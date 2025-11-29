@@ -1,0 +1,15 @@
+{
+    "titleLogin": "Đăng nhập",
+    "placeholder": {
+        "username": "Tên đăng nhập",
+        "password": "Mật khẩu"
+    },
+    "login": "Đăng nhập",
+    "fogotPassword": "Quên mật khẩu?",
+    "haveNotAccount": "Bạn chưa có tài khoản?",
+    "registerNow": "Đăng kí ngay",
+    "errors": {
+        "usernameRequired": "Vui lòng nhập tên đăng nhập",
+        "passwordRequired": "Vui lòng nhập mật khẩu"
+    }
+}
