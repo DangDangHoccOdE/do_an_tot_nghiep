@@ -1,10 +1,8 @@
-package com.management_system.service;
+package com.management_system.service.impl;
 
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Service;
 
-public interface IUserSecurityService extends UserDetailsService {
-    User findByUserName(String username);
-
-    User findByEmail(String email);
-
+@Service
+public class UserSecurityService {
+    
 }

@@ -1,4 +1,4 @@
-package com.management_system.entity;
+package com.management_system.entity.enums;
 
 public enum AssignmentStatus {
     TODO,

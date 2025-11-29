@@ -1,9 +1,9 @@
 package com.management_system.entity;
 
+import java.util.UUID;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,13 +13,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TeamMember extends BaseEntity {
-    @ManyToOne
-    @JoinColumn(name = "team_id", nullable = false)
-    private Team team;
+    @Column(name = "team_id", nullable = false)
+    private UUID teamId;
 
-    @ManyToOne
-    @JoinColumn(name = "staff_id", nullable = false)
-    private User staff;
+    @Column(name = "user_id", nullable = false)
+    private UUID userId;
 
     @Column(name = "role_in_team", length = 100)
     private String roleInTeam;

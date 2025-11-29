@@ -1,13 +1,12 @@
 package com.management_system.entity;
 
 import java.time.Instant;
+import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,9 +16,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProjectFile extends BaseEntity {
-    @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
-    private Project project;
+    @Column(name = "project_id", nullable = false)
+    private UUID projectId;
 
     @Column(name = "file_name", length = 200)
     private String fileName;
@@ -27,9 +25,8 @@ public class ProjectFile extends BaseEntity {
     @Column(name = "file_path", length = 255)
     private String filePath;
 
-    @ManyToOne
-    @JoinColumn(name = "uploaded_by")
-    private User uploadedBy;
+    @Column(name = "uploaded_by_user_id")
+    private UUID uploadedByUserId;
 
     @CreationTimestamp
     @Column(name = "uploaded_at", updatable = false)

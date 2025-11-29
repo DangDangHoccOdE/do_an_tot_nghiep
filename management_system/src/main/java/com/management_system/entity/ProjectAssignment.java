@@ -1,29 +1,28 @@
 package com.management_system.entity;
 
 import java.time.LocalDate;
+import java.util.UUID;
+
+import com.management_system.entity.enums.AssignmentStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "projects")
+@Table(name = "project_assignments")
 @Getter
 @Setter
 public class ProjectAssignment {
-    @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
-    private Project project;
+    @Column(name = "project_id", nullable = false)
+    private UUID projectId;
 
-    @ManyToOne
-    @JoinColumn(name = "staff_id", nullable = false)
-    private User staff;
+    @Column(name = "user_id", nullable = false)
+    private UUID userId;
 
     @Column(length = 100)
     private String position;

@@ -1,9 +1,14 @@
 package com.management_system.entity;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import com.management_system.entity.enums.AuthProvider;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +30,34 @@ public class User extends BaseEntity {
     @Column(length = 20)
     private String phone;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+    @Column(name = "role_id")
+    private UUID roleId;
+
+     @Column(name = "activation_code")
+    private String activationCode;
+
+    @Column(name = "activation_expiry")
+    private LocalDateTime activationExpiry;
+
+    @Column(name = "forgot_password_code")
+    private String forgotPasswordCode;
+
+    @Column(name = "forgot_password_expiry")
+    private LocalDateTime forgotPasswordExpiry;
+
+    @Column(name = "email_code")
+    private String emailCode;
+
+    @Column(name = "email_expiry")
+    private LocalDateTime emailExpiry;
+
+    @Column(name = "provider")
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider;
+
+    @Column(name = "provider_id")
+    private String providerId;
+
+    @Column(name = "avatar")
+    private String avatar;
 }
