@@ -1,12 +1,12 @@
 <template>
   <Header />
-  <div class="login-page">
-    <div class="login-form">
+  <div class="register-page">
+    <div class="register-form">
       <h2 class="font-bold text-lg">
-        {{ $t('titleLogin') }}
+        {{ $t('titleRegister') }}
       </h2>
       <el-form
-        ref="loginForm"
+        ref="registerForm"
         :model="form"
         :rules="rules"
         label-position="top"
@@ -16,7 +16,13 @@
           <el-input
             v-model="form.username"
             :placeholder="$t('placeholder.username')"
-            @keyup.enter="handleLogin"
+          />
+        </el-form-item>
+        <el-form-item prop="email">
+          <el-input
+            v-model="form.email"
+            type="email"
+            :placeholder="$t('placeholder.email')"
           />
         </el-form-item>
         <el-form-item prop="password">
@@ -25,30 +31,31 @@
             type="password"
             :placeholder="$t('placeholder.password')"
             show-password
-            @keyup.enter="handleLogin"
           />
         </el-form-item>
-        <div class="mb-4 text-gray-600">
-          <a
-            href="#"
-            class="hover:underline link-decoration"
-          >{{ $t('fogotPassword') }}</a>
-        </div>
+        <el-form-item prop="confirmPassword">
+          <el-input
+            v-model="form.confirmPassword"
+            type="password"
+            :placeholder="$t('placeholder.confirmPassword')"
+            show-password
+          />
+        </el-form-item>
         <el-form-item>
           <el-button
             type="primary"
             class="w-full"
-            @click="handleLogin"
+            @click="handleRegister"
           >
-            {{ t('login') }}
+            {{ t('register') }}
           </el-button>
         </el-form-item>
         <p class="mt-4 text-center">
-          {{ $t('haveNotAccount') }} <a
+          {{ $t('haveAccount') }} <a
             href="#"
             class="font-semibold hover:underline link-decoration"
-            @click.prevent="goToRegister"
-          >{{ $t('registerNow') }}</a>
+            @click.prevent="goToLogin"
+          >{{ $t('loginNow') }}</a>
         </p>
       </el-form>
     </div>
@@ -57,7 +64,7 @@
 </template>
 
 <script setup>
-defineOptions({ name: 'LoginPage' });
+defineOptions({ name: 'RegisterPage' });
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Header from '@/layouts/Header.vue'
@@ -66,44 +73,58 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 const router = useRouter()
-// function handleLogin() {
-//   auth.login()
-//   router.push('/')
-// }
 
 const form = ref({
   username: '',
-  password: ''
+  email: '',
+  password: '',
+  confirmPassword: ''
 })
+
+const validateConfirmPassword = (rule, value, callback) => {
+  if (value !== form.value.password) {
+    callback(new Error('Mật khẩu xác nhận không khớp'))
+  } else {
+    callback()
+  }
+}
 
 const rules = {
   username: [{ required: true, message: 'Vui lòng nhập tên đăng nhập', trigger: 'blur' }],
-  password: [{ required: true, message: 'Vui lòng nhập mật khẩu', trigger: 'blur' }]
+  email: [
+    { required: true, message: 'Vui lòng nhập email', trigger: 'blur' },
+    { type: 'email', message: 'Email không hợp lệ', trigger: 'blur' }
+  ],
+  password: [{ required: true, message: 'Vui lòng nhập mật khẩu', trigger: 'blur' }],
+  confirmPassword: [
+    { required: true, message: 'Vui lòng xác nhận mật khẩu', trigger: 'blur' },
+    { validator: validateConfirmPassword, trigger: 'blur' }
+  ]
 }
 
-const handleLogin = () => {
-  // auth.login()
-  router.push('/')
+const handleRegister = () => {
+  // TODO: Implement registration logic
+  router.push('/login')
 }
 
-const goToRegister = () => {
-  router.push('/register')
+const goToLogin = () => {
+  router.push('/login')
 }
 </script>
 
 <style scoped>
-.login-page {
+.register-page {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 40vh;
-  /* background-color: rgba(242, 230, 230, 0.95); */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  space-x: 4
 }
 
-.login-form {
+.register-form {
   padding: 30px 40px;
   border-radius: 10px;
   width: 400px;

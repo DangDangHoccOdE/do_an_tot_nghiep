@@ -1,15 +1,179 @@
 {
     "titleLogin": "Đăng nhập",
+    "titleRegister": "Đăng ký",
+    
     "placeholder": {
-        "username": "Tên đăng nhập",
-        "password": "Mật khẩu"
+      "username": "Tên đăng nhập",
+      "password": "Mật khẩu",
+      "email": "Email",
+      "confirmPassword": "Nhập lại mật khẩu",
+      "phone": "Số điện thoại",
+      "fullName": "Họ và tên"
     },
-    "login": "Đăng nhập",
-    "fogotPassword": "Quên mật khẩu?",
-    "haveNotAccount": "Bạn chưa có tài khoản?",
-    "registerNow": "Đăng kí ngay",
+  
     "errors": {
-        "usernameRequired": "Vui lòng nhập tên đăng nhập",
-        "passwordRequired": "Vui lòng nhập mật khẩu"
+      "usernameRequired": "Vui lòng nhập tên đăng nhập",
+      "emailInvalid": "Email không hợp lệ",
+      "emailRequired": "Vui lòng nhập email",
+      "passwordRequired": "Vui lòng nhập mật khẩu",
+      "passwordMin": "Mật khẩu phải ít nhất 6 ký tự",
+      "passwordNotMatch": "Mật khẩu xác nhận không khớp",
+      "confirmPasswordRequired": "Vui lòng xác nhận mật khẩu"
+    },
+  
+    "haveAccount": "Bạn đã có tài khoản?",
+    "loginNow": "Đăng nhập ngay",
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
+    
+    "header": {
+      "menus": {
+        "overview": {
+          "label": "Tổng quan",
+          "submenus": {
+            "companyProfile": "Hồ sơ công ty",
+            "whyVietnam": "Tại sao chọn Việt Nam",
+            "whyLuvina": "Tại sao chọn Luvina",
+            "aboutUs": "Về chúng tôi"
+          }
+        },
+        "services": {
+          "label": "Dịch vụ",
+          "submenus": {
+            "strategyConsulting": "Tư vấn chiến lược",
+            "softwareDevelopment": "Phát triển phần mềm",
+            "softwareMigration": "Di chuyển & hiện đại hoá ứng dụng",
+            "cloudTransformation": "Chuyển đổi đám mây",
+            "itManagement": "Dịch vụ quản lý CNTT",
+            "qaTesting": "Kiểm thử phần mềm và đảm bảo chất lượng",
+            "cyberSecurity": "Bảo mật CNTT"
+          }
+        },
+        "solutions": {
+          "label": "Giải pháp",
+          "submenus": {
+            "erp": "Hệ thống hoạch định nguồn lực doanh nghiệp (ERP)",
+            "crm": "Hệ thống quản lý quan hệ khách hàng (CRM)",
+            "cms": "Hệ thống quản trị nội dung (CMS)",
+            "ecommerce": "Giải pháp thương mại điện tử",
+            "pos": "Hệ thống Point-of-sale (POS)"
+          }
+        },
+        "business": {
+          "label": "Nghiệp vụ",
+          "submenus": {
+            "fintech": "Fintech",
+            "healthcare": "Healthcare",
+            "ecommerce": "E-commerce",
+            "education": "Education"
+          }
+        },
+        "news": {
+          "label": "Tin tức"
+        },
+        "resources": {
+          "label": "Nguồn lực",
+          "submenus": {
+            "blog": "Blog",
+            "caseStudy": "Case Study",
+            "whitepaper": "Whitepaper"
+          }
+        }
+      },
+      "contact": "Liên hệ",
+      "toggleMenu": "Mở/Đóng menu"
+    },
+    
+    "footer": {
+      "overview": "Top 10 công ty Gia công phần mềm Việt Nam với hơn 750 nhân tài phục vụ thị trường toàn cầu kể từ năm 2004.",
+      "offices": "VĂN PHÒNG",
+      "contact": "LIÊN HỆ",
+      "contactMobile": "Liên hệ",
+      "contactForCareer": "Contact for Career:",
+      "copyright": "Copyright © Luvina Software JSC.",
+      "privacyPolicy": "Privacy Policy",
+      "navigation": {
+        "home": "Trang chủ",
+        "services": "Dịch vụ",
+        "solutions": "Giải pháp",
+        "business": "Nghiệp vụ",
+        "projects": "Dự án",
+        "news": "Tin tức",
+        "aboutUs": "Về chúng tôi",
+        "resources": "Nguồn lực"
+      },
+      "officesData": {
+        "vietnam": {
+          "name": "Việt Nam",
+          "hanoi": {
+            "title": "Trụ sở Hà Nội",
+            "address": "Tháp văn phòng Hòa Bình - số 106 Hoàng Quốc Việt, phường Nghĩa Đô, TP Hà Nội",
+            "specificContact": "[THÔNG TIN LIÊN HỆ CỤ THỂ]",
+            "contactPerson": "NGƯỜI PHỤ TRÁCH:",
+            "contactPersonName": "Bùi Thị Bích Quyên",
+            "email": "EMAIL:",
+            "emailValue": "btbquyen@luvina.net",
+            "tel": "TEL:",
+            "telValue": "(84) (24) 3793 1103 (ext 113)",
+            "generalContact": "[THÔNG TIN LIÊN HỆ CHUNG]",
+            "generalEmail": "EMAIL:",
+            "generalEmailValue": "info@luvina.net",
+            "generalTel": "TEL:",
+            "generalTelValue": "(84) (24) 3793 1103 (ext 0)",
+            "fax": "FAX:",
+            "faxValue": "(84) (24) 3793 1106"
+          },
+          "danang": {
+            "title": "Chi nhánh tại Đà Nẵng",
+            "address": "Tầng 18, Tòa nhà số 2 Quang Trung, Phường Hải Châu, TP Đà Nẵng.",
+            "generalContact": "[THÔNG TIN LIÊN HỆ CHUNG]",
+            "tel": "TEL:",
+            "telValue": "(84) (236) 388 8718",
+            "fax": "FAX:",
+            "faxValue": "(84) (236) 388 8721"
+          },
+          "hcm": {
+            "title": "Chi nhánh tại TP HCM",
+            "address": "38/1 Nguyễn Văn Trỗi, Phường Cầu Kiệu, Thành phố Hồ Chí Minh, Việt Nam.",
+            "contact": "[THÔNG TIN LIÊN HỆ]",
+            "contactPerson": "NGƯỜI PHỤ TRÁCH:",
+            "contactPersonName": "Lê Viết Linh",
+            "tel": "TEL:",
+            "telValue": "(84) 903 054 065"
+          }
+        },
+        "japan": {
+          "name": "Nhật Bản",
+          "tokyo": {
+            "title": "Chi nhánh tại Nhật Bản",
+            "address": "R612, Kanagawa Science Pask (KSP), 3-2-1 Sakado, Takatsu-ku, Kawasaki-shi, Kanagawa-ken 213-0012, Japan",
+            "specificContact": "[THÔNG TIN LIÊN HỆ CỤ THỂ]",
+            "contactPerson": "NGƯỜI PHỤ TRÁCH:",
+            "contactPersonName": "Yokohama Kazutoshi",
+            "email": "EMAIL:",
+            "emailValue": "yokohama@luvina.jp",
+            "tel": "TEL:",
+            "telValue": "(81) (44) 271 7080",
+            "generalContact": "[THÔNG TIN LIÊN HỆ CHUNG]",
+            "generalEmail": "EMAIL:",
+            "generalEmailValue": "info@luvina.jp",
+            "generalTel": "TEL:",
+            "generalTelValue": "(81) (44) 271 7080"
+          }
+        },
+        "usa": {
+          "name": "Mỹ",
+          "vdx": {
+            "title": "Văn phòng đại diện - VDX",
+            "address": "38N Almaden Blvd, Unit 125, San Jose, California 95110-2720, United States.",
+            "generalContact": "[THÔNG TIN LIÊN HỆ CHUNG]",
+            "email": "EMAIL:",
+            "emailValue": "Info@vdx-usa.com",
+            "tel": "TEL:",
+            "telValue": "+1 (408) 805-2148"
+          }
+        }
+      }
     }
 }
+  

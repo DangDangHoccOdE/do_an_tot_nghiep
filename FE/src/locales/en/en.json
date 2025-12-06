@@ -1,7 +1,178 @@
 {
-    "titleLogin": "Đăng nhập",
+    "titleLogin": "Login",
+    "titleRegister": "Register",
+    
     "placeholder": {
-        "username": "Tên đăng nhập",
-        "password": "Mật khẩu"
+      "username": "Username",
+      "password": "Password",
+      "email": "Email",
+      "confirmPassword": "Confirm Password",
+      "phone": "Phone Number",
+      "fullName": "Full Name"
+    },
+  
+    "errors": {
+      "usernameRequired": "Please enter username",
+      "emailInvalid": "Invalid email",
+      "emailRequired": "Please enter email",
+      "passwordRequired": "Please enter password",
+      "passwordMin": "Password must be at least 6 characters",
+      "passwordNotMatch": "Password confirmation does not match",
+      "confirmPasswordRequired": "Please confirm password"
+    },
+  
+    "haveAccount": "Already have an account?",
+    "loginNow": "Login now",
+    "login": "Login",
+    "register": "Register",
+    
+    "header": {
+      "menus": {
+        "overview": {
+          "label": "Overview",
+          "submenus": {
+            "companyProfile": "Company Profile",
+            "whyVietnam": "Why Vietnam",
+            "whyLuvina": "Why Luvina",
+            "aboutUs": "About Us"
+          }
+        },
+        "services": {
+          "label": "Services",
+          "submenus": {
+            "strategyConsulting": "Strategy Consulting",
+            "softwareDevelopment": "Software Development",
+            "softwareMigration": "Application Migration & Modernization",
+            "cloudTransformation": "Cloud Transformation",
+            "itManagement": "IT Management Services",
+            "qaTesting": "Software Testing & Quality Assurance",
+            "cyberSecurity": "Cyber Security"
+          }
+        },
+        "solutions": {
+          "label": "Solutions",
+          "submenus": {
+            "erp": "Enterprise Resource Planning (ERP)",
+            "crm": "Customer Relationship Management (CRM)",
+            "cms": "Content Management System (CMS)",
+            "ecommerce": "E-commerce Solutions",
+            "pos": "Point-of-sale (POS) System"
+          }
+        },
+        "business": {
+          "label": "Business",
+          "submenus": {
+            "fintech": "Fintech",
+            "healthcare": "Healthcare",
+            "ecommerce": "E-commerce",
+            "education": "Education"
+          }
+        },
+        "news": {
+          "label": "News"
+        },
+        "resources": {
+          "label": "Resources",
+          "submenus": {
+            "blog": "Blog",
+            "caseStudy": "Case Study",
+            "whitepaper": "Whitepaper"
+          }
+        }
+      },
+      "contact": "Contact",
+      "toggleMenu": "Toggle Menu"
+    },
+    
+    "footer": {
+      "overview": "Top 10 Vietnamese Software Outsourcing Company with over 750 talents serving the global market since 2004.",
+      "offices": "OFFICES",
+      "contact": "CONTACT",
+      "contactMobile": "Contact",
+      "contactForCareer": "Contact for Career:",
+      "copyright": "Copyright © Luvina Software JSC.",
+      "privacyPolicy": "Privacy Policy",
+      "navigation": {
+        "home": "Home",
+        "services": "Services",
+        "solutions": "Solutions",
+        "business": "Business",
+        "projects": "Projects",
+        "news": "News",
+        "aboutUs": "About Us",
+        "resources": "Resources"
+      },
+      "officesData": {
+        "vietnam": {
+          "name": "Vietnam",
+          "hanoi": {
+            "title": "Hanoi Headquarters",
+            "address": "Hoa Binh Office Tower - No. 106 Hoang Quoc Viet, Nghia Do Ward, Hanoi",
+            "specificContact": "[SPECIFIC CONTACT INFORMATION]",
+            "contactPerson": "PERSON IN CHARGE:",
+            "contactPersonName": "Bui Thi Bich Quyen",
+            "email": "EMAIL:",
+            "emailValue": "btbquyen@luvina.net",
+            "tel": "TEL:",
+            "telValue": "(84) (24) 3793 1103 (ext 113)",
+            "generalContact": "[GENERAL CONTACT INFORMATION]",
+            "generalEmail": "EMAIL:",
+            "generalEmailValue": "info@luvina.net",
+            "generalTel": "TEL:",
+            "generalTelValue": "(84) (24) 3793 1103 (ext 0)",
+            "fax": "FAX:",
+            "faxValue": "(84) (24) 3793 1106"
+          },
+          "danang": {
+            "title": "Da Nang Branch",
+            "address": "18th Floor, Building No. 2 Quang Trung, Hai Chau Ward, Da Nang City.",
+            "generalContact": "[GENERAL CONTACT INFORMATION]",
+            "tel": "TEL:",
+            "telValue": "(84) (236) 388 8718",
+            "fax": "FAX:",
+            "faxValue": "(84) (236) 388 8721"
+          },
+          "hcm": {
+            "title": "Ho Chi Minh City Branch",
+            "address": "38/1 Nguyen Van Troi, Cau Kieu Ward, Ho Chi Minh City, Vietnam.",
+            "contact": "[CONTACT INFORMATION]",
+            "contactPerson": "PERSON IN CHARGE:",
+            "contactPersonName": "Le Viet Linh",
+            "tel": "TEL:",
+            "telValue": "(84) 903 054 065"
+          }
+        },
+        "japan": {
+          "name": "Japan",
+          "tokyo": {
+            "title": "Japan Branch",
+            "address": "R612, Kanagawa Science Park (KSP), 3-2-1 Sakado, Takatsu-ku, Kawasaki-shi, Kanagawa-ken 213-0012, Japan",
+            "specificContact": "[SPECIFIC CONTACT INFORMATION]",
+            "contactPerson": "PERSON IN CHARGE:",
+            "contactPersonName": "Yokohama Kazutoshi",
+            "email": "EMAIL:",
+            "emailValue": "yokohama@luvina.jp",
+            "tel": "TEL:",
+            "telValue": "(81) (44) 271 7080",
+            "generalContact": "[GENERAL CONTACT INFORMATION]",
+            "generalEmail": "EMAIL:",
+            "generalEmailValue": "info@luvina.jp",
+            "generalTel": "TEL:",
+            "generalTelValue": "(81) (44) 271 7080"
+          }
+        },
+        "usa": {
+          "name": "USA",
+          "vdx": {
+            "title": "Representative Office - VDX",
+            "address": "38N Almaden Blvd, Unit 125, San Jose, California 95110-2720, United States.",
+            "generalContact": "[GENERAL CONTACT INFORMATION]",
+            "email": "EMAIL:",
+            "emailValue": "Info@vdx-usa.com",
+            "tel": "TEL:",
+            "telValue": "+1 (408) 805-2148"
+          }
+        }
+      }
     }
 }
