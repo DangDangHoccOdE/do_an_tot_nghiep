@@ -42,7 +42,4 @@ public class Task extends BaseEntity {
 
     @Column(name = "due_date")
     private LocalDate dueDate;
-
-    @OneToMany(mappedBy = "task")
-    private List<TaskUpdate> updates;
 }

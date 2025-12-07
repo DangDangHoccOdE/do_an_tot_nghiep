@@ -17,7 +17,7 @@ import lombok.Setter;
 @Table(name = "project_assignments")
 @Getter
 @Setter
-public class ProjectAssignment {
+public class ProjectAssignment extends BaseEntity {
     @Column(name = "project_id", nullable = false)
     private UUID projectId;
 

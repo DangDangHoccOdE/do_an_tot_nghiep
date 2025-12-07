@@ -7,4 +7,6 @@ import com.management_system.entity.User;
 
 public interface UserRepository extends BaseRepository<User, UUID> {
     Optional<User> findByEmailAndDeleteFlagFalse(String email);
+
+    Boolean existsByEmailIgnoreCaseAndDeleteFlagFalse(String email);
 }

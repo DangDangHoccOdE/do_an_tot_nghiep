@@ -18,7 +18,7 @@
           class="relative group menu-item"
         >
           <component
-            :is="menu.external ? 'a' : 'router-link'"
+            :is="'a'"
             :href="menu.external ? menu.url : undefined"
             :to="menu.external ? undefined : menu.url"
             :target="menu.external ? '_blank' : undefined"
@@ -58,7 +58,7 @@
               <component
                 v-for="(sub, i) in menu.submenus"
                 :key="i"
-                :is="sub.external ? 'a' : 'router-link'"
+                :is="'a'"
                 :href="sub.external ? sub.url : undefined"
                 :to="sub.external ? undefined : sub.url"
                 :target="sub.external ? '_blank' : undefined"
@@ -72,10 +72,10 @@
 
         <!-- Contact Button -->
         <router-link
-          to="/contact"
+          to="/"
           class="overflow-hidden gap-2.5 flex justify-center items-center self-stretch py-1 my-auto text-lg text-white bg-[#CE181E] hover:bg-[#f93535] rounded-lg h-[36px] w-[134px] cursor-pointer transition-colors duration-200 no-underline"
         >
-          {{ $t("header.contact") }}
+          {{ $t("contact") }}
         </router-link>
       </div>
 
@@ -83,7 +83,7 @@
       <button
         @click="toggleMobileMenu"
         class="md:hidden p-2 text-[#4A4B4C] focus:outline-none"
-        :aria-label="$t('header.toggleMenu')"
+        :aria-label="$t('toggleMenu')"
       >
         <MenuIcon v-if="!isMobileMenuOpen" class="w-6 h-6" />
         <CloseIcon v-else class="w-6 h-6" />
@@ -114,7 +114,7 @@
           </button>
           <component
             v-else
-            :is="menu.external ? 'a' : 'router-link'"
+            :is="'a'"
             :href="menu.external ? menu.url : undefined"
             :to="menu.external ? undefined : menu.url"
             :target="menu.external ? '_blank' : undefined"
@@ -129,7 +129,7 @@
             <component
               v-for="(sub, i) in menu.submenus"
               :key="i"
-              :is="sub.external ? 'a' : 'router-link'"
+              :is="'a'" 
               :href="sub.external ? sub.url : undefined"
               :to="sub.external ? undefined : sub.url"
               :target="sub.external ? '_blank' : undefined"
@@ -143,11 +143,11 @@
 
         <!-- Mobile Contact Button -->
         <router-link
-          to="/contact"
+          to="/"
           class="mx-4 my-4 flex justify-center items-center py-2 text-lg text-white bg-[#CE181E] hover:bg-[#f93535] rounded-lg transition-colors no-underline"
           @click="closeMobileMenu"
         >
-          {{ $t("header.contact") }}
+          {{ $t("contact") }}
         </router-link>
       </div>
     </div>
@@ -188,156 +188,156 @@ const toggleSubmenu = (index) => {
 
 const menus = computed(() => [
   {
-    labelKey: "header.menus.overview.label",
-    url: "/overview",
+    labelKey: "menus.overview.label",
+    url: "",
     external: false,
     submenus: [
       {
-        labelKey: "header.menus.overview.submenus.companyProfile",
-        url: "/company-profile",
+        labelKey: "menus.overview.submenus.companyProfile",
+        url: "",
         external: false,
       },
       {
-        labelKey: "header.menus.overview.submenus.whyVietnam",
-        url: "/why-viet-nam",
+        labelKey: "menus.overview.submenus.whyVietnam",
+        url: "",
         external: false,
       },
       {
-        labelKey: "header.menus.overview.submenus.whyLuvina",
-        url: "/why-luvina",
+        labelKey: "menus.overview.submenus.whyLuvina",
+        url: "",
         external: false,
       },
       {
-        labelKey: "header.menus.overview.submenus.aboutUs",
-        url: "/about-us",
+        labelKey: "menus.overview.submenus.aboutUs",
+        url: "",
         external: false,
       },
     ],
   },
   {
-    labelKey: "header.menus.services.label",
-    url: "/services",
+    labelKey: "menus.services.label",
+    url: "/",
     external: false,
     submenus: [
       {
-        labelKey: "header.menus.services.submenus.strategyConsulting",
-        url: "/services/it-strategy-consulting",
+        labelKey: "menus.services.submenus.strategyConsulting",
+        url: "",
         external: false,
       },
       {
-        labelKey: "header.menus.services.submenus.softwareDevelopment",
-        url: "/services/software-development",
+        labelKey: "menus.services.submenus.softwareDevelopment",
+        url: "",
         external: false,
       },
       {
-        labelKey: "header.menus.services.submenus.softwareMigration",
-        url: "/services/software-migration-modernization",
+        labelKey: "menus.services.submenus.softwareMigration",
+        url: "",
         external: false,
       },
       {
-        labelKey: "header.menus.services.submenus.cloudTransformation",
-        url: "/services/cloud-transformation",
+        labelKey: "menus.services.submenus.cloudTransformation",
+        url: "",
         external: false,
       },
       {
-        labelKey: "header.menus.services.submenus.itManagement",
-        url: "/services/it-management-services",
+        labelKey: "menus.services.submenus.itManagement",
+        url: "",
         external: false,
       },
       {
-        labelKey: "header.menus.services.submenus.qaTesting",
-        url: "/services/qa-software-testing-service",
+        labelKey: "menus.services.submenus.qaTesting",
+        url: "",
         external: false,
       },
       {
-        labelKey: "header.menus.services.submenus.cyberSecurity",
-        url: "/services/cyber-security-services",
+        labelKey: "menus.services.submenus.cyberSecurity",
+        url: "",
         external: false,
       },
     ],
   },
   {
-    labelKey: "header.menus.solutions.label",
-    url: "/solutions",
+    labelKey: "menus.solutions.label",
+    url: "",
     external: false,
     submenus: [
       {
-        labelKey: "header.menus.solutions.submenus.erp",
-        url: "/solutions/erp",
+        labelKey: "menus.solutions.submenus.erp",
+        url: "",
         external: false,
       },
       {
-        labelKey: "header.menus.solutions.submenus.crm",
-        url: "/solutions/crm",
+        labelKey: "menus.solutions.submenus.crm",
+        url: "",
         external: false,
       },
       {
-        labelKey: "header.menus.solutions.submenus.cms",
-        url: "/solutions/cms",
+        labelKey: "menus.solutions.submenus.cms",
+        url: "",
         external: false,
       },
       {
-        labelKey: "header.menus.solutions.submenus.ecommerce",
-        url: "/solutions/e-commerce",
+        labelKey: "menus.solutions.submenus.ecommerce",
+        url: "",
         external: false,
       },
       {
-        labelKey: "header.menus.solutions.submenus.pos",
-        url: "/solutions/pos",
+        labelKey: "menus.solutions.submenus.pos",
+        url: "",
         external: false,
       },
     ],
   },
   {
-    labelKey: "header.menus.business.label",
-    url: "/business",
+    labelKey: "menus.business.label",
+    url: "",
     external: false,
     submenus: [
       {
-        labelKey: "header.menus.business.submenus.fintech",
-        url: "/business/fintech",
+        labelKey: "menus.business.submenus.fintech",
+        url: "",
         external: false,
       },
       {
-        labelKey: "header.menus.business.submenus.healthcare",
-        url: "/business/healthcare",
+        labelKey: "menus.business.submenus.healthcare",
+        url: "",
         external: false,
       },
       {
-        labelKey: "header.menus.business.submenus.ecommerce",
-        url: "/business/e-commerce",
+        labelKey: "menus.business.submenus.ecommerce",
+        url: "",
         external: false,
       },
       {
-        labelKey: "header.menus.business.submenus.education",
-        url: "/business/education",
+        labelKey: "menus.business.submenus.education",
+        url: "",
         external: false,
       },
     ],
   },
   {
-    labelKey: "header.menus.news.label",
-    url: "/news",
+    labelKey: "menus.news.label",
+    url: "",
     external: false,
   },
   {
-    labelKey: "header.menus.resources.label",
-    url: "/resources",
+    labelKey: "menus.resources.label",
+    url: "",
     external: false,
     submenus: [
       {
-        labelKey: "header.menus.resources.submenus.blog",
-        url: "/resources/blog",
+        labelKey: "menus.resources.submenus.blog",
+        url: "",
         external: false,
       },
       {
-        labelKey: "header.menus.resources.submenus.caseStudy",
-        url: "/resources/case-study",
+        labelKey: "menus.resources.submenus.caseStudy",
+        url: "",
         external: false,
       },
       {
-        labelKey: "header.menus.resources.submenus.whitepaper",
-        url: "/resources/whitepaper",
+        labelKey: "menus.resources.submenus.whitepaper",
+        url: "",
         external: false,
       },
     ],

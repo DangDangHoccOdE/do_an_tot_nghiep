@@ -15,7 +15,7 @@
                   />
                 </div>
                 <div class="text-[#70706F] my-8 font-normal md:text-base text-[12px] leading-[20.4px] footer-overview-offices">
-                  {{ $t('footer.overview') }}
+                  {{ $t('overview') }}
                 </div>
               </div>
 
@@ -56,7 +56,7 @@
             <div class="md:mt-0 mt-4">
               <div class="expansion-panels">
                 <p class="font-bold md:mb-4 mb-[30px] md:text-xl text-base text-black footer-title-office">
-                  {{ $t('footer.offices') }}
+                  {{ $t('offices') }}
                 </p>
 
                 <!-- Vietnam Office -->
@@ -161,29 +161,29 @@
           <div class="lg:pt-0 pt-[37px]">
             <div class="md:ml-20 relative footer-pc-display customer-contact-footer">
               <p class="font-bold text-xl footer-contact-title">
-                {{ $t('footer.contact') }}
+                {{ $t('contact') }}
               </p>
               <nav class="flex flex-col mt-4 space-y-2 text-sm text-black font-normal">
-                <a class="hover:opacity-75" href="mailto:info@luvina.net">
-                  info@luvina.net
+                <a class="hover:opacity-75">
+                  {{ $t('infoLuvina') }}
                 </a>
-                <p class="text-[#4A4B4C]">{{ $t('footer.contactForCareer') }}</p>
-                <a class="hover:opacity-75" href="tel:+84865032899">
-                  (+84) 865 032 899
+                <p class="text-[#4A4B4C]">{{ $t('contactForCareer') }}</p>
+                <a class="hover:opacity-75">
+                  {{ $t('phoneLuvina') }}
                 </a>
               </nav>
             </div>
 
             <div class="lg:ml-20 relative block lg:hidden">
               <p class="font-bold text-base md:text-xl">
-                {{ $t('footer.contactMobile') }}
+                {{ $t('contactMobile') }}
               </p>
               <nav class="flex flex-col mt-4 space-y-2 text-sm text-[#70706F] font-normal">
-                <a class="hover:opacity-75" href="mailto:info@luvina.net">
-                  info@luvina.net
+                <a class="hover:opacity-75" href="">
+                  {{ $t('infoLuvina') }}
                 </a>
-                <a class="hover:opacity-75" href="tel:+842838110001">
-                  Careers (+84) 2838 110 001
+                <a class="hover:opacity-75" href="">
+                  {{ $t('careerLuvina') }}
                 </a>
               </nav>
             </div>
@@ -211,13 +211,13 @@
       <!-- Copyright & Privacy -->
       <div class="text-[#000000] font-normal lg:flex lg:justify-between custom-border-footer">
         <div class="flex justify-center text-[10px] leading-[13.56px] h-[14px] lg:justify-start lg:text-[16px] lg:leading-[27.2px] lg:h-[17px]">
-          {{ $t('footer.copyright') }}
+          {{ $t('copyright') }}
         </div>
         <router-link
-          to="/privacy-policy"
+          to="/"
           class="flex justify-center text-[10px] leading-[13.56px] h-[14px] lg:justify-start lg:text-[16px] lg:leading-[27.2px] lg:h-[17px] hover:text-[#4A4B4C]"
         >
-          {{ $t('footer.privacyPolicy') }}
+          {{ $t('privacyPolicy') }}
         </router-link>
       </div>
     </div>
@@ -246,121 +246,121 @@ const togglePanel = (index) => {
 const socialLinks = [
   {
     name: 'Facebook',
-    url: 'https://www.facebook.com/LuvinaSoftware',
+    url: '',
     icon: FacebookIcon,
   },
   {
     name: 'LinkedIn',
-    url: 'https://www.linkedin.com/company/luvina-software-outsourcing',
+    url: '',
     icon: LinkedInIcon,
   },
   {
     name: 'YouTube',
-    url: 'https://www.youtube.com/@luvinasoftware',
+    url: '',
     icon: YouTubeIcon,
   },
 ];
 
 const navLinks = computed(() => [
-  { key: 'home', labelKey: 'footer.navigation.home', url: '/' },
-  { key: 'services', labelKey: 'footer.navigation.services', url: '/services' },
-  { key: 'solutions', labelKey: 'footer.navigation.solutions', url: '/solutions' },
-  { key: 'business', labelKey: 'footer.navigation.business', url: '/business' },
-  { key: 'projects', labelKey: 'footer.navigation.projects', url: '/projects' },
-  { key: 'news', labelKey: 'footer.navigation.news', url: '/news' },
-  { key: 'aboutUs', labelKey: 'footer.navigation.aboutUs', url: '/about-us' },
-  { key: 'resources', labelKey: 'footer.navigation.resources', url: '/resources' },
+  { key: 'home', labelKey: 'navigation.home', url: '/' },
+  { key: 'services', labelKey: 'navigation.services', url: '/' },
+  { key: 'solutions', labelKey: 'navigation.solutions', url: '/' },
+  { key: 'business', labelKey: 'navigation.business', url: '/' },
+  { key: 'projects', labelKey: 'navigation.projects', url: '/' },
+  { key: 'news', labelKey: 'navigation.news', url: '/' },
+  { key: 'aboutUs', labelKey: 'navigation.aboutUs', url: '/' },
+  { key: 'resources', labelKey: 'navigation.resources', url: '/' },
 ]);
 
 const offices = computed(() => [
   {
-    nameKey: 'footer.officesData.vietnam.name',
+    nameKey: 'officesData.vietnam.name',
     flagIcon: VietnamFlagIcon,
     branches: {
       hanoi: {
-        titleKey: 'footer.officesData.vietnam.hanoi.title',
-        addressKey: 'footer.officesData.vietnam.hanoi.address',
+        titleKey: 'officesData.vietnam.hanoi.title',
+        addressKey: 'officesData.vietnam.hanoi.address',
         specificContact: {
-          titleKey: 'footer.officesData.vietnam.hanoi.specificContact',
-          contactPersonKey: 'footer.officesData.vietnam.hanoi.contactPerson',
-          contactPersonNameKey: 'footer.officesData.vietnam.hanoi.contactPersonName',
-          emailKey: 'footer.officesData.vietnam.hanoi.email',
+          titleKey: 'officesData.vietnam.hanoi.specificContact',
+          contactPersonKey: 'officesData.vietnam.hanoi.contactPerson',
+          contactPersonNameKey: 'officesData.vietnam.hanoi.contactPersonName',
+          emailKey: 'officesData.vietnam.hanoi.email',
           emailValue: 'btbquyen@luvina.net',
-          telKey: 'footer.officesData.vietnam.hanoi.tel',
+          telKey: 'officesData.vietnam.hanoi.tel',
           telValue: '(84) (24) 3793 1103 (ext 113)',
         },
         generalContact: {
-          titleKey: 'footer.officesData.vietnam.hanoi.generalContact',
-          emailKey: 'footer.officesData.vietnam.hanoi.generalEmail',
+          titleKey: 'officesData.vietnam.hanoi.generalContact',
+          emailKey: 'officesData.vietnam.hanoi.generalEmail',
           emailValue: 'info@luvina.net',
-          telKey: 'footer.officesData.vietnam.hanoi.generalTel',
+          telKey: 'officesData.vietnam.hanoi.generalTel',
           telValue: '(84) (24) 3793 1103 (ext 0)',
-          faxKey: 'footer.officesData.vietnam.hanoi.fax',
+          faxKey: 'officesData.vietnam.hanoi.fax',
           faxValue: '(84) (24) 3793 1106',
         },
       },
       danang: {
-        titleKey: 'footer.officesData.vietnam.danang.title',
-        addressKey: 'footer.officesData.vietnam.danang.address',
+        titleKey: 'officesData.vietnam.danang.title',
+        addressKey: 'officesData.vietnam.danang.address',
         generalContact: {
-          titleKey: 'footer.officesData.vietnam.danang.generalContact',
-          telKey: 'footer.officesData.vietnam.danang.tel',
+          titleKey: 'officesData.vietnam.danang.generalContact',
+          telKey: 'officesData.vietnam.danang.tel',
           telValue: '(84) (236) 388 8718',
-          faxKey: 'footer.officesData.vietnam.danang.fax',
+          faxKey: 'officesData.vietnam.danang.fax',
           faxValue: '(84) (236) 388 8721',
         },
       },
       hcm: {
-        titleKey: 'footer.officesData.vietnam.hcm.title',
-        addressKey: 'footer.officesData.vietnam.hcm.address',
+        titleKey: 'officesData.vietnam.hcm.title',
+        addressKey: 'officesData.vietnam.hcm.address',
         contact: {
-          titleKey: 'footer.officesData.vietnam.hcm.contact',
-          contactPersonKey: 'footer.officesData.vietnam.hcm.contactPerson',
-          contactPersonNameKey: 'footer.officesData.vietnam.hcm.contactPersonName',
-          telKey: 'footer.officesData.vietnam.hcm.tel',
+          titleKey: 'officesData.vietnam.hcm.contact',
+          contactPersonKey: 'officesData.vietnam.hcm.contactPerson',
+          contactPersonNameKey: 'officesData.vietnam.hcm.contactPersonName',
+          telKey: 'officesData.vietnam.hcm.tel',
           telValue: '(84) 903 054 065',
         },
       },
     },
   },
   {
-    nameKey: 'footer.officesData.japan.name',
+    nameKey: 'officesData.japan.name',
     flagIcon: JapanFlagIcon,
     branches: {
       tokyo: {
-        titleKey: 'footer.officesData.japan.tokyo.title',
-        addressKey: 'footer.officesData.japan.tokyo.address',
+        titleKey: 'officesData.japan.tokyo.title',
+        addressKey: 'officesData.japan.tokyo.address',
         specificContact: {
-          titleKey: 'footer.officesData.japan.tokyo.specificContact',
-          contactPersonKey: 'footer.officesData.japan.tokyo.contactPerson',
-          contactPersonNameKey: 'footer.officesData.japan.tokyo.contactPersonName',
-          emailKey: 'footer.officesData.japan.tokyo.email',
+          titleKey: 'officesData.japan.tokyo.specificContact',
+          contactPersonKey: 'officesData.japan.tokyo.contactPerson',
+          contactPersonNameKey: 'officesData.japan.tokyo.contactPersonName',
+          emailKey: 'officesData.japan.tokyo.email',
           emailValue: 'yokohama@luvina.jp',
-          telKey: 'footer.officesData.japan.tokyo.tel',
+          telKey: 'officesData.japan.tokyo.tel',
           telValue: '(81) (44) 271 7080',
         },
         generalContact: {
-          titleKey: 'footer.officesData.japan.tokyo.generalContact',
-          emailKey: 'footer.officesData.japan.tokyo.generalEmail',
+          titleKey: 'officesData.japan.tokyo.generalContact',
+          emailKey: 'officesData.japan.tokyo.generalEmail',
           emailValue: 'info@luvina.jp',
-          telKey: 'footer.officesData.japan.tokyo.generalTel',
+          telKey: 'officesData.japan.tokyo.generalTel',
           telValue: '(81) (44) 271 7080',
         },
       },
     },
   },
   {
-    nameKey: 'footer.officesData.usa.name',
+    nameKey: 'officesData.usa.name',
     flagIcon: 'img', // USA flag is an image
     branches: {
       vdx: {
-        titleKey: 'footer.officesData.usa.vdx.title',
-        addressKey: 'footer.officesData.usa.vdx.address',
+        titleKey: 'officesData.usa.vdx.title',
+        addressKey: 'officesData.usa.vdx.address',
         generalContact: {
-          titleKey: 'footer.officesData.usa.vdx.generalContact',
-          emailKey: 'footer.officesData.usa.vdx.email',
+          titleKey: 'officesData.usa.vdx.generalContact',
+          emailKey: 'officesData.usa.vdx.email',
           emailValue: 'Info@vdx-usa.com',
-          telKey: 'footer.officesData.usa.vdx.tel',
+          telKey: 'officesData.usa.vdx.tel',
           telValue: '+1 (408) 805-2148',
         },
       },

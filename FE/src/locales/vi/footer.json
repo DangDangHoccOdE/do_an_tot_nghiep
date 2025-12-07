@@ -1,0 +1,94 @@
+{
+    "overview": "Top 10 công ty Gia công phần mềm Việt Nam với hơn 750 nhân tài phục vụ thị trường toàn cầu kể từ năm 2004.",
+    "offices": "VĂN PHÒNG",
+    "contact": "LIÊN HỆ",
+    "infoLuvina": "info{'@'}luvina.net",
+    "careerLuvina": "Careers (+84) 2838 110 001",
+    "phoneLuvina": "(+84) 865 032 899",
+    "contactMobile": "Liên hệ",
+    "contactForCareer": "Contact for Career:",
+    "copyright": "Copyright © Luvina Software JSC.",
+    "privacyPolicy": "Privacy Policy",
+    "navigation": {
+      "home": "Trang chủ",
+      "services": "Dịch vụ",
+      "solutions": "Giải pháp",
+      "business": "Nghiệp vụ",
+      "projects": "Dự án",
+      "news": "Tin tức",
+      "aboutUs": "Về chúng tôi",
+      "resources": "Nguồn lực"
+    },
+    "officesData": {
+      "vietnam": {
+        "name": "Việt Nam",
+        "hanoi": {
+          "title": "Trụ sở Hà Nội",
+          "address": "Tháp văn phòng Hòa Bình - số 106 Hoàng Quốc Việt, phường Nghĩa Đô, TP Hà Nội",
+          "specificContact": "[THÔNG TIN LIÊN HỆ CỤ THỂ]",
+          "contactPerson": "NGƯỜI PHỤ TRÁCH:",
+          "contactPersonName": "Bùi Thị Bích Quyên",
+          "email": "EMAIL:",
+          "emailValue": "btbquyen{'@'}luvina.net",
+          "tel": "TEL:",
+          "telValue": "(84) (24) 3793 1103 (ext 113)",
+          "generalContact": "[THÔNG TIN LIÊN HỆ CHUNG]",
+          "generalEmail": "EMAIL:",
+          "generalEmailValue": "info{'@'}luvina.net",
+          "generalTel": "TEL:",
+          "generalTelValue": "(84) (24) 3793 1103 (ext 0)",
+          "fax": "FAX:",
+          "faxValue": "(84) (24) 3793 1106"
+        },
+        "danang": {
+          "title": "Chi nhánh tại Đà Nẵng",
+          "address": "Tầng 18, Tòa nhà số 2 Quang Trung, Phường Hải Châu, TP Đà Nẵng.",
+          "generalContact": "[THÔNG TIN LIÊN HỆ CHUNG]",
+          "tel": "TEL:",
+          "telValue": "(84) (236) 388 8718",
+          "fax": "FAX:",
+          "faxValue": "(84) (236) 388 8721"
+        },
+        "hcm": {
+          "title": "Chi nhánh tại TP HCM",
+          "address": "38/1 Nguyễn Văn Trỗi, Phường Cầu Kiệu, Thành phố Hồ Chí Minh, Việt Nam.",
+          "contact": "[THÔNG TIN LIÊN HỆ]",
+          "contactPerson": "NGƯỜI PHỤ TRÁCH:",
+          "contactPersonName": "Lê Viết Linh",
+          "tel": "TEL:",
+          "telValue": "(84) 903 054 065"
+        }
+      },
+      "japan": {
+        "name": "Nhật Bản",
+        "tokyo": {
+          "title": "Chi nhánh tại Nhật Bản",
+          "address": "R612, Kanagawa Science Pask (KSP), 3-2-1 Sakado, Takatsu-ku, Kawasaki-shi, Kanagawa-ken 213-0012, Japan",
+          "specificContact": "[THÔNG TIN LIÊN HỆ CỤ THỂ]",
+          "contactPerson": "NGƯỜI PHỤ TRÁCH:",
+          "contactPersonName": "Yokohama Kazutoshi",
+          "email": "EMAIL:",
+          "emailValue": "yokohama{'@'}luvina.jp",
+          "tel": "TEL:",
+          "telValue": "(81) (44) 271 7080",
+          "generalContact": "[THÔNG TIN LIÊN HỆ CHUNG]",
+          "generalEmail": "EMAIL:",
+          "generalEmailValue": "info{'@'}luvina.jp",
+          "generalTel": "TEL:",
+          "generalTelValue": "(81) (44) 271 7080"
+        }
+      },
+      "usa": {
+        "name": "Mỹ",
+        "vdx": {
+          "title": "Văn phòng đại diện - VDX",
+          "address": "38N Almaden Blvd, Unit 125, San Jose, California 95110-2720, United States.",
+          "generalContact": "[THÔNG TIN LIÊN HỆ CHUNG]",
+          "email": "EMAIL:",
+          "emailValue": "Info{'@'}vdx-usa.com",
+          "tel": "TEL:",
+          "telValue": "+1 (408) 805-2148"
+        }
+      }
+    }
+}

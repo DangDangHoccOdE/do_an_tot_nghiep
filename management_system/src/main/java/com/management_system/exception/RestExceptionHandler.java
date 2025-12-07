@@ -1,10 +1,13 @@
 package com.management_system.exception;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -44,13 +47,6 @@ public class RestExceptionHandler {
     protected MessageResponse handleIOException(IOException e) {
         return new MessageResponse(e.getMessage());
     }
- 
-    /** Duplicate code error */
-    @ExceptionHandler(DuplicateCodeException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    protected MessageResponse handleDuplicateCodeException(DuplicateCodeException e) {
-        return new MessageResponse(e.getMessage());
-    }
 
     /** Error data not found */
     @ExceptionHandler(EntityNotFoundException.class)
@@ -77,6 +73,12 @@ public class RestExceptionHandler {
     @ExceptionHandler(OptimisticLockException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public MessageResponse handleConflict(OptimisticLockException e) {
+        return new MessageResponse(e.getMessage());
+    }
+
+    @ExceptionHandler(ResourceAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public MessageResponse handleResourceAlreadyExistsException(ResourceAlreadyExistsException e) {
         return new MessageResponse(e.getMessage());
     }
 

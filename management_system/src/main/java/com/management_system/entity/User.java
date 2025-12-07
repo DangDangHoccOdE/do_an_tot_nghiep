@@ -1,9 +1,11 @@
 package com.management_system.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.management_system.entity.enums.AuthProvider;
+import com.management_system.entity.enums.Gender;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,7 +16,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "users")
 @Getter
 @Setter
 public class User extends BaseEntity {
@@ -24,16 +26,26 @@ public class User extends BaseEntity {
     @Column(length = 255, nullable = false)
     private String password;
 
-    @Column(name = "full_name", length = 150)
-    private String fullName;
+    @Column(name = "first_name")
+    private String firstName;
 
-    @Column(length = 20)
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "date_of_birth")
+    private LocalDate dateOfBirth;
+
+    @Column(name = "phone",length = 20)
     private String phone;
 
     @Column(name = "role_id")
     private UUID roleId;
 
-     @Column(name = "activation_code")
+    @Column(name = "gender")
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    @Column(name = "activation_code")
     private String activationCode;
 
     @Column(name = "activation_expiry")

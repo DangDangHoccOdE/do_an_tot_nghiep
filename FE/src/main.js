@@ -5,6 +5,7 @@ import router from './router'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import './assets/styles/styles.css'
+import './assets/styles/common.css'
 // import vue-i18n
 import i18n from './i18n'  
 

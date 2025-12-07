@@ -13,7 +13,7 @@
       <div
         class="relative bg-[#840000] text-white p-4 rounded-lg lg:w-[436px] lg:min-h-[317px] w-[360px] min-h-[243px] overflow-hidden transition-transform duration-300 lg:hover:scale-110"
       >
-        <RouterLink to="/vi/services">
+        <RouterLink to="/">
           <img
             class="absolute top-0 left-0 w-full h-full object-cover"
             src="https://luvina.net/vi/wp-content/uploads/2025/02/dich_vu_cua_chung_toi.png"
@@ -45,19 +45,19 @@
         <!-- Cột trái -->
         <div class="flex flex-col lg:w-[436px] lg:min-h-[317px] w-[360px] min-h-[243px] gap-6">
           <ServiceItem
-            to="/vi/services/it-strategy-consulting"
+            to="/"
             text="Tư vấn chiến lược"
           />
           <ServiceItem
-            to="/vi/services/software-development"
+            to="/"
             text="Phát triển phần mềm"
           />
           <ServiceItem
-            to="/vi/services/software-migration-modernization"
+            to="/"
             text="Di chuyển & hiện đại hóa ứng dụng"
           />
           <ServiceItem
-            to="/vi/services/cloud-transformation"
+            to=""
             text="Chuyển đổi đám mây"
           />
         </div>
@@ -66,15 +66,15 @@
         <div class="flex flex-col lg:w-[436px] lg:min-h-[317px] w-[360px] min-h-[243px] gap-6">
           <ServiceItem
             class="lg:mt-0 mt-6"
-            to="/vi/services/it-management-services"
+            to="/"
             text="Dịch vụ quản lý CNTT"
           />
           <ServiceItem
-            to="/vi/services/qa-software-testing-service"
+            to="/"
             text="Kiểm thử & quản lý chất lượng"
           />
           <ServiceItem
-            to="/vi/services/cyber-security-services"
+            to="/"
             text="Bảo mật công nghệ thông tin"
           />
         </div>
@@ -82,7 +82,7 @@
 
       <!-- Nút xem thêm (mobile) -->
       <RouterLink
-        to="/vi/services"
+        to=""
         class="lg:hidden flex items-center justify-center rounded-lg bg-[#ce181e] text-white text-[18px] font-normal text-center leading-[23px] mt-8 px-4 py-2 transition-colors duration-300 hover:bg-red-700"
       >
         <span>Xem thêm</span>

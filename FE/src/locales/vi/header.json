@@ -1,0 +1,57 @@
+{
+    "menus": {
+      "overview": {
+        "label": "Tổng quan",
+        "submenus": {
+          "companyProfile": "Hồ sơ công ty",
+          "whyVietnam": "Tại sao chọn Việt Nam",
+          "whyLuvina": "Tại sao chọn Luvina",
+          "aboutUs": "Về chúng tôi"
+        }
+      },
+      "services": {
+        "label": "Dịch vụ",
+        "submenus": {
+          "strategyConsulting": "Tư vấn chiến lược",
+          "softwareDevelopment": "Phát triển phần mềm",
+          "softwareMigration": "Di chuyển & hiện đại hoá ứng dụng",
+          "cloudTransformation": "Chuyển đổi đám mây",
+          "itManagement": "Dịch vụ quản lý CNTT",
+          "qaTesting": "Kiểm thử phần mềm và đảm bảo chất lượng",
+          "cyberSecurity": "Bảo mật CNTT"
+        }
+      },
+      "solutions": {
+        "label": "Giải pháp",
+        "submenus": {
+          "erp": "Hệ thống hoạch định nguồn lực doanh nghiệp (ERP)",
+          "crm": "Hệ thống quản lý quan hệ khách hàng (CRM)",
+          "cms": "Hệ thống quản trị nội dung (CMS)",
+          "ecommerce": "Giải pháp thương mại điện tử",
+          "pos": "Hệ thống Point-of-sale (POS)"
+        }
+      },
+      "business": {
+        "label": "Nghiệp vụ",
+        "submenus": {
+          "fintech": "Fintech",
+          "healthcare": "Healthcare",
+          "ecommerce": "E-commerce",
+          "education": "Education"
+        }
+      },
+      "news": {
+        "label": "Tin tức"
+      },
+      "resources": {
+        "label": "Nguồn lực",
+        "submenus": {
+          "blog": "Blog",
+          "caseStudy": "Case Study",
+          "whitepaper": "Whitepaper"
+        }
+      }
+    },
+    "contact": "Liên hệ",
+    "toggleMenu": "Mở/Đóng menu"
+}

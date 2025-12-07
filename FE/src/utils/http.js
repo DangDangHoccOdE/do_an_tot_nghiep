@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/stores/auth/useAuthStore";
 import router from "@/router";
 
 const baseURL = import.meta.env.VITE_BASE_API || "https://687f0ea4efe65e52008840fa.mockapi.io";
@@ -7,14 +7,22 @@ const baseURL = import.meta.env.VITE_BASE_API || "https://687f0ea4efe65e52008840
 const apiService = import.meta.env.VITE_API_PREFIX || "";
 
 axios.defaults.timeout = 50000;
-axios.defaults.baseURL = baseURL + apiService;
+axios.defaults.baseURL = `${baseURL}/${apiService}`;
 
 // Request interceptor
 axios.interceptors.request.use(
     (config) => {
-        const auth = useAuthStore();
-        if(auth.isLoggedIn && auth.token) {
-            config.headers["Access-Token"] = auth.token
+        try {
+            // Chỉ gọi store khi Pinia đã được khởi tạo
+            const auth = useAuthStore();
+            // Nếu user đã login và có token (có thể lưu trong user object hoặc state riêng)
+            if(auth.isLoggedIn && auth.user?.token) {
+                config.headers["Access-Token"] = auth.user.token
+            }
+        } catch (error) {
+            // Pinia chưa được khởi tạo, bỏ qua việc thêm token
+            // Điều này xảy ra khi gọi API từ validator hoặc bên ngoài component
+            // Không cần xử lý, chỉ cần bỏ qua
         }
         return config;
     },
