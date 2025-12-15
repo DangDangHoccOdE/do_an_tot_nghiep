@@ -107,9 +107,9 @@ const handleRegister = async () => {
     handleSuccess(successMessage);
 
     // Redirect to login page after 1.5 seconds
-    // setTimeout(() => {
-    //   router.push("/login");
-    // }, 1500);
+    setTimeout(() => {
+      router.push("/login");
+    }, 1500);
   }, "message.MSG0010");
 };
 
