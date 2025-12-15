@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,7 @@ import com.management_system.service.inter.IUserService;
 import com.management_system.utils.EmailUtil;
 import com.management_system.utils.MessageUtil;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -47,16 +49,17 @@ public class UserService implements IUserService {
 
     @Override
     @Transactional
-    public MessageResponse registerUser(UserRequest userRequest, Locale locale) throws IOException {
+    public MessageResponse registerUser(UserRequest userRequest) throws IOException {
         validatorWrapper.validate(userRequest);
 
         User user = modelMapper.map(userRequest, User.class);
 
         if (userRepository.existsByEmailIgnoreCaseAndDeleteFlagFalse(user.getEmail())) {
-            throw new ResourceAlreadyExistsException(messageUtil.getMessage(
-                    ErrorCode.ERR002, new Object[] {
-                            messageUtil.getMessage(MessageKey.EMAIL, null, locale)
-                    }, locale));
+            throw new ResourceAlreadyExistsException(
+                    messageUtil.getMessage(
+                            ErrorCode.ERR002,
+                            new Object[] { MessageKey.EMAIL },
+                            LocaleContextHolder.getLocale()));
         }
 
         // handle avatar
@@ -64,7 +67,7 @@ public class UserService implements IUserService {
         String avatarPath = defaultAvatar;
 
         if (avatar != null && !avatar.isEmpty()) {
-            avatarPath = fileStorageService.storeFile(avatar, locale);
+            avatarPath = fileStorageService.storeFile(avatar, LocaleContextHolder.getLocale());
         } else {
             user.setAvatar(avatarPath);
         }
@@ -98,7 +101,7 @@ public class UserService implements IUserService {
         // Send activation email
         emailUtil.sendEmailActive(userRequest.getEmail(), user.getActivationCode());
 
-        String msg = messageUtil.getMessage(MessageKey.REGISTER_SUCCESS, null, locale);
+        String msg = messageUtil.getMessage(MessageKey.REGISTER_SUCCESS, null, LocaleContextHolder.getLocale());
         return new MessageResponse(msg);
     }
 
@@ -107,5 +110,11 @@ public class UserService implements IUserService {
         return userRepository.existsByEmailIgnoreCaseAndDeleteFlagFalse(email);
     }
 
-    
+    @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmailAndDeleteFlagFalse(email)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        messageUtil.format(ErrorCode.ERR003, MessageKey.USER, LocaleContextHolder.getLocale())));
+    }
+
 }

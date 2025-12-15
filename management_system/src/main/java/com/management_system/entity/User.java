@@ -35,7 +35,7 @@ public class User extends BaseEntity {
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
-    @Column(name = "phone",length = 20)
+    @Column(name = "phone", length = 20)
     private String phone;
 
     @Column(name = "role_id")
@@ -72,4 +72,7 @@ public class User extends BaseEntity {
 
     @Column(name = "avatar")
     private String avatar;
+
+    @Column(name = "refreshToken")
+    private String refreshToken;
 }
