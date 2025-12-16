@@ -8,45 +8,55 @@
         <el-form
           :model="registerForm"
           :rules="rules"
-          :validate-on-rule-change="false"
-          ref="form_ref"
+          ref="formRef"
           label-position="top"
-          label-width="160px"
+          @submit.prevent="handleRegister"
           v-loading="loading"
         >
           <!-- First Name -->
-          <el-form-item prop="firstName">
-            <template #label>
-              <RequiredLabel :label="$t('firstName')" required />
-            </template>
-            <el-input v-model="registerForm.firstName" clearable />
+          <el-form-item :label="$t('firstName')" prop="firstName">
+            <el-input 
+              v-model="registerForm.firstName" 
+              clearable
+              :placeholder="$t('firstNamePlaceholder')"
+            />
           </el-form-item>
 
           <!-- Last Name -->
-          <el-form-item prop="lastName">
-            <template #label>
-              <RequiredLabel :label="$t('lastName')" required />
-            </template>
-            <el-input v-model="registerForm.lastName" />
+          <el-form-item :label="$t('lastName')" prop="lastName">
+            <el-input 
+              v-model="registerForm.lastName" 
+              clearable
+              :placeholder="$t('lastNamePlaceholder')"
+            />
           </el-form-item>
 
           <!-- Email -->
-          <el-form-item prop="email">
-            <template #label>
-              <RequiredLabel :label="$t('email')" required />
-            </template>
-            <el-input v-model="registerForm.email" />
+          <el-form-item :label="$t('email')" prop="email">
+            <el-input 
+              v-model="registerForm.email" 
+              clearable
+              type="email"
+              :placeholder="$t('emailPlaceholder')"
+            />
           </el-form-item>
 
           <!-- Password -->
-          <el-form-item prop="password">
-            <template #label>
-              <RequiredLabel :label="$t('password')" required />
-            </template>
-            <el-input v-model="registerForm.password" show-password />
+          <el-form-item :label="$t('password')" prop="password">
+            <el-input 
+              v-model="registerForm.password" 
+              show-password
+              type="password"
+              :placeholder="$t('passwordPlaceholder')"
+            />
           </el-form-item>
 
-          <el-button type="primary" class="submit-btn" @click="handleRegister">
+          <el-button 
+            type="primary" 
+            class="submit-btn" 
+            @click="handleRegister"
+            :loading="loading"
+          >
             {{ $t("register") }}
           </el-button>
         </el-form>
@@ -64,53 +74,135 @@
     </div>
   </div>
 </template>
+
 <script setup>
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
+import { ElMessage } from "element-plus";
 import { apiRegister } from "@/services/apiRegister";
-import { handleError, handleSuccess } from "@/utils/handleMessage";
-import { useLoading } from "@/utils/useLoading";
-import RequiredLabel from "@/components/common/RequiredLabel.vue";
-import { createRegisterRules } from "@/validations/registerRules";
 
 const { t } = useI18n();
 const router = useRouter();
+const formRef = ref();
+const loading = ref(false);
 
-const { loading, withLoading } = useLoading(t);
-
-const registerForm = ref({
+// Form data
+const registerForm = reactive({
   firstName: "",
   lastName: "",
   email: "",
   password: "",
 });
 
-const rules = createRegisterRules(t, apiRegister);
-const form_ref = ref();
+// Validation rules
+const rules = reactive({
+  firstName: [
+    {
+      required: true,
+      message: t("firstNameRequired"),
+      trigger: "blur",
+    },
+    {
+      min: 2,
+      max: 50,
+      message: t("firstNameLength"),
+      trigger: "blur",
+    },
+  ],
+  lastName: [
+    {
+      required: true,
+      message: t("lastNameRequired"),
+      trigger: "blur",
+    },
+    {
+      min: 2,
+      max: 50,
+      message: t("lastNameLength"),
+      trigger: "blur",
+    },
+  ],
+  email: [
+    {
+      required: true,
+      message: t("emailRequired"),
+      trigger: "blur",
+    },
+    {
+      type: "email",
+      message: t("emailInvalid"),
+      trigger: ["blur", "change"],
+    },
+  ],
+  password: [
+    {
+      required: true,
+      message: t("passwordRequired"),
+      trigger: "blur",
+    },
+    {
+      min: 6,
+      message: t("passwordMinLength"),
+      trigger: "blur",
+    },
+    {
+      pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+      message: t("passwordPattern"),
+      trigger: "blur",
+    },
+  ],
+});
+
+// Handle registration
 const handleRegister = async () => {
-  await withLoading(async () => {
+  if (!formRef.value) return;
+
+  try {
+    // Validate form
+    await formRef.value.validate();
+    
+    loading.value = true;
+
     // Prepare data for API
     const registerData = {
-      firstName: registerForm.value.firstName.trim(),
-      lastName: registerForm.value.lastName.trim(),
-      email: registerForm.value.email.trim(),
-      password: registerForm.value.password,
-      authProvider: "local", // Set default auth provider
+      firstName: registerForm.firstName.trim(),
+      lastName: registerForm.lastName.trim(),
+      email: registerForm.email.trim().toLowerCase(),
+      password: registerForm.password,
+      authProvider: "local",
     };
 
     // Call register API
     const response = await apiRegister.register(registerData);
 
     // Show success message
-    const successMessage = response?.message || t("registrationSuccess");
-    handleSuccess(successMessage);
+    ElMessage.success({
+      message: response?.message || t("registrationSuccess"),
+      duration: 3000,
+    });
+
+    // Reset form
+    formRef.value.resetFields();
 
     // Redirect to login page after 1.5 seconds
     setTimeout(() => {
       router.push("/login");
     }, 1500);
-  }, "message.MSG0010");
+  } catch (error) {
+    if (error.errors) {
+      // Validation errors
+      console.log("Validation failed:", error);
+    } else {
+      // API errors
+      ElMessage.error({
+        message: error.message || t("registrationFailed"),
+        duration: 3000,
+      });
+    }
+  } finally {
+    loading.value = false;
+  }
 };
 
 const goToLogin = () => {
@@ -161,72 +253,48 @@ const goToLogin = () => {
   color: #4a4b4c;
   margin-bottom: 40px;
   text-align: center;
+  font-weight: 600;
 }
 
-.input-group {
-  position: relative;
+/* Element Plus Form Overrides */
+:deep(.el-form-item__label) {
+  font-weight: 600;
+  color: #4a4b4c;
+  margin-bottom: 8px;
+}
+
+:deep(.el-input__wrapper) {
+  background-color: #efeff0;
+  border-radius: 10px;
+  padding: 12px 15px;
+  box-shadow: none;
+  transition: all 0.3s;
+}
+
+:deep(.el-input__wrapper:hover) {
+  background-color: #e5e5e5;
+}
+
+:deep(.el-input__wrapper.is-focus) {
+  background-color: #e5e5e5;
+  box-shadow: 0 0 0 2px rgba(206, 24, 30, 0.1) !important;
+}
+
+:deep(.el-input__inner) {
+  color: #4a4b4c;
+}
+
+:deep(.el-input__inner::placeholder) {
+  color: #70706f;
+}
+
+:deep(.el-form-item) {
   margin-bottom: 25px;
 }
 
-.input-group input {
-  width: 100%;
-  padding: 15px 45px 15px 15px;
-  border: none;
-  background: #efeff0;
-  border-radius: 10px;
-  font-size: 14px;
-  transition: all 0.3s;
-  color: #4a4b4c;
-}
-
-.input-group input:focus {
-  outline: none;
-  background: #e5e5e5;
-  box-shadow: 0 0 0 2px rgba(206, 24, 30, 0.1);
-}
-
-.input-group input::placeholder {
-  color: #70706f;
-}
-
-.input-group .select-input {
-  width: 100%;
-  padding: 15px;
-  border: none;
-  background: #efeff0;
-  border-radius: 10px;
-  font-size: 14px;
-  transition: all 0.3s;
-  color: #4a4b4c;
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2370706f' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 15px center;
-  padding-right: 45px;
-}
-
-.input-group .select-input:focus {
-  outline: none;
-  background-color: #e5e5e5;
-  box-shadow: 0 0 0 2px rgba(206, 24, 30, 0.1);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2370706f' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 15px center;
-}
-
-.input-group .select-input option {
-  background: white;
-  color: #4a4b4c;
-}
-
-.input-group .icon {
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #70706f;
-  font-size: 16px;
+:deep(.el-form-item__error) {
+  font-size: 12px;
+  padding-top: 4px;
 }
 
 .submit-btn {
@@ -235,22 +303,16 @@ const goToLogin = () => {
   background: linear-gradient(135deg, #ce181e 0%, #f93535 100%);
   border: none;
   border-radius: 10px;
-  color: white;
   font-size: 16px;
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
   margin-top: 10px;
+  height: auto;
 }
 
-.submit-btn:hover:not(:disabled) {
+.submit-btn:hover:not(.is-loading) {
   transform: translateY(-2px);
   box-shadow: 0 5px 20px rgba(206, 24, 30, 0.4);
-}
-
-.submit-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+  background: linear-gradient(135deg, #ce181e 0%, #f93535 100%);
 }
 
 /* Side Panel */
@@ -283,6 +345,7 @@ const goToLogin = () => {
   font-size: 32px;
   margin-bottom: 15px;
   z-index: 1;
+  font-weight: 600;
 }
 
 .side-panel p {
@@ -300,7 +363,6 @@ const goToLogin = () => {
   border-radius: 25px;
   font-size: 14px;
   font-weight: 600;
-  cursor: pointer;
   transition: all 0.3s;
   z-index: 1;
 }
@@ -335,6 +397,15 @@ const goToLogin = () => {
 
   .form-panel {
     padding: 40px 30px;
+  }
+
+  .form-panel h2 {
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+
+  .side-panel h2 {
+    font-size: 26px;
   }
 }
 </style>
