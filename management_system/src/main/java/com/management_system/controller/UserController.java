@@ -27,8 +27,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<MessageResponse> register(@RequestBody UserRequest userRequest) throws IOException {
-        Locale locale = LocaleContextHolder.getLocale();
-        MessageResponse response = iUserService.registerUser(userRequest, locale);
+        MessageResponse response = iUserService.registerUser(userRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

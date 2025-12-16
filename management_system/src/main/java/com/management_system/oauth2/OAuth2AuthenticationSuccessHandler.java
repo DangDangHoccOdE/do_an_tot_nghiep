@@ -1,28 +1,29 @@
 package com.management_system.oauth2;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import static com.management_system.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
+
+import java.io.IOException;
+import java.net.URI;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
+
 import com.management_system.config.AppProperties;
 import com.management_system.entity.User;
-import com.management_system.exception.BadRequestException;
-import com.management_system.repository.UserRepository;
-import com.management_system.service.inter.IUserService;
+import com.management_system.exception.BusinessLogicException;
+import com.management_system.service.impl.UserService;
 import com.management_system.utils.CookieUtil;
 import com.management_system.utils.JwtUtil;
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.Optional;
-
-import static com.management_system.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 //Lớp OAuth2AuthenticationSuccessHandler thực hiện các chức năng chính sau:
 //Xử lý sự kiện xác thực thành công bằng cách tạo JWT tokens và chuyển hướng người dùng.
@@ -32,16 +33,16 @@ import static com.management_system.oauth2.HttpCookieOAuth2AuthorizationRequestR
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtUtil jwtUtil;
     private final AppProperties appProperties;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
     @Autowired
     OAuth2AuthenticationSuccessHandler(JwtUtil jwtUtil, AppProperties appProperties,
-            @Lazy UserRepository userRepository,
+            @Lazy UserService userService,
             HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository) {
         this.jwtUtil = jwtUtil;
         this.appProperties = appProperties;
-        this.userRepository = userRepository;
+        this.userService = userService;
         this.httpCookieOAuth2AuthorizationRequestRepository = httpCookieOAuth2AuthorizationRequestRepository;
     }
 
@@ -66,7 +67,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         // Check xem cookie có redirect_url k
         if (redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get())) {
-            throw new org.apache.coyote.BadRequestException(
+            throw new BusinessLogicException(
                     "Lấy làm tiếc! Chúng tôi có URI chuyển hướng trái phép và không thể tiến hành xác thực");
         }
 
@@ -74,10 +75,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         final String accessToken = jwtUtil.generateToken(authentication.getName());
         final String refreshToken = jwtUtil.generateRefreshToken(authentication.getName());
 
-        User user = userRepository.findByEmailAndDeleteFlagFalse(authentication.getName());
+        User user = userService.findUserByEmail(authentication.getName());
 
         user.setRefreshToken(refreshToken);
-        userRepository.save(user);
+        userService.saveUser(user);
 
         // ĐƯờng dẫn trả về về là
         // http://localhost:3000/oauth2/redirect?accessToken=...&refreshToken=...

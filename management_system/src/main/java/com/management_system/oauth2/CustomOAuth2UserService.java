@@ -1,10 +1,9 @@
 package com.management_system.oauth2;
 
-import java.nio.file.attribute.UserPrincipal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
@@ -22,7 +21,7 @@ import com.management_system.exception.OAuth2AuthenticationProcessingException;
 import com.management_system.oauth2.user.OAuth2UserInfo;
 import com.management_system.oauth2.user.OAuth2UserInfoFactory;
 import com.management_system.repository.RoleRepository;
-import com.management_system.service.inter.IUserService;
+import com.management_system.service.impl.UserService;
 
 //Lớp CustomOAuth2UserService chịu trách nhiệm:
 //Xử lý thông tin người dùng từ OAuth2 provider.
@@ -31,12 +30,15 @@ import com.management_system.service.inter.IUserService;
 //Đảm bảo rằng người dùng đang đăng nhập bằng cùng một provider mà họ đã sử dụng để đăng ký.
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
-    private final IUserService iUserService;
+    private final UserService userService;
     private final RoleRepository roleRepository;
 
+    @Value("${default-role-id}")
+    private String defaultRole;
+
     @Autowired
-    public CustomOAuth2UserService(@Lazy IUserService iUserService, @Lazy RoleRepository roleRepository) {
-        this.iUserService = iUserService;
+    public CustomOAuth2UserService(@Lazy UserService userService, @Lazy RoleRepository roleRepository) {
+        this.userService = userService;
         this.roleRepository = roleRepository;
     }
 
@@ -59,7 +61,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             throw new OAuth2AuthenticationProcessingException("Email không tìm thấy trong provider");
         }
 
-        User userOptional = iUserService.findUserByEmail(oAuth2UserInfo.getEmail());
+        User userOptional = userService.findUserByEmail(oAuth2UserInfo.getEmail());
         User user;
         if (userOptional != null) {
             user = userOptional;
@@ -89,14 +91,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setEmail(oAuth2UserInfo.getEmail());
         user.setAvatar(oAuth2UserInfo.getImageUrl());
 
-        List<String> roles = new ArrayList<>();
-        roles.add("ROLE_USER");
-        return iUserService.saveUserWithRole(user, roles);
+        UUID defaultRoleId = UUID.fromString(defaultRole);
+        user.setRoleId(defaultRoleId);
+        return userService.saveUser(user);
     }
 
     private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {
         existingUser.setFirstName(oAuth2UserInfo.getGivenName());
         existingUser.setLastName(oAuth2UserInfo.getFamilyName());
-        return iUserService.sa(existingUser);
+        return userService.saveUser(existingUser);
     }
 }

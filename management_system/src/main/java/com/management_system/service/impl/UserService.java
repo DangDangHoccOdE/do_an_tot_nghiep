@@ -2,6 +2,7 @@ package com.management_system.service.impl;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -115,6 +116,12 @@ public class UserService implements IUserService {
         return userRepository.findByEmailAndDeleteFlagFalse(email)
                 .orElseThrow(() -> new EntityNotFoundException(
                         messageUtil.format(ErrorCode.ERR003, MessageKey.USER, LocaleContextHolder.getLocale())));
+    }
+
+    @Override
+    @Transactional
+    public User saveUser(User user) {
+        return userRepository.save(user);
     }
 
 }

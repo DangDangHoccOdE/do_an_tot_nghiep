@@ -12,4 +12,6 @@ public interface IUserService {
     Boolean existsByEmail(String email);
 
     User findUserByEmail(String email);
+
+    User saveUser(User user);
 }
