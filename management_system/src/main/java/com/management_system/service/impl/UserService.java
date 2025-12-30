@@ -124,4 +124,9 @@ public class UserService implements IUserService {
         return userRepository.save(user);
     }
 
+    @Override
+    public User findByProviderAndProviderId(AuthProvider authProvider, String providerId) {
+        return userRepository.findByProviderAndProviderIdAndDeleteFlagFalse(authProvider, providerId)
+                .orElse(null);
+    }
 }

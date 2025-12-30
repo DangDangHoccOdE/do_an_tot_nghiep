@@ -22,7 +22,7 @@ public class I18nConfig {
     @Bean
     public MessageSource messageSource() {
         ResourceBundleMessageSource ms = new ResourceBundleMessageSource();
-        ms.setBasename("messages");
+        ms.setBasename("i18n/messages");
         ms.setDefaultEncoding("UTF-8");
         ms.setUseCodeAsDefaultMessage(true);
         return ms;
