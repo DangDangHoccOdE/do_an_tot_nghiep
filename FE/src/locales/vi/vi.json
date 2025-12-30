@@ -24,7 +24,14 @@
         },
         "actions": {
             "refresh": "Làm mới",
-            "loadTasks": "Tải task"
+            "loadTasks": "Tải task",
+            "add": "Thêm mới",
+            "edit": "Chỉnh sửa",
+            "delete": "Xóa",
+            "view": "Xem",
+            "save": "Lưu",
+            "cancel": "Hủy",
+            "close": "Đóng"
         },
         "table": {
             "projectName": "Tên dự án",
@@ -36,10 +43,37 @@
             "members": "Thành viên",
             "title": "Tiêu đề",
             "assignee": "Giao cho",
-            "dueDate": "Hạn"
+            "dueDate": "Hạn",
+            "clientId": "Khách hàng",
+            "budgetEstimated": "Ngân sách",
+            "timelineEstimated": "Thời gian (ngày)"
         },
         "filters": {
-            "projectId": "Nhập mã Project"
+            "projectId": "Nhập mã Project",
+            "search": "Tìm kiếm...",
+            "status": "Trạng thái",
+            "statusAll": "Tất cả",
+            "statusCurrent": "Hiện tại",
+            "statusFuture": "Tương lai"
+        },
+        "form": {
+            "projectName": "Tên dự án",
+            "description": "Mô tả",
+            "status": "Trạng thái",
+            "startDate": "Ngày bắt đầu",
+            "endDate": "Ngày kết thúc",
+            "teamId": "Mã đội",
+            "clientId": "Mã khách hàng",
+            "budgetEstimated": "Ngân sách dự kiến",
+            "timelineEstimated": "Thời gian (ngày)",
+            "teamName": "Tên đội",
+            "teamDescription": "Mô tả đội",
+            "userId": "Mã nhân viên",
+            "memberRole": "Vai trò trong đội"
+        },
+        "confirm": {
+            "deleteTitle": "Xóa bản ghi",
+            "deleteMessage": "Bạn có chắc muốn xóa mục này?"
         },
         "empty": "Không có dữ liệu"
     }
