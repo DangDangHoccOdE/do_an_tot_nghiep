@@ -5,8 +5,8 @@ public class Endpoints {
 
     public static final String[] PUBLIC_GET_ENDPOINTS = {
             "/api/v1/users/register",
+            "/api/v1/users/check-duplicate",
             "/users/login",
-            "/oauth2/authorize/google",
-            "/oauth2/authorize/facebook"
+            "login/oauth2/code/**"
     };
 }

@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -29,6 +30,7 @@ import com.management_system.service.inter.IUserSecurityService;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfiguration {
     @Autowired
     private CustomBasicAuthenticationEntryPoint customBasicAuthenticationEntryPoint;
@@ -104,8 +106,10 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 // cấu hình phân quyền
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, Endpoints.PUBLIC_GET_ENDPOINTS).permitAll()
-                        .anyRequest().authenticated())
+                    .requestMatchers(HttpMethod.GET, Endpoints.PUBLIC_GET_ENDPOINTS).permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
+                    .requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll()
+                    .anyRequest().authenticated())
                 // Xử lý lỗi 403
                 .exceptionHandling(handling -> handling.accessDeniedHandler(customAccessDeniedHandler))
                 // Dùng JWT filter
@@ -122,9 +126,9 @@ public class SecurityConfiguration {
                                                                                                         // cho request
                                                                                                         // OAuth2
                         )
-                        .redirectionEndpoint(redirection -> redirection
-                                .baseUri("/oauth2/callback/*") // URL callback sau khi xác thực
-                        )
+                        // .redirectionEndpoint(redirection -> redirection
+                        // .baseUri("/oauth2/callback/*") // URL callback sau khi xác thực
+                        // )
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService) // Dịch vụ lấy thông tin người dùng OAuth2
                         )

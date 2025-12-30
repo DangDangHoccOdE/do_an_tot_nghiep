@@ -20,8 +20,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import java.nio.charset.StandardCharsets;
 
 @Component
 public class JwtUtil {
@@ -44,7 +44,7 @@ public class JwtUtil {
         claim.put("type", "accessToken");
 
         boolean isAdmin = false;
-        boolean isManager = false;
+        boolean isPm = false;
         boolean isStaff = false;
         boolean isUser = false;
 
@@ -56,8 +56,8 @@ public class JwtUtil {
                 case "ROLE_ADMIN":
                     isAdmin = true;
                     break;
-                case "ROLE_MANAGER":
-                    isManager = true;
+                case "ROLE_PM":
+                    isPm = true;
                     break;
                 case "ROLE_STAFF":
                     isStaff = true;
@@ -68,8 +68,11 @@ public class JwtUtil {
                 default:
             }
         }
+        if (role != null) {
+            claim.put("role", role.getName());
+        }
         claim.put("isAdmin", isAdmin);
-        claim.put("isManager", isManager);
+        claim.put("isPm", isPm);
         claim.put("isStaff", isStaff);
         claim.put("isUser", isUser);
 
@@ -93,7 +96,7 @@ public class JwtUtil {
     }
 
     private Key getSignKey(String secret) {
-        byte[] keyBytes = Decoders.BASE64.decode(secret);
+        byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

@@ -20,10 +20,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class User extends BaseEntity {
-    @Column(length = 150, nullable = false, unique = true)
+    @Column(length = 150, unique = true)
     private String email;
 
-    @Column(length = 255, nullable = false)
+    @Column(length = 255)
     private String password;
 
     @Column(name = "first_name")
