@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useAuthStore } from "@/stores/auth/useAuthStore";
 import router from "@/router";
 
-const baseURL = import.meta.env.VITE_BASE_API || "https://687f0ea4efe65e52008840fa.mockapi.io";
+const baseURL = import.meta.env.VITE_BASE_API || "http://localhost:8080";
 
 const apiService = import.meta.env.VITE_API_PREFIX || "";
 
@@ -16,8 +16,8 @@ axios.interceptors.request.use(
             // Chỉ gọi store khi Pinia đã được khởi tạo
             const auth = useAuthStore();
             // Nếu user đã login và có token (có thể lưu trong user object hoặc state riêng)
-            if(auth.isLoggedIn && auth.user?.token) {
-                config.headers["Access-Token"] = auth.user.token
+            if(auth.isLoggedIn && auth.accessToken) {
+                config.headers["Authorization"] = `Bearer ${auth.accessToken}`
             }
         } catch (error) {
             // Pinia chưa được khởi tạo, bỏ qua việc thêm token
@@ -46,7 +46,17 @@ axios.interceptors.response.use(
     }
     return Promise.reject(res.data.msg || new Error(res.msg || "Error"));
     },
-    (error) => Promise.reject(error)
+    (error) => {
+        const auth = useAuthStore();
+        if (error?.response?.status === 401 || error?.response?.status === 403) {
+            auth.logout();
+            const path = router.currentRoute.value.fullPath;
+            if(!path.includes('login')) {
+                router.push(`/login?redirect=${path}`)
+            }
+        }
+        return Promise.reject(error);
+    }
 );
 
 // API methods

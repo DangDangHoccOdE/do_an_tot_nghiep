@@ -57,5 +57,12 @@
       "agreeTerms": "Tôi đồng ý với",
       "termsAndConditions": "thỏa thuận và điều khoản",
       "agreeTermsFull": "Tôi đồng ý với thỏa thuận và điều khoản"
+    },
+
+    "placeholder": {
+      "firstName": "Nhập họ",
+      "lastName": "Nhập tên",
+      "password": "Nhập mật khẩu",
+      "email": "Nhập email"
     }
 }

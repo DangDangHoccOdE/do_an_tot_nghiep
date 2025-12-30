@@ -14,46 +14,58 @@
           v-loading="loading"
         >
           <!-- First Name -->
-          <el-form-item :label="$t('firstName')" prop="firstName">
-            <el-input 
-              v-model="registerForm.firstName" 
+          <el-form-item prop="firstName">
+            <template #label>
+              <RequiredLabel required :label="$t('firstName')" />
+            </template>
+            <el-input
+              v-model="registerForm.firstName"
               clearable
-              :placeholder="$t('firstNamePlaceholder')"
+              :placeholder="$t('placeholder.firstName')"
             />
           </el-form-item>
 
           <!-- Last Name -->
-          <el-form-item :label="$t('lastName')" prop="lastName">
-            <el-input 
-              v-model="registerForm.lastName" 
+          <el-form-item prop="lastName">
+            <template #label>
+              <RequiredLabel required :label="$t('lastName')" />
+            </template>
+            <el-input
+              v-model="registerForm.lastName"
               clearable
-              :placeholder="$t('lastNamePlaceholder')"
+              :placeholder="$t('placeholder.lastName')"
             />
           </el-form-item>
 
           <!-- Email -->
-          <el-form-item :label="$t('email')" prop="email">
-            <el-input 
-              v-model="registerForm.email" 
+          <el-form-item prop="email">
+            <template #label>
+              <RequiredLabel required :label="$t('email')" />
+            </template>
+            <el-input
+              v-model="registerForm.email"
               clearable
               type="email"
-              :placeholder="$t('emailPlaceholder')"
+              :placeholder="$t('placeholder.email')"
             />
           </el-form-item>
 
           <!-- Password -->
-          <el-form-item :label="$t('password')" prop="password">
-            <el-input 
-              v-model="registerForm.password" 
+          <el-form-item prop="password">
+            <template #label>
+              <RequiredLabel required :label="$t('password')" />
+            </template>
+            <el-input
+              v-model="registerForm.password"
               show-password
               type="password"
-              :placeholder="$t('passwordPlaceholder')"
+              :placeholder="$t('placeholder.password')"
             />
           </el-form-item>
 
-          <el-button 
-            type="primary" 
-            class="submit-btn" 
+          <el-button
+            type="primary"
+            class="submit-btn"
             @click="handleRegister"
             :loading="loading"
           >
@@ -81,6 +93,8 @@ import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { ElMessage } from "element-plus";
 import { apiRegister } from "@/services/apiRegister";
+import { createRegisterRules } from "@/validations/registerRules";
+import RequiredLabel from "@/components/common/RequiredLabel.vue";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -96,63 +110,7 @@ const registerForm = reactive({
 });
 
 // Validation rules
-const rules = reactive({
-  firstName: [
-    {
-      required: true,
-      message: t("firstNameRequired"),
-      trigger: "blur",
-    },
-    {
-      min: 2,
-      max: 50,
-      message: t("firstNameLength"),
-      trigger: "blur",
-    },
-  ],
-  lastName: [
-    {
-      required: true,
-      message: t("lastNameRequired"),
-      trigger: "blur",
-    },
-    {
-      min: 2,
-      max: 50,
-      message: t("lastNameLength"),
-      trigger: "blur",
-    },
-  ],
-  email: [
-    {
-      required: true,
-      message: t("emailRequired"),
-      trigger: "blur",
-    },
-    {
-      type: "email",
-      message: t("emailInvalid"),
-      trigger: ["blur", "change"],
-    },
-  ],
-  password: [
-    {
-      required: true,
-      message: t("passwordRequired"),
-      trigger: "blur",
-    },
-    {
-      min: 6,
-      message: t("passwordMinLength"),
-      trigger: "blur",
-    },
-    {
-      pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-      message: t("passwordPattern"),
-      trigger: "blur",
-    },
-  ],
-});
+const rules = createRegisterRules(t, apiRegister);
 
 // Handle registration
 const handleRegister = async () => {
@@ -161,7 +119,7 @@ const handleRegister = async () => {
   try {
     // Validate form
     await formRef.value.validate();
-    
+
     loading.value = true;
 
     // Prepare data for API

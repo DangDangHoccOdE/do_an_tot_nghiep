@@ -54,9 +54,13 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
+import { post } from '@/utils/http';
+import { useAuthStore } from '@/stores/auth/useAuthStore';
 
 const router = useRouter();
+const route = useRoute();
+const auth = useAuthStore();
 const isLoading = ref(false);
 
 const loginForm = ref({
@@ -68,22 +72,10 @@ const handleLogin = async () => {
   isLoading.value = true;
   
   try {
-    // TODO: Call your login API here
-    console.log('Login data:', loginForm.value);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Example API call:
-    // const response = await fetch('/api/login', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(loginForm.value)
-    // });
-    // const data = await response.json();
-    
-    alert('Login successful!');
-    // router.push('/dashboard');
+    const data = await post('/api/v1/auth/login', loginForm.value);
+    auth.login(data);
+    const redirect = route.query.redirect || '/admin';
+    router.push(redirect);
   } catch (error) {
     console.error('Login error:', error);
     alert('Login failed. Please try again.');
@@ -93,11 +85,11 @@ const handleLogin = async () => {
 };
 
 const handleGoogleLogin = () => {
-  window.location.href = "http://localhost:8080/oauth2/authorize/google";
+  window.location.href = `http://localhost:8080/oauth2/authorize/google?redirect_uri=http://localhost:5173/oauth2/redirect`;
 };
 
 const handleFacebookLogin = () => {
-  window.location.href = "http://localhost:8080/oauth2/authorize/facebook";
+  window.location.href = `http://localhost:8080/oauth2/authorize/facebook?redirect_uri=http://localhost:5173/oauth2/redirect`;
 };
 
 const handleForgotPassword = () => {

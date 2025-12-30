@@ -11,6 +11,37 @@
         "ERR010": "Lỗi kết nối API. Vui lòng thử lại sau.",
         "MSG0010": "Đang xử lý...",
         "MSG006": "Không có dữ liệu"
+    },
+
+    "admin": {
+        "title": "Không gian quản trị",
+        "subtitle": "Quản lý dự án, đội nhóm và báo cáo task mỗi ngày.",
+        "menu": {
+            "currentProjects": "Dự án hiện tại",
+            "futureProjects": "Dự án tương lai",
+            "teams": "Đội dự án",
+            "tasks": "Task theo dự án"
+        },
+        "actions": {
+            "refresh": "Làm mới",
+            "loadTasks": "Tải task"
+        },
+        "table": {
+            "projectName": "Tên dự án",
+            "status": "Trạng thái",
+            "startDate": "Bắt đầu",
+            "endDate": "Kết thúc",
+            "teamName": "Tên đội",
+            "description": "Mô tả",
+            "members": "Thành viên",
+            "title": "Tiêu đề",
+            "assignee": "Giao cho",
+            "dueDate": "Hạn"
+        },
+        "filters": {
+            "projectId": "Nhập mã Project"
+        },
+        "empty": "Không có dữ liệu"
     }
 }
   

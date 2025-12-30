@@ -8,6 +8,7 @@ export const createRegisterRules = (
       field: i18n('email'),
       isEmail: true,
       maxLength: 50,
+      required: true,
       apiCheckFn: async (value) => {
         return await apiRegister.checkEmailExists(value);
       },
@@ -27,13 +28,6 @@ export const createRegisterRules = (
 
     password: createCommonValidator({
       field: i18n('password'),
-      maxLength: 20,
-      required: true,
-      isPassword: true
-    }),
-
-    confirmPassword: createCommonValidator({
-      field: i18n('confirmPassword'),
       maxLength: 20,
       required: true,
       isPassword: true
