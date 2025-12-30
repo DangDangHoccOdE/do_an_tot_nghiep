@@ -314,8 +314,18 @@ const openProjectDrawer = async (mode, id = null) => {
   projectDrawer.visible = true
 }
 
+const normalizeDate = (value) => {
+  if (!value) return ''
+  if (typeof value === 'string') return value
+  return value.toISOString().split('T')[0]
+}
+
 const saveProject = async () => {
-  const payload = { ...projectForm }
+  const payload = {
+    ...projectForm,
+    startDate: normalizeDate(projectForm.startDate),
+    endDate: normalizeDate(projectForm.endDate)
+  }
   if (projectDrawer.mode === 'edit' && projectDrawer.id) {
     await put(`/api/v1/projects/${projectDrawer.id}`, payload)
   } else {

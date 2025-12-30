@@ -207,5 +207,69 @@
           }
         }
       }
+    },
+    "admin": {
+      "title": "Admin workspace",
+      "subtitle": "Manage projects, teams and daily tasks with clarity.",
+      "menu": {
+        "currentProjects": "Current projects",
+        "futureProjects": "Future projects",
+        "teams": "Project teams",
+        "tasks": "Tasks by project"
+      },
+      "actions": {
+        "refresh": "Refresh",
+        "loadTasks": "Load tasks",
+        "add": "Add new",
+        "edit": "Edit",
+        "delete": "Delete",
+        "view": "View",
+        "save": "Save",
+        "cancel": "Cancel",
+        "close": "Close"
+      },
+      "table": {
+        "projectName": "Project name",
+        "status": "Status",
+        "startDate": "Start",
+        "endDate": "End",
+        "teamName": "Team name",
+        "description": "Description",
+        "members": "Members",
+        "title": "Title",
+        "assignee": "Assignee",
+        "dueDate": "Due date",
+        "clientId": "Client",
+        "budgetEstimated": "Budget",
+        "timelineEstimated": "Timeline (days)"
+      },
+      "filters": {
+        "projectId": "Enter project ID",
+        "search": "Search...",
+        "status": "Status",
+        "statusAll": "All",
+        "statusCurrent": "Current",
+        "statusFuture": "Future"
+      },
+      "form": {
+        "projectName": "Project name",
+        "description": "Description",
+        "status": "Status",
+        "startDate": "Start date",
+        "endDate": "End date",
+        "teamId": "Team ID",
+        "clientId": "Client ID",
+        "budgetEstimated": "Budget estimated",
+        "timelineEstimated": "Timeline (days)",
+        "teamName": "Team name",
+        "teamDescription": "Description",
+        "userId": "User ID",
+        "memberRole": "Role in team"
+      },
+      "confirm": {
+        "deleteTitle": "Delete record",
+        "deleteMessage": "Are you sure you want to delete this item?"
+      },
+      "empty": "No data"
     }
 }
