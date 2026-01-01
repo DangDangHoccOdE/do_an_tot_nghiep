@@ -13,6 +13,8 @@ public interface IProjectService {
 
     ProjectResponse create(ProjectRequest request);
 
+    ProjectResponse createFuture(ProjectRequest request);
+
     ProjectResponse update(UUID id, ProjectRequest request);
 
     void delete(UUID id);

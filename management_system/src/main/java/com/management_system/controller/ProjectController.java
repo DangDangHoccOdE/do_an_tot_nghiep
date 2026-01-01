@@ -19,6 +19,7 @@ import com.management_system.dto.response.PageResponse;
 import com.management_system.dto.response.ProjectResponse;
 import com.management_system.service.inter.IProjectService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -43,13 +44,19 @@ public class ProjectController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_PM')")
-    public ResponseEntity<ProjectResponse> create(@RequestBody ProjectRequest request) {
+    public ResponseEntity<ProjectResponse> create(@Valid @RequestBody ProjectRequest request) {
         return ResponseEntity.ok(projectService.create(request));
+    }
+
+    @PostMapping("/future")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_PM')")
+    public ResponseEntity<ProjectResponse> createFuture(@Valid @RequestBody ProjectRequest request) {
+        return ResponseEntity.ok(projectService.createFuture(request));
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_PM')")
-    public ResponseEntity<ProjectResponse> update(@PathVariable UUID id, @RequestBody ProjectRequest request) {
+    public ResponseEntity<ProjectResponse> update(@PathVariable UUID id, @Valid @RequestBody ProjectRequest request) {
         return ResponseEntity.ok(projectService.update(id, request));
     }
 

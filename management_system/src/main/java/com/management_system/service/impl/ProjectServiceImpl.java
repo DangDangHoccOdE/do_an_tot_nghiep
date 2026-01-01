@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.management_system.core.ValidatorWrapper;
 import com.management_system.dto.request.ProjectRequest;
 import com.management_system.dto.response.PageResponse;
 import com.management_system.dto.response.ProjectResponse;
@@ -25,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class ProjectServiceImpl implements IProjectService {
 
     private final ProjectRepository projectRepository;
+    private final ValidatorWrapper validator;
 
     @Override
     public PageResponse<ProjectResponse> getPage(String status, int page, int size) {
@@ -39,13 +41,15 @@ public class ProjectServiceImpl implements IProjectService {
             switch (status.toLowerCase()) {
                 case "current":
                     filtered = all.stream()
-                            .filter(p -> p.getStatus() == ProjectStatus.IN_PROGRESS || p.getStatus() == ProjectStatus.APPROVED)
+                            .filter(p -> p.getStatus() == ProjectStatus.IN_PROGRESS
+                                    || p.getStatus() == ProjectStatus.APPROVED)
                             .filter(p -> p.getStartDate() == null || !p.getStartDate().isAfter(today))
                             .collect(Collectors.toList());
                     break;
                 case "future":
                     filtered = all.stream()
-                            .filter(p -> p.getStatus() == ProjectStatus.PENDING || (p.getStartDate() != null && p.getStartDate().isAfter(today)))
+                            .filter(p -> p.getStatus() == ProjectStatus.PENDING
+                                    || (p.getStartDate() != null && p.getStartDate().isAfter(today)))
                             .collect(Collectors.toList());
                     break;
                 default:
@@ -74,6 +78,15 @@ public class ProjectServiceImpl implements IProjectService {
 
     @Override
     public ProjectResponse create(ProjectRequest request) {
+        validateRequest(request, false);
+        Project project = new Project();
+        applyRequest(project, request);
+        return toResponse(projectRepository.save(project));
+    }
+
+    @Override
+    public ProjectResponse createFuture(ProjectRequest request) {
+        validateRequest(request, true);
         Project project = new Project();
         applyRequest(project, request);
         return toResponse(projectRepository.save(project));
@@ -83,6 +96,7 @@ public class ProjectServiceImpl implements IProjectService {
     public ProjectResponse update(UUID id, ProjectRequest request) {
         Project project = projectRepository.findByIdAndDeleteFlagFalse(id)
                 .orElseThrow(() -> new EntityNotFoundException("Project not found"));
+        validateRequest(request, false);
         applyRequest(project, request);
         return toResponse(projectRepository.save(project));
     }
@@ -107,6 +121,36 @@ public class ProjectServiceImpl implements IProjectService {
         }
         project.setStartDate(request.getStartDate());
         project.setEndDate(request.getEndDate());
+    }
+
+    private void validateRequest(ProjectRequest request, boolean enforceFutureDate) {
+        validator.validate(request);
+
+        LocalDate startDate = request.getStartDate();
+        LocalDate endDate = request.getEndDate();
+        LocalDate today = LocalDate.now();
+
+        if (startDate != null && endDate != null && endDate.isBefore(startDate)) {
+            throw new IllegalArgumentException("End date must be after start date");
+        }
+
+        if (enforceFutureDate) {
+            if (startDate == null) {
+                throw new IllegalArgumentException("Start date is required for future projects");
+            }
+            if (!startDate.isAfter(today)) {
+                throw new IllegalArgumentException("Future projects must start after today");
+            }
+            if (request.getStatus() == null) {
+                request.setStatus(ProjectStatus.PENDING);
+            }
+        }
+
+        if (request.getStatus() == ProjectStatus.IN_PROGRESS || request.getStatus() == ProjectStatus.APPROVED) {
+            if (startDate != null && startDate.isAfter(today)) {
+                throw new IllegalArgumentException("Cannot mark project in progress before its start date");
+            }
+        }
     }
 
     private ProjectResponse toResponse(Project project) {
