@@ -26,7 +26,8 @@
       "lastNameRequired": "Vui lòng nhập tên",
       "genderRequired": "Vui lòng chọn giới tính",
       "phoneRequired": "Vui lòng nhập số điện thoại",
-      "agreementRequired": "Vui lòng đồng ý với thỏa thuận"
+      "agreementRequired": "Vui lòng đồng ý với thỏa thuận",
+      "passwordOrEmailIncorrect": "Email hoặc mật khẩu không đúng"
     },
   
     "haveAccount": "Bạn đã có tài khoản?",

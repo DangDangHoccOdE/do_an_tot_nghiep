@@ -32,29 +32,22 @@ axios.interceptors.request.use(
 // Response interceptor
 axios.interceptors.response.use(
     (res) => {
-        if (res.data) {
-            return res;
-        }
-        if (res || res.data.success) {
-            return res;
-        }
-        if (res.data.code === "402" || res.data.code === "406") {
-            const path = router.currentRoute.value.fullPath;
-            if(!path.includes('login')) {
-                router.push(`/login?redirect=${path}`)
-        }
-    }
-    return Promise.reject(res.data.msg || new Error(res.msg || "Error"));
+        // Trả về response như là, để component tự xử lý logic
+        return res;
     },
     (error) => {
         const auth = useAuthStore();
+        
+        // Nếu là lỗi 401/403 và không phải login page, đăng xuất và redirect
         if (error?.response?.status === 401 || error?.response?.status === 403) {
-            auth.logout();
             const path = router.currentRoute.value.fullPath;
-            if(!path.includes('login')) {
-                router.push(`/login?redirect=${path}`)
+            // Chỉ logout nếu đã qua trang login (có token lưu nhưng hết hạn)
+            if(!path.includes('login') && auth.accessToken) {
+                auth.logout();
+                router.push(`/login?redirect=${path}`);
             }
         }
+        
         return Promise.reject(error);
     }
 );

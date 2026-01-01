@@ -1,4 +1,3 @@
-import { tr } from "element-plus/es/locales.mjs";
 import { validateMessages } from "./validateMessages";
 
 const EMAIL_REGEX = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
