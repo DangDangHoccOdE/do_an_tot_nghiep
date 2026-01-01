@@ -7,6 +7,19 @@ public class Endpoints {
             "/api/v1/users/register",
             "/api/v1/users/check-duplicate",
             "/users/login",
-            "login/oauth2/code/**"
+            "login/oauth2/code/**",
+            "/api/v1/auth/login",
+            "/api/v1/auth/refresh",
+            "/oauth2/**",
+            "/login/oauth2/**",
+            "/api/v1/projects",
+    };
+
+    public static final String[] PUBLIC_POST_ENDPOINTS = {
+            "/api/v1/auth/login",
+            "/api/v1/auth/refresh",
+            "/oauth2/**",
+            "/login/oauth2/**",
+            "/api/v1/projects",
     };
 }

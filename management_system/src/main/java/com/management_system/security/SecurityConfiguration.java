@@ -96,8 +96,10 @@ public class SecurityConfiguration {
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
                     configuration.addAllowedOrigin(Endpoints.front_end_host);
-                    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+                    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     configuration.addAllowedHeader("*");
+                    configuration.addExposedHeader("Authorization");
+                    configuration.addExposedHeader("Content-Type");
                     configuration.setAllowCredentials(true);
                     configuration.setMaxAge(3600L);
                     return configuration;
@@ -106,10 +108,9 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 // cấu hình phân quyền
                 .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(HttpMethod.GET, Endpoints.PUBLIC_GET_ENDPOINTS).permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
-                    .requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll()
-                    .anyRequest().authenticated())
+                        .requestMatchers(HttpMethod.GET, Endpoints.PUBLIC_GET_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_POST_ENDPOINTS).permitAll()
+                        .anyRequest().authenticated())
                 // Xử lý lỗi 403
                 .exceptionHandling(handling -> handling.accessDeniedHandler(customAccessDeniedHandler))
                 // Dùng JWT filter

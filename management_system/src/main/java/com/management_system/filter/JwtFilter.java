@@ -42,23 +42,19 @@ public class JwtFilter extends OncePerRequestFilter {
     public JwtFilter(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver) {
         this.resolver = resolver;
     }
-    
+
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         try {
             String authHeader = request.getHeader("Authorization");
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                authHeader = request.getHeader("X-Refresh-Token");
+                filterChain.doFilter(request, response);
+                return;
             }
-            String token = null;
-            String username = null;
-            String tokenType = null;
-            if (authHeader != null && (authHeader.startsWith("Bearer ") || authHeader.startsWith("Refresh-Token"))) {
-                token = authHeader.substring(authHeader.startsWith("Bearer ") ? 7 : 14);
-                tokenType = authHeader.startsWith("Bearer ") ? JwtUtil.SECRET_ACCESS_TOKEN : JwtUtil.SECRET_REFRESH_TOKEN;
 
-                username = jwtService.extractUserName(token, tokenType);
-            }
+            String token = authHeader.substring(7);
+            String username = jwtService.extractUserName(token, JwtUtil.SECRET_ACCESS_TOKEN);
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails;
@@ -73,24 +69,25 @@ public class JwtFilter extends OncePerRequestFilter {
                     userDetails = new org.springframework.security.core.userdetails.User(
                             user.getEmail(),
                             "", // Password không có
-                            List.of(new SimpleGrantedAuthority(role))
-                    );
+                            List.of(new SimpleGrantedAuthority(role)));
                 } else {
                     // Xử lý user
                     userDetails = iUserSecurityService.loadUserByUsername(username);
                 }
 
-                boolean isTokenValid = jwtService.validateToken(token, userDetails, tokenType);
+                boolean isTokenValid = jwtService.validateToken(token, userDetails, JwtUtil.SECRET_ACCESS_TOKEN);
                 if (isTokenValid) {
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
+                            null, userDetails.getAuthorities());
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
             filterChain.doFilter(request, response);
-        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
+        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException
+                | IllegalArgumentException e) {
             resolver.resolveException(request, response, null, e);
         }
     }
-    
+
 }
