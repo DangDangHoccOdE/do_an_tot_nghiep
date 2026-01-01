@@ -17,9 +17,10 @@
               v-model="loginForm.username" 
               type="text" 
               placeholder="Username" 
-              required
+              :class="{ 'input-error': errors.username }"
             >
             <span class="icon">👤</span>
+            <span v-if="errors.username" class="error-msg">{{ errors.username }}</span>
           </div>
 
           <div class="input-group">
@@ -27,9 +28,14 @@
               v-model="loginForm.password" 
               type="password" 
               placeholder="Password" 
-              required
+              :class="{ 'input-error': errors.password }"
             >
             <span class="icon">🔒</span>
+            <span v-if="errors.password" class="error-msg">{{ errors.password }}</span>
+          </div>
+
+          <div v-if="errors.general" class="error-banner">
+            {{ errors.general }}
           </div>
 
           <div class="forgot-password">
@@ -52,53 +58,84 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue';
+<script>
 import { useRouter, useRoute } from 'vue-router';
-import { post } from '@/utils/http';
 import { useAuthStore } from '@/stores/auth/useAuthStore';
+import { apiAuth } from '@/services/apiAuth';
 
-const router = useRouter();
-const route = useRoute();
-const auth = useAuthStore();
-const isLoading = ref(false);
+export default {
+  name: 'Login',
+  setup() {
+    const router = useRouter();
+    const route = useRoute();
+    const auth = useAuthStore();
 
-const loginForm = ref({
-  username: '',
-  password: ''
-});
-
-const handleLogin = async () => {
-  isLoading.value = true;
-  
-  try {
-    const data = await post('/api/v1/auth/login', loginForm.value);
-    auth.login(data);
-    const redirect = route.query.redirect || '/admin';
-    router.push(redirect);
-  } catch (error) {
-    console.error('Login error:', error);
-    alert('Login failed. Please try again.');
-  } finally {
-    isLoading.value = false;
+    return {
+      router,
+      route,
+      auth
+    };
+  },
+  data() {
+    return {
+      isLoading: false,
+      loginForm: {
+        username: '',
+        password: ''
+      },
+      errors: {
+        username: '',
+        password: '',
+        general: ''
+      }
+    };
+  },
+  methods: {
+    clearErrors() {
+      this.errors = { username: '', password: '', general: '' };
+    },
+    async handleLogin() {
+      this.clearErrors();
+      this.isLoading = true;
+      
+      try {
+        const data = await apiAuth.login(this.loginForm);
+        this.auth.login(data);
+        const redirect = this.route.query.redirect || '/admin';
+        this.router.push(redirect);
+      } catch (error) {
+        console.error('Login error:', error);
+        
+        // Get message từ response data - backend trả về dạng { code, message, data, success }
+        let errorMsg = 'Login failed. Please try again.';
+        
+        if (error?.response?.data) {
+          // Nếu backend trả về ApiResponse format
+          errorMsg = error.response.data.message || error.response.data.error || errorMsg;
+        } else if (error?.message) {
+          errorMsg = error.message;
+        }
+        
+        // Hiển thị message lỗi ở banner (vì không thể phân biệt username hay password từ backend)
+        this.errors.general = errorMsg;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    handleGoogleLogin() {
+      window.location.href = `http://localhost:8080/oauth2/authorize/google?redirect_uri=http://localhost:5173/oauth2/redirect`;
+    },
+    handleFacebookLogin() {
+      window.location.href = `http://localhost:8080/oauth2/authorize/facebook?redirect_uri=http://localhost:5173/oauth2/redirect`;
+    },
+    handleForgotPassword() {
+      alert('Forgot password - Implement password reset');
+      // this.router.push('/forgot-password');
+    },
+    goToRegister() {
+      this.router.push('/register');
+    }
   }
-};
-
-const handleGoogleLogin = () => {
-  window.location.href = `http://localhost:8080/oauth2/authorize/google?redirect_uri=http://localhost:5173/oauth2/redirect`;
-};
-
-const handleFacebookLogin = () => {
-  window.location.href = `http://localhost:8080/oauth2/authorize/facebook?redirect_uri=http://localhost:5173/oauth2/redirect`;
-};
-
-const handleForgotPassword = () => {
-  alert('Forgot password - Implement password reset');
-  // router.push('/forgot-password');
-};
-
-const goToRegister = () => {
-  router.push('/register');
 };
 </script>
 
@@ -231,6 +268,20 @@ const goToRegister = () => {
   color: #70706F;
 }
 
+.input-group input.input-error {
+  border: 2px solid #CE181E;
+  background: #fff5f5;
+  box-shadow: 0 0 0 2px rgba(206, 24, 30, 0.1);
+}
+
+.error-msg {
+  display: block;
+  color: #CE181E;
+  font-size: 12px;
+  margin-top: 6px;
+  font-weight: 500;
+}
+
 .input-group .icon {
   position: absolute;
   right: 15px;
@@ -254,6 +305,18 @@ const goToRegister = () => {
 
 .forgot-password a:hover {
   color: #b0151a;
+}
+
+.error-banner {
+  background: #fff5f5;
+  border: 1px solid #f5b4b4;
+  color: #CE181E;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 500;
 }
 
 .submit-btn {

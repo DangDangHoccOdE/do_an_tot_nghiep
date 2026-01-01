@@ -81,37 +81,37 @@ const items = [
     title: "Quản trị dự án",
     content:
       "Khả năng quản trị dự án vượt trội dựa trên việc tuân thủ các tiêu chuẩn như ISO và CMMI 3.",
-    icon: "/vi/wp-content/themes/luvina2024/assets/images/gear-icon.png",
-    iconHover: "/vi/wp-content/themes/luvina2024/assets/images/gear-red-icon.png",
-    bg: "/vi/wp-content/themes/luvina2024/assets/images/parallelogram-icon.png",
-    bgHover: "/vi/wp-content/themes/luvina2024/assets/images/parallelogram-red-icon.png",
+    icon: "https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/gear-icon.png",
+    iconHover: "https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/gear-red-icon.png",
+    bg: "https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/parallelogram-icon.png",
+    bgHover: "https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/parallelogram-red-icon.png",
   },
   {
     title: "Văn hóa đào tạo & phát triển",
     content:
       "Khả năng đáp ứng nghiệp vụ và kỹ thuật mới hiệu quả nhờ văn hóa và kỹ năng tự học của nhân sự.",
-    icon: "/vi/wp-content/themes/luvina2024/assets/images/education-icon.png",
-    iconHover: "/vi/wp-content/themes/luvina2024/assets/images/education-red-icon.png",
-    bg: "/vi/wp-content/themes/luvina2024/assets/images/parallelogram-icon.png",
-    bgHover: "/vi/wp-content/themes/luvina2024/assets/images/parallelogram-red-icon.png",
+    icon: "https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/education-icon.png",
+    iconHover: "https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/education-red-icon.png",
+    bg: "https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/parallelogram-icon.png",
+    bgHover: "https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/parallelogram-red-icon.png",
   },
   {
     title: "Chất lượng ổn định",
     content:
       "Đảm bảo chất lượng sản phẩm, dịch vụ cao và bền vững dù thay đổi cơ cấu nhân sự.",
-    icon: "/vi/wp-content/themes/luvina2024/assets/images/quality-icon.png",
-    iconHover: "/vi/wp-content/themes/luvina2024/assets/images/quality-red-icon.png",
-    bg: "/vi/wp-content/themes/luvina2024/assets/images/parallelogram-icon.png",
-    bgHover: "/vi/wp-content/themes/luvina2024/assets/images/parallelogram-red-icon.png",
+    icon: "https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/quality-icon.png",
+    iconHover: "https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/quality-red-icon.png",
+    bg: "https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/parallelogram-icon.png",
+    bgHover: "https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/parallelogram-red-icon.png",
   },
   {
     title: "Hợp tác lâu dài",
     content:
       "Chú trọng mối quan hệ hợp tác lâu dài, đồng hành cùng khách hàng vươn tới thành công.",
-    icon: "/vi/wp-content/themes/luvina2024/assets/images/collaborate-icon.png",
-    iconHover: "/vi/wp-content/themes/luvina2024/assets/images/collaborate-red-icon.png",
-    bg: "/vi/wp-content/themes/luvina2024/assets/images/parallelogram-icon.png",
-    bgHover: "/vi/wp-content/themes/luvina2024/assets/images/parallelogram-red-icon.png",
+    icon: "https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/collaborate-icon.png",
+    iconHover: "https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/collaborate-red-icon.png",
+    bg: "https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/parallelogram-icon.png",
+    bgHover: "https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/parallelogram-red-icon.png",
   },
 ];
 </script>
