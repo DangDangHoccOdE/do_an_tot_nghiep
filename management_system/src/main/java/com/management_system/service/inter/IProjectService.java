@@ -9,6 +9,8 @@ import com.management_system.dto.response.PageResponse;
 public interface IProjectService {
     PageResponse<ProjectResponse> getPage(String status, int page, int size);
 
+    PageResponse<ProjectResponse> getMyProjects(UUID userId, int page, int size);
+
     ProjectResponse get(UUID id);
 
     ProjectResponse create(ProjectRequest request);

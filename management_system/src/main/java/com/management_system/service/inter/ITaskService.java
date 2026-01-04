@@ -9,6 +9,8 @@ import com.management_system.dto.response.TaskResponse;
 public interface ITaskService {
     List<TaskResponse> getByProject(UUID projectId);
 
+    TaskResponse get(UUID id);
+
     TaskResponse create(TaskRequest request);
 
     TaskResponse update(UUID id, TaskRequest request);
