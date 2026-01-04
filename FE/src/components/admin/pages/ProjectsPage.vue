@@ -1,6 +1,6 @@
 <template>
   <div class="grid">
-    <SectionCard :eyebrow="sectionLabel" :title="sectionLabel">
+    <SectionCard :title="sectionLabel">
       <template #actions>
         <div class="action-row">
           <el-input v-model="projectSearch" :placeholder="t('admin.filters.search')" size="small" class="search-input"
