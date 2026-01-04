@@ -30,9 +30,8 @@ const navItems = computed(() => [
   { key: 'future', label: t('admin.menu.futureProjects'), icon: '🗓️', routeName: 'admin-projects-future' },
   { key: 'teams', label: t('admin.menu.teams'), icon: '👥', routeName: 'admin-teams' },
   { key: 'tasks', label: t('admin.menu.tasks'), icon: '✅', routeName: 'admin-tasks' },
-  { key: 'customers', label: 'Khách hàng', icon: '👤', routeName: 'admin-customers' },
-  { key: 'staff', label: 'Nhân viên', icon: '👨‍💼', routeName: 'admin-staff' },
-  { key: 'users', label: 'Người dùng', icon: '🔧', routeName: 'admin-users' }
+  { key: 'staff', label: t('admin.menu.staff'), icon: '👨‍💼', routeName: 'admin-staff' },
+  { key: 'users', label: t('admin.menu.users'), icon: '👤', routeName: 'admin-users' }
 ])
 
 const activeSection = computed(() => route.meta.sectionKey || 'current')
@@ -70,15 +69,17 @@ const userInitials = computed(() => {
 
 <style scoped>
 .admin-shell {
-  min-height: 100vh;
+  height: 100vh;
   display: grid;
   grid-template-columns: 260px 1fr;
   gap: 18px;
-  padding: 16px 18px 22px;
+  padding: 16px 18px 16px;
   background: radial-gradient(circle at 12% 18%, rgba(206, 24, 30, 0.08), transparent 22%),
     radial-gradient(circle at 70% 0%, rgba(0, 122, 204, 0.08), transparent 26%),
     #f7f8fb;
   transition: grid-template-columns 0.2s ease;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .admin-shell.collapsed {
@@ -89,6 +90,8 @@ const userInitials = computed(() => {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  overflow: hidden;
+  min-height: 0;
 }
 
 .content-card {
@@ -97,12 +100,17 @@ const userInitials = computed(() => {
   border-radius: 14px;
   padding: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-  min-height: 95vh;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
 }
 
 @media (max-width: 960px) {
   .admin-shell {
     grid-template-columns: 1fr;
+    height: auto;
+    min-height: 100vh;
   }
 }
 </style>

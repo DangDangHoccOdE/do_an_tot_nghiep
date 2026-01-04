@@ -15,8 +15,6 @@ import TeamFormPage from "@/components/admin/pages/TeamFormPage.vue";
 import TaskFormPage from "@/components/admin/pages/TaskFormPage.vue";
 import UsersPage from "@/components/admin/pages/UsersPage.vue";
 import UserFormPage from "@/components/admin/pages/UserFormPage.vue";
-import CustomersPage from "@/components/admin/pages/CustomersPage.vue";
-import CustomerFormPage from "@/components/admin/pages/CustomerFormPage.vue";
 import StaffPage from "@/components/admin/pages/StaffPage.vue";
 import StaffFormPage from "@/components/admin/pages/StaffFormPage.vue";
 import MainLayout from "@/layouts/MainLayout.vue";
@@ -124,26 +122,6 @@ const routes = [
         component: UserFormPage,
         props: (route) => ({ id: route.params.id, mode: "edit" }),
         meta: { sectionKey: "users" }
-      },
-      {
-        path: "customers",
-        name: "admin-customers",
-        component: CustomersPage,
-        meta: { sectionKey: "customers" }
-      },
-      {
-        path: "customers/new",
-        name: "admin-customers-new",
-        component: CustomerFormPage,
-        props: { mode: "create" },
-        meta: { sectionKey: "customers" }
-      },
-      {
-        path: "customers/:id/edit",
-        name: "admin-customers-edit",
-        component: CustomerFormPage,
-        props: (route) => ({ id: route.params.id, mode: "edit" }),
-        meta: { sectionKey: "customers" }
       },
       {
         path: "staff",

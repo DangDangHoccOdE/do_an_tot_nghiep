@@ -2,7 +2,6 @@
   <section class="card" :class="{ 'full': full }">
     <header class="card-header">
       <div>
-        <p class="eyebrow">{{ eyebrow }}</p>
         <h2>{{ title }}</h2>
         <p class="desc" v-if="description">{{ description }}</p>
       </div>
@@ -22,7 +21,6 @@ import { defineProps } from 'vue'
 defineProps({
   title: { type: String, required: true },
   description: { type: String, default: '' },
-  eyebrow: { type: String, default: '' },
   full: { type: Boolean, default: false }
 })
 </script>
@@ -46,14 +44,6 @@ defineProps({
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 12px;
-}
-
-.eyebrow {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #6b7280;
-  margin: 0 0 4px;
 }
 
 h2 {

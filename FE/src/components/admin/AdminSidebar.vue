@@ -6,6 +6,10 @@
       </div>
     </div>
 
+    <div class="language-box" v-if="!collapsed">
+      <LanguageSwitcher />
+    </div>
+
     <nav>
       <button v-for="item in items" :key="item.key" :class="['nav-item', { active: item.key === active, collapsed }]"
         type="button" @click="$emit('select', item.key)">
@@ -29,14 +33,14 @@
 
       <transition name="fade">
         <div v-if="showDropdown" class="avatar-dropdown">
-          <button type="button" @click="handleHome">Trang chính</button>
-          <button type="button" class="danger" @click="handleLogout">Đăng xuất</button>
+          <button type="button" @click="handleHome">{{ $t('admin.sidebar.home') }}</button>
+          <button type="button" class="danger" @click="handleLogout">{{ $t('admin.sidebar.logout') }}</button>
         </div>
       </transition>
     </div>
 
-    <button class="collapse-handle" type="button" :aria-label="collapsed ? 'Mở menu' : 'Thu gọn menu'"
-      @click="$emit('toggle')">
+    <button class="collapse-handle" type="button"
+      :aria-label="collapsed ? $t('admin.sidebar.expand') : $t('admin.sidebar.collapse')" @click="$emit('toggle')">
       <component :is="collapsed ? MenuUnfoldIcon : MenuFoldIcon" class="collapse-icon" />
     </button>
   </aside>
@@ -49,6 +53,7 @@ import MenuFoldIcon from '@/components/icons/MenuFoldIcon.vue'
 import MenuUnfoldIcon from '@/components/icons/MenuUnfoldIcon.vue'
 import ChevronDownIcon from '@/components/icons/ChevronDownIcon.vue'
 import ChevronUpIcon from '@/components/icons/ChevronUpIcon.vue'
+import LanguageSwitcher from '@/components/common/LanguageSwitcher.vue'
 
 defineProps({
   items: { type: Array, required: true },
@@ -264,8 +269,22 @@ nav {
   padding: 8px;
   display: grid;
   gap: 6px;
-  min-width: 180px;
+  min-width: 200px;
   z-index: 5;
+}
+
+.language-box {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: center;
+  background-color: #fff;
+}
+
+.sidebar.collapsed .language-box {
+  padding: 8px 0;
 }
 
 .avatar-dropdown button {
