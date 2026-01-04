@@ -1,7 +1,7 @@
 <template>
   <section class="experience-section">
     <h2 class="experience-title">
-      Kinh nghiệm của chúng tôi
+      {{ $t('home.experience.title') }}
     </h2>
 
     <div class="experience-grid">
@@ -23,7 +23,7 @@
     </div>
 
     <a href="/vi/industries/" class="view-more group">
-      <p class="view-more-text">Xem thêm</p>
+      <p class="view-more-text">{{ $t('home.experience.viewMore') }}</p>
       <img src="https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/industry-arrow-right.png" alt=""
         class="view-more-icon group-hover:hidden" />
       <img src="https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/icon-next-white-1.png" alt=""
@@ -33,88 +33,93 @@
 </template>
 
 <script setup>
-const items = [
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+
+const items = computed(() => [
   {
-    title: 'Tài chính – Bảo hiểm – <br>Ngân hàng',
+    title: t('home.experience.items.bfsi.title'),
     href: 'https://luvina.net/vi/industries/bfsi',
     bg1: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/rectangle-934.png',
     bg2: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/rectangle-935.png',
     icon: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/image-1.png',
-    alt: 'BFSI'
+    alt: t('home.experience.items.bfsi.alt')
   },
   {
-    title: 'Xây dựng',
+    title: t('home.experience.items.construction.title'),
     href: 'https://luvina.net/vi/industries/construction',
     bg1: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/rectangle-934.png',
     bg2: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/rectangle-935.png',
     icon: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/image-2.png',
-    alt: 'Construction'
+    alt: t('home.experience.items.construction.alt')
   },
   {
-    title: 'Y tế',
+    title: t('home.experience.items.healthcare.title'),
     href: 'https://luvina.net/vi/industries/healthcare',
     bg1: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/rectangle-934.png',
     bg2: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/rectangle-935.png',
     icon: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/image-3.png',
-    alt: 'Healthcare'
+    alt: t('home.experience.items.healthcare.alt')
   },
   {
-    title: 'Nhân sự',
+    title: t('home.experience.items.hr.title'),
     href: 'https://luvina.net/vi/industries/human-resources',
     bg1: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/rectangle-934.png',
     bg2: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/rectangle-935.png',
     icon: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/image-4.png',
-    alt: 'HR'
+    alt: t('home.experience.items.hr.alt')
   },
   {
-    title: 'Hậu cần &amp; Vận tải',
+    title: t('home.experience.items.logistics.title'),
     href: 'https://luvina.net/vi/industries/logistics-transportation',
     bg1: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/rectangle-934.png',
     bg2: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/rectangle-935.png',
     icon: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/image-5.png',
-    alt: 'Logistics'
+    alt: t('home.experience.items.logistics.alt')
   },
   {
-    title: 'Sản xuất',
+    title: t('home.experience.items.manufacturing.title'),
     href: 'https://luvina.net/vi/industries/manufacturing',
     bg1: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/rectangle-934.png',
     bg2: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/rectangle-935.png',
     icon: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/image-6.png',
-    alt: 'Manufacturing'
+    alt: t('home.experience.items.manufacturing.alt')
   },
   {
-    title: 'Truyền thông <br>&amp; Tổ chức sự kiện',
+    title: t('home.experience.items.media.title'),
     href: 'https://luvina.net/vi/industries/media-event-planning',
     bg1: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/rectangle-934.png',
     bg2: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/rectangle-935.png',
     icon: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/image-7.png',
-    alt: 'Media'
+    alt: t('home.experience.items.media.alt')
   },
   {
-    title: 'Bất động sản',
+    title: t('home.experience.items.realEstate.title'),
     href: 'https://luvina.net/vi/industries/real-estate',
     bg1: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/rectangle-934.png',
     bg2: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/rectangle-935.png',
     icon: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/image-8.png',
-    alt: 'Real Estate'
+    alt: t('home.experience.items.realEstate.alt')
   },
   {
-    title: 'Bán lẻ &amp; Thương mại<br>điện tử',
+    title: t('home.experience.items.retail.title'),
     href: 'https://luvina.net/vi/industries/retail-e-commerce',
     bg1: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/rectangle-934.png',
     bg2: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/rectangle-935.png',
     icon: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/image-9.png',
-    alt: 'Retail'
+    alt: t('home.experience.items.retail.alt')
   },
   {
-    title: 'Du lịch &amp; Hàng không',
+    title: t('home.experience.items.travel.title'),
     href: 'https://luvina.net/vi/industries/travel-aviation',
     bg1: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/rectangle-934.png',
     bg2: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/rectangle-935.png',
     icon: 'https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/image-10.png',
-    alt: 'Travel'
+    alt: t('home.experience.items.travel.alt')
   }
-];
+])
 </script>
 
 <style scoped>

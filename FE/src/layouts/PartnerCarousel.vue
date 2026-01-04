@@ -4,7 +4,7 @@
         <h2 class="text-[20px] lg:text-[40px] font-bold lg:uppercase text-center leading-[60px]
              bg-gradient-to-r from-[#840000] to-[#CE181E]
              bg-clip-text text-transparent">
-            Đối tác của chúng tôi
+            {{ $t('home.partners.title') }}
         </h2>
 
         <!-- Partner list -->
@@ -27,7 +27,7 @@
              hover:bg-[linear-gradient(90deg,#840000_0%,#ce181e_100%)]
              gap-[10px]">
             <p class="text-[18px] leading-[170%] text-white">
-                Trở thành đối tác của chúng tôi
+                {{ $t('home.partners.cta') }}
             </p>
             <img src="https://luvina.net/vi/wp-content/uploads/2025/02/arrow-right-white.png" alt="Contact Icon"
                 class="ml-[3px] w-[24px] h-[24px]" aria-hidden="true" decoding="async" loading="lazy" />

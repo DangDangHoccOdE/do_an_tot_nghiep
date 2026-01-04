@@ -2,75 +2,69 @@
   <section class="overview-hero">
     <div class="overview-card">
       <div class="overview-content">
-        <h2 class="overview-title">Luvina overview</h2>
-          <div class="lg:flex hidden flex justify-center mt-12 items-center bg-[#fafafa] w-full">
-            <div
-              class="lg:max-w-[1355px] xl:w-[90vw] w-full rounded-none
+        <h2 class="overview-title">{{ $t('home.overview.title') }}</h2>
+        <div class="lg:flex hidden flex justify-center mt-12 items-center bg-[#fafafa] w-full">
+          <div class="lg:max-w-[1355px] xl:w-[90vw] w-full rounded-none
                     bg-[url('/vi/wp-content/uploads/2025/02/backgroud_luvina_overview.png')]
                     bg-cover bg-center
-                    2xl:bg-[length:120%] xl:bg-[length:130%] lg:bg-[length:140%]"
-            >
-              <div class="flex flex-col items-center px-20 pt-[67px] pb-10 w-full max-md:px-5 max-md:max-w-full">
-                <section class="flex flex-col items-center max-w-full w-[1085px]">
-                  <section class="self-stretch z-20 -mt-[60px]">
-                    <div class="flex gap-5 max-md:flex-col">
-                      <article class="w-3/12 max-md:w-full text-center">
-                        <div class="flex flex-col grow max-md:mt-10">
-                          <h3
-                            class="counter self-center text-6xl font-bold leading-none uppercase text-[#353535] max-md:text-4xl"
-                            data-value="20"
-                          >
-                            20+
-                          </h3>
-                          <p class="text-lg leading-8 text-[#818181]">
-                            Năm phát triển
-                          </p>
-                        </div>
-                      </article>
-
-                      <article class="w-3/12 max-md:w-full text-center">
-                        <div class="flex flex-col max-md:mt-10">
-                          <h3
-                            class="counter self-center text-6xl font-bold leading-none uppercase text-[#353535] max-md:text-4xl"
-                            data-value="110"
-                          >
-                            110+
-                          </h3>
-                          <p class="text-lg leading-8 text-[#818181]">
-                            Khách hàng hài lòng
-                          </p>
-                        </div>
-                      </article>
-
-                      <article class="w-3/12 max-md:w-full text-center">
+                    2xl:bg-[length:120%] xl:bg-[length:130%] lg:bg-[length:140%]">
+            <div class="flex flex-col items-center px-20 pt-[67px] pb-10 w-full max-md:px-5 max-md:max-w-full">
+              <section class="flex flex-col items-center max-w-full w-[1085px]">
+                <section class="self-stretch z-20 -mt-[60px]">
+                  <div class="flex gap-5 max-md:flex-col">
+                    <article class="w-3/12 max-md:w-full text-center">
+                      <div class="flex flex-col grow max-md:mt-10">
                         <h3
-                          class="counter text-6xl font-bold leading-none uppercase text-[#353535] max-md:mt-10 max-md:text-4xl"
-                          data-value="750"
-                        >
-                          750+
+                          class="counter self-center text-6xl font-bold leading-none uppercase text-[#353535] max-md:text-4xl"
+                          data-value="20">
+                          20+
                         </h3>
                         <p class="text-lg leading-8 text-[#818181]">
-                          Nhân sự IT tài năng
+                          {{ $t('home.overview.stats.years') }}
                         </p>
-                      </article>
+                      </div>
+                    </article>
 
-                      <article class="w-3/12 max-md:w-full text-center">
+                    <article class="w-3/12 max-md:w-full text-center">
+                      <div class="flex flex-col max-md:mt-10">
                         <h3
-                          class="counter text-6xl font-bold leading-none uppercase text-[#353535] max-md:mt-10 max-md:text-4xl"
-                          data-value="1000"
-                        >
-                          1000+
+                          class="counter self-center text-6xl font-bold leading-none uppercase text-[#353535] max-md:text-4xl"
+                          data-value="110">
+                          110+
                         </h3>
                         <p class="text-lg leading-8 text-[#818181]">
-                          Dự án thành công
+                          {{ $t('home.overview.stats.clients') }}
                         </p>
-                      </article>
-                    </div>
-                  </section>
+                      </div>
+                    </article>
+
+                    <article class="w-3/12 max-md:w-full text-center">
+                      <h3
+                        class="counter text-6xl font-bold leading-none uppercase text-[#353535] max-md:mt-10 max-md:text-4xl"
+                        data-value="750">
+                        750+
+                      </h3>
+                      <p class="text-lg leading-8 text-[#818181]">
+                        {{ $t('home.overview.stats.talents') }}
+                      </p>
+                    </article>
+
+                    <article class="w-3/12 max-md:w-full text-center">
+                      <h3
+                        class="counter text-6xl font-bold leading-none uppercase text-[#353535] max-md:mt-10 max-md:text-4xl"
+                        data-value="1000">
+                        1000+
+                      </h3>
+                      <p class="text-lg leading-8 text-[#818181]">
+                        {{ $t('home.overview.stats.projects') }}
+                      </p>
+                    </article>
+                  </div>
                 </section>
-              </div>
+              </section>
             </div>
           </div>
+        </div>
       </div>
     </div>
   </section>

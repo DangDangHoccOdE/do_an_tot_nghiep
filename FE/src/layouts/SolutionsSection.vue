@@ -1,48 +1,44 @@
 <template>
   <section class="solutions-hero">
     <div class="solutions-copy">
-      <h2 class="solutions-title">Giải pháp tùy chỉnh cho mọi lĩnh vực</h2>
+      <h2 class="solutions-title">{{ $t('home.solutions.title') }}</h2>
       <div class="solutions-links">
         <a href="/vi/solutions/erp" class="solution-text" data-key="ERP">
-          Enterprise Resource Planning (ERP)
+          {{ $t('home.solutions.items.erp') }}
         </a>
         <a href="/vi/solutions/cms" class="solution-text" data-key="CMS">
-          Content Management System (CMS)
+          {{ $t('home.solutions.items.cms') }}
         </a>
         <a href="/vi/solutions/crm" class="solution-text" data-key="CRM">
-          Customer Relationship Management (CRM)
+          {{ $t('home.solutions.items.crm') }}
         </a>
         <a href="/vi/solutions/pos" class="solution-text" data-key="POS">
-          Point-of-sale Systems (POS)
+          {{ $t('home.solutions.items.pos') }}
         </a>
         <a href="/vi/solutions/e-commerce" class="solution-text" data-key="E-commerce">
-          E-commerce Solutions
+          {{ $t('home.solutions.items.ecommerce') }}
         </a>
       </div>
       <a href="/vi/solutions" class="solutions-cta desktop-cta">
-        Xem thêm
+        {{ $t('home.solutions.viewMore') }}
         <img src="https://luvina.net/vi/wp-content/uploads/2025/02/arrow-right-white.png" alt="" class="cta-icon" />
       </a>
     </div>
 
     <div class="solutions-visual">
-      <img
-        id="solution-image"
-        class="solutions-image"
-        src="https://luvina.net/vi/wp-content/uploads/2025/02/Solution_ERP.png"
-        alt="ERP system on a laptop screen"
-      />
+      <img id="solution-image" class="solutions-image"
+        src="https://luvina.net/vi/wp-content/uploads/2025/02/Solution_ERP.png" alt="ERP system on a laptop screen" />
     </div>
 
     <a href="/vi/solutions" class="solutions-cta mobile-cta">
-      Xem thêm
+      {{ $t('home.solutions.viewMore') }}
       <img src="https://luvina.net/vi/wp-content/uploads/2025/02/arrow-right-white.png" alt="" class="cta-icon" />
     </a>
   </section>
 </template>
 
 <script setup>
-// Static section; no script logic required.
+// Static section; text localized via i18n
 </script>
 
 <style scoped>
@@ -142,6 +138,7 @@
   .desktop-cta {
     display: inline-flex;
   }
+
   .mobile-cta {
     display: none;
   }
@@ -164,6 +161,7 @@
   .solutions-visual {
     margin-left: 8%;
   }
+
   .solutions-image {
     width: 685px;
   }

@@ -13,7 +13,7 @@
                lg:uppercase 
                bg-gradient-to-r from-[#840000] to-[#CE181E]
                bg-clip-text text-transparent">
-        Luvina Academy
+        {{ $t('home.academy.title') }}
       </h2>
 
       <!-- Nội dung chính -->
@@ -25,12 +25,7 @@
                      lg:leading-[31px] leading-[27px] 
                      lg:text-[18px] text-[16px] font-normal text-[#4A4B4C] 
                      max-md:max-w-full 2xl:w-[783px] xl:w-[699px] sm:w-[590px] w-full">
-              Để tăng trưởng nhân sự theo kế hoạch định trước và đảm bảo tiêu
-              chuẩn chất lượng nhân sự đồng nhất, từ 2008 chúng tôi liên tục tổ
-              chức các khóa đào tạo CNTT tại LUVINA ACADEMY với tần suất trung
-              bình 2 khóa/năm dành cho các sinh viên năm cuối khoa CNTT và cả
-              những sinh viên thuộc nhiều khoa khác như điện tử, xây dựng, cơ
-              khí, tài chính, kinh tế, ngoại thương, …
+              {{ $t('home.academy.description') }}
             </p>
 
             <!-- Danh sách check -->
@@ -43,13 +38,13 @@
                   <img decoding="async" loading="lazy"
                     src="https://luvina.net/vi/wp-content/uploads/2025/02/icon_checked.png" class="w-[24px] h-[24px]"
                     alt="Icon">
-                  <span>Con người là trung tâm</span>
+                  <span>{{ $t('home.academy.bullets.people') }}</span>
                 </li>
                 <li class="flex gap-[13px] lg:mt-0 mt-[23px]">
                   <img decoding="async" loading="lazy"
                     src="https://luvina.net/vi/wp-content/uploads/2025/02/icon_checked.png" class="w-[24px] h-[24px]"
                     alt="Icon">
-                  <span>Đề cao chất lượng giảng dạy</span>
+                  <span>{{ $t('home.academy.bullets.quality') }}</span>
                 </li>
               </div>
               <div class="lg:space-y-[23px]">
@@ -57,13 +52,13 @@
                   <img decoding="async" loading="lazy"
                     src="https://luvina.net/vi/wp-content/uploads/2025/02/icon_checked.png" class="w-[24px] h-[24px]"
                     alt="Icon">
-                  <span>Không ngừng học hỏi và phát triển</span>
+                  <span>{{ $t('home.academy.bullets.learning') }}</span>
                 </li>
                 <li class="flex gap-[13px] lg:mt-0 mt-[23px]">
                   <img decoding="async" loading="lazy"
                     src="https://luvina.net/vi/wp-content/uploads/2025/02/icon_checked.png" class="w-[24px] h-[24px]"
                     alt="Icon">
-                  <span>Đảm bảo nguồn nhân lực ổn định và chất lượng</span>
+                  <span>{{ $t('home.academy.bullets.stability') }}</span>
                 </li>
               </div>
             </ul>

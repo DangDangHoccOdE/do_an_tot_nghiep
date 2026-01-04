@@ -7,7 +7,7 @@
         <h2 class="text-[20px] lg:text-[40px] font-bold lg:uppercase text-center leading-[60px]
              bg-gradient-to-r from-[#840000] to-[#CE181E]
              bg-clip-text text-transparent">
-            Chứng nhận & Giải thưởng
+            {{ $t('home.awards.title') }}
         </h2>
 
         <!-- List -->
@@ -25,9 +25,9 @@
                     </div>
 
                     <div class="text-[15px] 2xl:text-[18px] font-normal
-                   leading-[22px] lg:leading-[26.6px] 2xl:leading-[30.6px]
-                   text-center text-black whitespace-pre-line">
-                        {{ item.title }}
+                                     leading-[22px] lg:leading-[26.6px] 2xl:leading-[30.6px]
+                                     text-center text-black whitespace-pre-line">
+                        {{ $t(item.titleKey) }}
                     </div>
                 </div>
             </div>
@@ -35,56 +35,60 @@
     </div>
 </template>
 <script setup>
-const baseAwards = [
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+
+const baseAwards = computed(() => [
     {
         src: "https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/pc-certifications-awards-image-7.png",
-        title: "ISO27001",
+        titleKey: 'home.awards.items.iso',
         imgClass: "w-[35%]"
     },
     {
         src: "https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/pc-certifications-awards-image-2-jp.png",
-        title: "CMMI DEV LEVEL 3",
+        titleKey: 'home.awards.items.cmmiDev',
         imgClass: "w-[35%]"
     },
     {
         src: "https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/pc-certifications-awards-image-1-jp.png",
-        title: "CMMI SERVICE LEVEL 3",
+        titleKey: 'home.awards.items.cmmiService',
         imgClass: "w-[35%]"
     },
     {
         src: "https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/pc-certifications-awards-image-2.png",
-        title: "TOKYO TECH\nVENTURES",
+        titleKey: 'home.awards.items.tokyoTech',
         imgClass: "w-[35%]"
     },
     {
         src: "https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/pc-certifications-awards-image-3.png",
-        title: "THE KURAMAE\nVENTURE AWARD",
+        titleKey: 'home.awards.items.kuramae',
         imgClass: "w-[35%]"
     },
     {
         src: "https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/pc-certifications-awards-image-4.png",
-        title: "TOP 10 VIETNAM ICT\nCOMPANIES 2021",
+        titleKey: 'home.awards.items.top10Ict2021',
         imgClass: "w-[35%]"
     },
     {
         src: "https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/pc-certifications-awards-image-5.png",
-        title: "TOP 10 VIETNAM ICT\nCOMPANIES 2024",
+        titleKey: 'home.awards.items.top10Ict2024',
         imgClass: "w-[25%]"
     },
     {
         src: "https://luvina.net/vi/wp-content/uploads/2025/10/pc-certifications-awards-image-8.png",
-        title: "TOP 10 VIETNAM TECH & MAP 2025",
+        titleKey: 'home.awards.items.top10TechMap2025',
         imgClass: "w-[30%]"
     },
     {
         src: "https://luvina.net/vi/wp-content/themes/luvina2024/assets/images/pc-certifications-awards-image-6.png",
-        title: "DESIGNRUSH",
+        titleKey: 'home.awards.items.designRush',
         imgClass: "w-[25%]"
     }
-];
+])
 
-// nhân bản để scroll vô hạn
-const awards = [...baseAwards, ...baseAwards];
+const awards = computed(() => [...baseAwards.value, ...baseAwards.value])
 </script>
 <style scoped>
 @keyframes scrollX {
