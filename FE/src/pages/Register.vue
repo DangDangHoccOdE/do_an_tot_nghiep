@@ -3,26 +3,16 @@
     <div class="container">
       <!-- Form Panel -->
       <div class="form-panel">
-        <h2>{{ $t("titleRegister") }}</h2>
+        <h2>{{ $t("auth.register.title") }}</h2>
 
-        <el-form
-          :model="registerForm"
-          :rules="rules"
-          ref="formRef"
-          label-position="top"
-          @submit.prevent="handleRegister"
-          v-loading="loading"
-        >
+        <el-form :model="registerForm" :rules="rules" ref="formRef" label-position="top"
+          @submit.prevent="handleRegister" v-loading="loading">
           <!-- First Name -->
           <el-form-item prop="firstName">
             <template #label>
               <RequiredLabel required :label="$t('firstName')" />
             </template>
-            <el-input
-              v-model="registerForm.firstName"
-              clearable
-              :placeholder="$t('placeholder.firstName')"
-            />
+            <el-input v-model="registerForm.firstName" clearable :placeholder="$t('placeholder.firstName')" />
           </el-form-item>
 
           <!-- Last Name -->
@@ -30,11 +20,7 @@
             <template #label>
               <RequiredLabel required :label="$t('lastName')" />
             </template>
-            <el-input
-              v-model="registerForm.lastName"
-              clearable
-              :placeholder="$t('placeholder.lastName')"
-            />
+            <el-input v-model="registerForm.lastName" clearable :placeholder="$t('placeholder.lastName')" />
           </el-form-item>
 
           <!-- Email -->
@@ -42,12 +28,7 @@
             <template #label>
               <RequiredLabel required :label="$t('email')" />
             </template>
-            <el-input
-              v-model="registerForm.email"
-              clearable
-              type="email"
-              :placeholder="$t('placeholder.email')"
-            />
+            <el-input v-model="registerForm.email" clearable type="email" :placeholder="$t('placeholder.email')" />
           </el-form-item>
 
           <!-- Password -->
@@ -55,20 +36,11 @@
             <template #label>
               <RequiredLabel required :label="$t('password')" />
             </template>
-            <el-input
-              v-model="registerForm.password"
-              show-password
-              type="password"
-              :placeholder="$t('placeholder.password')"
-            />
+            <el-input v-model="registerForm.password" show-password type="password"
+              :placeholder="$t('placeholder.password')" />
           </el-form-item>
 
-          <el-button
-            type="primary"
-            class="submit-btn"
-            @click="handleRegister"
-            :loading="loading"
-          >
+          <el-button type="primary" class="submit-btn" @click="handleRegister" :loading="loading">
             {{ $t("register") }}
           </el-button>
         </el-form>
@@ -76,11 +48,11 @@
 
       <!-- Side Panel -->
       <div class="side-panel">
-        <h2>{{ $t("welcomeBack") }}</h2>
-        <p>{{ $t("haveAccount") }}</p>
+        <h2>{{ $t("auth.register.welcomeBack") }}</h2>
+        <p>{{ $t("auth.register.haveAccount") }}</p>
 
         <el-button type="success" @click="goToLogin" class="switch-btn">
-          {{ $t("login") }}
+          {{ $t("auth.register.loginNow") }}
         </el-button>
       </div>
     </div>
@@ -143,10 +115,7 @@ const handleRegister = async () => {
     // Reset form
     formRef.value.resetFields();
 
-    // Redirect to login page after 1.5 seconds
-    setTimeout(() => {
-      router.push("/login");
-    }, 1500);
+    router.push({ path: "/activate", query: { email: registerData.email } });
   } catch (error) {
     if (error.errors) {
       // Validation errors
@@ -337,6 +306,7 @@ const goToLogin = () => {
     opacity: 0;
     transform: translateX(30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);

@@ -3,33 +3,25 @@
     <div class="container">
       <!-- Side Panel -->
       <div class="side-panel">
-        <h2>Hello, Welcome!</h2>
-        <p>Don't have an account?</p>
-        <button @click="goToRegister" class="switch-btn">Register</button>
+        <h2>{{ $t('auth.login.welcome') }}</h2>
+        <p>{{ $t('auth.login.noAccount') }}</p>
+        <button @click="goToRegister" class="switch-btn">{{ $t('auth.login.registerNow') }}</button>
       </div>
 
       <!-- Form Panel -->
       <div class="form-panel">
-        <h2>Login</h2>
+        <h2>{{ $t('auth.login.title') }}</h2>
         <form @submit.prevent="handleLogin">
           <div class="input-group">
-            <input 
-              v-model="loginForm.username" 
-              type="text" 
-              placeholder="Username" 
-              :class="{ 'input-error': errors.username }"
-            >
+            <input v-model="loginForm.username" type="text" :placeholder="$t('auth.login.username')"
+              :class="{ 'input-error': errors.username }">
             <span class="icon">👤</span>
             <span v-if="errors.username" class="error-msg">{{ errors.username }}</span>
           </div>
 
           <div class="input-group">
-            <input 
-              v-model="loginForm.password" 
-              type="password" 
-              placeholder="Password" 
-              :class="{ 'input-error': errors.password }"
-            >
+            <input v-model="loginForm.password" type="password" :placeholder="$t('auth.login.password')"
+              :class="{ 'input-error': errors.password }">
             <span class="icon">🔒</span>
             <span v-if="errors.password" class="error-msg">{{ errors.password }}</span>
           </div>
@@ -39,14 +31,14 @@
           </div>
 
           <div class="forgot-password">
-            <a href="#" @click.prevent="handleForgotPassword">Forgot password?</a>
+            <a href="#" @click.prevent="handleForgotPassword">{{ $t('auth.login.forgotPassword') }}</a>
           </div>
 
           <button type="submit" class="submit-btn" :disabled="isLoading">
-            {{ isLoading ? 'Loading...' : 'Login' }}
+            {{ isLoading ? $t('auth.login.loading') : $t('auth.login.submit') }}
           </button>
 
-          <div class="divider">or login with social platforms</div>
+          <div class="divider">{{ $t('auth.login.socialLogin') }}</div>
 
           <div class="social-login">
             <div class="social-btn google" @click="handleGoogleLogin">G</div>
@@ -97,7 +89,7 @@ export default {
     async handleLogin() {
       this.clearErrors();
       this.isLoading = true;
-      
+
       try {
         const data = await apiAuth.login(this.loginForm);
         this.auth.login(data);
@@ -105,19 +97,30 @@ export default {
         this.router.push(redirect);
       } catch (error) {
         console.error('Login error:', error);
-        
+
         // Get message từ response data - backend trả về dạng { code, message, data, success }
-        let errorMsg = 'Login failed. Please try again.';
-        
+        let errorMsg = this.$t('auth.errors.loginFailed');
+        const status = error?.response?.status;
+
         if (error?.response?.data) {
           // Nếu backend trả về ApiResponse format
           errorMsg = error.response.data.message || error.response.data.error || errorMsg;
         } else if (error?.message) {
           errorMsg = error.message;
         }
-        
+
         // Hiển thị message lỗi ở banner (vì không thể phân biệt username hay password từ backend)
         this.errors.general = errorMsg;
+
+        const msgLower = (errorMsg || '').toLowerCase();
+        if (status === 403 || msgLower.includes('chua duoc kich hoat')) {
+          setTimeout(() => {
+            this.router.push({
+              path: '/activate',
+              query: { email: this.loginForm.username }
+            });
+          }, 2000); // 2 giây
+        }
       } finally {
         this.isLoading = false;
       }
@@ -395,10 +398,21 @@ export default {
   box-shadow: 0 5px 15px rgba(206, 24, 30, 0.1);
 }
 
-.social-btn.google { color: #DB4437; }
-.social-btn.facebook { color: #4267B2; }
-.social-btn.github { color: #333; }
-.social-btn.linkedin { color: #0077B5; }
+.social-btn.google {
+  color: #DB4437;
+}
+
+.social-btn.facebook {
+  color: #4267B2;
+}
+
+.social-btn.github {
+  color: #333;
+}
+
+.social-btn.linkedin {
+  color: #0077B5;
+}
 
 /* Animation */
 @keyframes slideIn {
@@ -406,6 +420,7 @@ export default {
     opacity: 0;
     transform: translateX(-30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
