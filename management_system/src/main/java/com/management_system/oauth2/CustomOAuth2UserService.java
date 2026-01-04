@@ -21,7 +21,7 @@ import com.management_system.exception.OAuth2AuthenticationProcessingException;
 import com.management_system.oauth2.user.OAuth2UserInfo;
 import com.management_system.oauth2.user.OAuth2UserInfoFactory;
 import com.management_system.repository.RoleRepository;
-import com.management_system.service.impl.UserService;
+import com.management_system.service.impl.UserServiceImpl;
 
 //Lớp CustomOAuth2UserService chịu trách nhiệm:
 //Xử lý thông tin người dùng từ OAuth2 provider.
@@ -30,14 +30,14 @@ import com.management_system.service.impl.UserService;
 //Đảm bảo rằng người dùng đang đăng nhập bằng cùng một provider mà họ đã sử dụng để đăng ký.
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
-    private final UserService userService;
+    private final UserServiceImpl userService;
     private final RoleRepository roleRepository;
 
     @Value("${default-role-id}")
     private String defaultRole;
 
     @Autowired
-    public CustomOAuth2UserService(@Lazy UserService userService, @Lazy RoleRepository roleRepository) {
+    public CustomOAuth2UserService(@Lazy UserServiceImpl userService, @Lazy RoleRepository roleRepository) {
         this.userService = userService;
         this.roleRepository = roleRepository;
     }

@@ -16,7 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.management_system.config.AppProperties;
 import com.management_system.entity.User;
 import com.management_system.exception.BusinessLogicException;
-import com.management_system.service.impl.UserService;
+import com.management_system.service.impl.UserServiceImpl;
 import com.management_system.utils.CookieUtil;
 import com.management_system.utils.JwtUtil;
 
@@ -33,12 +33,12 @@ import jakarta.servlet.http.HttpServletResponse;
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtUtil jwtUtil;
     private final AppProperties appProperties;
-    private final UserService userService;
+    private final UserServiceImpl userService;
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
     @Autowired
     OAuth2AuthenticationSuccessHandler(JwtUtil jwtUtil, AppProperties appProperties,
-            @Lazy UserService userService,
+            @Lazy UserServiceImpl userService,
             HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository) {
         this.jwtUtil = jwtUtil;
         this.appProperties = appProperties;
