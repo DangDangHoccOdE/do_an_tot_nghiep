@@ -1,40 +1,38 @@
 <template>
-  <div class="admin-shell">
-    <AdminSidebar :items="navItems" :active="activeSection" @select="handleSelect" />
+  <div class="admin-shell" :class="{ collapsed: isSidebarCollapsed }">
+    <AdminSidebar :items="navItems" :active="activeSection" :collapsed="isSidebarCollapsed"
+      :user-initials="userInitials" :user-name="auth.user?.fullName || auth.user?.email" :user-email="auth.user?.email"
+      @select="handleSelect" @logout="handleLogout" @home="goHome" @toggle="toggleSidebar" />
 
     <div class="admin-main">
-      <div class="hero">
-        <div>
-          <p class="eyebrow">{{ t('admin.title') }}</p>
-          <h1>{{ t('admin.subtitle') }}</h1>
-        </div>
-        <div class="badges">
-          <span class="badge">JWT</span>
-          <span class="badge">RBAC</span>
-          <span class="badge">Element+</span>
-        </div>
+      <div class="content-card">
+        <router-view />
       </div>
-
-      <router-view />
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { useAuthStore } from '@/stores/auth/useAuthStore'
 import AdminSidebar from '@/components/admin/AdminSidebar.vue'
 
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
+const auth = useAuthStore()
+const isSidebarCollapsed = ref(false)
 
 const navItems = computed(() => [
   { key: 'current', label: t('admin.menu.currentProjects'), icon: '📈', routeName: 'admin-projects-current' },
   { key: 'future', label: t('admin.menu.futureProjects'), icon: '🗓️', routeName: 'admin-projects-future' },
   { key: 'teams', label: t('admin.menu.teams'), icon: '👥', routeName: 'admin-teams' },
-  { key: 'tasks', label: t('admin.menu.tasks'), icon: '✅', routeName: 'admin-tasks' }
+  { key: 'tasks', label: t('admin.menu.tasks'), icon: '✅', routeName: 'admin-tasks' },
+  { key: 'customers', label: 'Khách hàng', icon: '👤', routeName: 'admin-customers' },
+  { key: 'staff', label: 'Nhân viên', icon: '👨‍💼', routeName: 'admin-staff' },
+  { key: 'users', label: 'Người dùng', icon: '🔧', routeName: 'admin-users' }
 ])
 
 const activeSection = computed(() => route.meta.sectionKey || 'current')
@@ -45,6 +43,29 @@ const handleSelect = (key) => {
     router.push({ name: target.routeName })
   }
 }
+
+const toggleSidebar = () => {
+  isSidebarCollapsed.value = !isSidebarCollapsed.value
+}
+
+const handleLogout = () => {
+  auth.logout()
+  router.push('/')
+}
+
+const goHome = () => {
+  router.push('/')
+}
+
+const userInitials = computed(() => {
+  if (auth.user?.fullName) {
+    const parts = auth.user.fullName.trim().split(' ')
+    if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+    return auth.user.fullName.slice(0, 2).toUpperCase()
+  }
+  if (auth.user?.email) return auth.user.email.slice(0, 2).toUpperCase()
+  return 'A'
+})
 </script>
 
 <style scoped>
@@ -53,10 +74,15 @@ const handleSelect = (key) => {
   display: grid;
   grid-template-columns: 260px 1fr;
   gap: 18px;
-  padding: 22px;
-  background: radial-gradient(circle at 20% 20%, rgba(37, 99, 235, 0.08), transparent 25%),
-    radial-gradient(circle at 80% 0%, rgba(16, 185, 129, 0.08), transparent 30%),
-    #f4f6fb;
+  padding: 16px 18px 22px;
+  background: radial-gradient(circle at 12% 18%, rgba(206, 24, 30, 0.08), transparent 22%),
+    radial-gradient(circle at 70% 0%, rgba(0, 122, 204, 0.08), transparent 26%),
+    #f7f8fb;
+  transition: grid-template-columns 0.2s ease;
+}
+
+.admin-shell.collapsed {
+  grid-template-columns: 88px 1fr;
 }
 
 .admin-main {
@@ -65,53 +91,18 @@ const handleSelect = (key) => {
   gap: 16px;
 }
 
-.hero {
-  background: linear-gradient(120deg, #111827 0%, #1f2937 55%, #111827 100%);
-  color: #f9fafb;
-  border-radius: 16px;
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
-}
-
-.eyebrow {
-  margin: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 12px;
-  color: #9ca3af;
-}
-
-h1 {
-  margin: 6px 0 0;
-  font-size: 22px;
-}
-
-.badges {
-  display: flex;
-  gap: 8px;
-}
-
-.badge {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  color: #e5e7eb;
+.content-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  min-height: 95vh;
 }
 
 @media (max-width: 960px) {
   .admin-shell {
     grid-template-columns: 1fr;
-  }
-
-  .hero {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
   }
 }
 </style>
