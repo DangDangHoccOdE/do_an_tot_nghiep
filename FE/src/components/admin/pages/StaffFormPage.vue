@@ -1,123 +1,180 @@
 <template>
-    <div class="grid">
-        <SectionCard eyebrow="Quản lý nhân viên" :title="isEdit ? 'Sửa nhân viên' : 'Thêm nhân viên'">
-            <el-form ref="formRef" :model="form" :rules="staffRules" label-width="150px">
-                <el-form-item label="Email" prop="email">
-                    <el-input v-model="form.email" :disabled="isEdit" />
-                </el-form-item>
+    <div class="page">
+        <SectionCard>
+            <div class="page-header">
+                <div class="title-group">
+                    <h2 class="page-title">{{ t('admin.entities.staff') }}</h2>
+                </div>
+                <div class="header-actions">
+                    <el-button @click="confirmCancel">{{ t('admin.actions.cancel') }}</el-button>
+                    <el-button type="primary" @click="submit">
+                        {{ isEdit ? t('admin.actions.update') : t('admin.actions.create') }}
+                    </el-button>
+                </div>
+            </div>
+            <div class="form-wrapper">
+                <el-form ref="formRef" :model="form" :rules="staffRules" label-width="auto">
+                    <!-- Account Information -->
+                    <div class="form-section-full">
+                        <div class="form-section-title">{{ t('admin.form.accountInfo') }}</div>
+                        <div class="form-grid">
+                            <el-form-item prop="email">
+                                <template #label>
+                                    <RequiredLabel :label="t('admin.form.email')" :required="true" />
+                                </template>
+                                <el-input v-model="form.email" :disabled="isEdit"
+                                    :placeholder="t('admin.placeholders.email')" />
+                            </el-form-item>
 
-                <el-form-item label="Mật khẩu" prop="password" v-if="!isEdit">
-                    <el-input v-model="form.password" type="password" />
-                </el-form-item>
-
-                <el-form-item label="Tên" prop="firstName">
-                    <el-input v-model="form.firstName" />
-                </el-form-item>
-
-                <el-form-item label="Họ" prop="lastName">
-                    <el-input v-model="form.lastName" />
-                </el-form-item>
-
-                <el-form-item label="Số điện thoại" prop="phone">
-                    <el-input v-model="form.phone" />
-                </el-form-item>
-
-                <!-- IT Role Section -->
-                <el-form-item label="Vai trò IT" prop="itRole">
-                    <el-select v-model="form.itRole" placeholder="Chọn vai trò" style="width: 100%;">
-                        <el-option label="Frontend Developer" value="FRONTEND_DEVELOPER" />
-                        <el-option label="Backend Developer" value="BACKEND_DEVELOPER" />
-                        <el-option label="Fullstack Developer" value="FULLSTACK_DEVELOPER" />
-                        <el-option label="Mobile Developer" value="MOBILE_DEVELOPER" />
-                        <el-option label="DevOps Engineer" value="DEVOPS_ENGINEER" />
-                        <el-option label="QA Manual Tester" value="QA_MANUAL" />
-                        <el-option label="QA Automation" value="QA_AUTOMATION" />
-                        <el-option label="Business Analyst" value="BUSINESS_ANALYST" />
-                        <el-option label="Product Owner" value="PRODUCT_OWNER" />
-                        <el-option label="Project Manager" value="PROJECT_MANAGER" />
-                        <el-option label="Scrum Master" value="SCRUM_MASTER" />
-                        <el-option label="Tech Lead" value="TECH_LEAD" />
-                        <el-option label="Solution Architect" value="SOLUTION_ARCHITECT" />
-                        <el-option label="UI/UX Designer" value="UI_UX_DESIGNER" />
-                        <el-option label="Data Engineer" value="DATA_ENGINEER" />
-                        <el-option label="Data Analyst" value="DATA_ANALYST" />
-                        <el-option label="Security Engineer" value="SECURITY_ENGINEER" />
-                        <el-option label="Database Administrator" value="DATABASE_ADMINISTRATOR" />
-                        <el-option label="System Administrator" value="SYSTEM_ADMINISTRATOR" />
-                    </el-select>
-                </el-form-item>
-
-                <!-- Skills Section -->
-                <el-form-item label="Kỹ năng">
-                    <div class="skills-section">
-                        <!-- Add new skill -->
-                        <div class="skill-input-group">
-                            <el-select v-model="newSkill.skillId" placeholder="Chọn kỹ năng"
-                                style="flex: 1; margin-right: 8px;">
-                                <el-option v-for="skill in availableSkills" :key="skill.id" :label="skill.name"
-                                    :value="skill.id" />
-                            </el-select>
-                            <el-select v-model="newSkill.level" placeholder="Cấp độ"
-                                style="width: 150px; margin-right: 8px;">
-                                <el-option label="Intern (Thực tập)" value="INTERN" />
-                                <el-option label="Fresher (0-1 năm)" value="FRESHER" />
-                                <el-option label="Junior (1-2 năm)" value="JUNIOR" />
-                                <el-option label="Middle (2-4 năm)" value="MIDDLE" />
-                                <el-option label="Senior (4-7 năm)" value="SENIOR" />
-                                <el-option label="Lead (7-10 năm)" value="LEAD" />
-                                <el-option label="Principal (10+ năm)" value="PRINCIPAL" />
-                                <el-option label="Architect (10+ năm)" value="ARCHITECT" />
-                                <el-option label="Expert (15+ năm)" value="EXPERT" />
-                            </el-select>
-                            <el-input-number v-model="newSkill.yearsOfExperience" :min="0" :max="50"
-                                placeholder="Năm kinh nghiệm" style="width: 120px; margin-right: 8px;" />
-                            <el-button type="primary" @click="addSkill" :disabled="!newSkill.skillId">
-                                Thêm
-                            </el-button>
-                        </div>
-
-                        <!-- Skills list -->
-                        <div class="skills-list" v-if="form.skills && form.skills.length > 0">
-                            <div class="skill-item" v-for="(skill, index) in form.skills" :key="index">
-                                <span class="skill-text">
-                                    {{ getSkillName(skill.skillId) }} - {{ skill.level }} ({{ skill.yearsOfExperience }}
-                                    năm)
-                                </span>
-                                <el-button type="danger" size="small" @click="removeSkill(index)">
-                                    Xóa
-                                </el-button>
-                            </div>
-                        </div>
-                        <div class="help-text" v-if="!form.skills || form.skills.length === 0">
-                            Chưa có kỹ năng nào. Thêm kỹ năng để tiếp tục.
+                            <el-form-item prop="password" v-if="!isEdit">
+                                <template #label>
+                                    <RequiredLabel :label="t('admin.form.password')" :required="true" />
+                                </template>
+                                <el-input v-model="form.password" type="password"
+                                    :placeholder="t('admin.placeholders.password')" />
+                            </el-form-item>
                         </div>
                     </div>
-                </el-form-item>
 
-                <el-form-item label="CV" prop="cv">
-                    <el-input v-model="form.cv" placeholder="Đường dẫn tới CV hoặc file URL" />
-                </el-form-item>
+                    <!-- Personal Information -->
+                    <div class="form-section-full">
+                        <div class="form-section-title">{{ t('admin.form.personalInfo') }}</div>
+                        <div class="form-grid">
+                            <el-form-item prop="firstName">
+                                <template #label>
+                                    <RequiredLabel :label="t('admin.form.firstName')" :required="true" />
+                                </template>
+                                <el-input v-model="form.firstName" :placeholder="t('admin.placeholders.firstName')" />
+                            </el-form-item>
 
-                <el-form-item label="Avatar">
-                    <div class="avatar-upload">
-                        <div class="avatar-preview" v-if="form.avatar || previewUrl">
-                            <img :src="previewUrl || form.avatar" alt="preview" />
+                            <el-form-item prop="lastName">
+                                <template #label>
+                                    <RequiredLabel :label="t('admin.form.lastName')" :required="true" />
+                                </template>
+                                <el-input v-model="form.lastName" :placeholder="t('admin.placeholders.lastName')" />
+                            </el-form-item>
+
+                            <el-form-item prop="phone">
+                                <template #label>
+                                    <RequiredLabel :label="t('admin.form.phone')" :required="true" />
+                                </template>
+                                <el-input v-model="form.phone" :placeholder="t('admin.placeholders.phone')" />
+                            </el-form-item>
+
+                            <el-form-item prop="cv">
+                                <template #label>
+                                    <RequiredLabel :label="t('admin.form.cv')" :required="false" />
+                                </template>
+                                <el-input v-model="form.cv" :placeholder="t('admin.placeholders.cv')" />
+                            </el-form-item>
                         </div>
-                        <el-upload :on-change="handleAvatarChange" :auto-upload="false" accept="image/*" drag
-                            action="#">
-                            <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-                            <div class="el-upload__text">
-                                Kéo file vào đây hoặc <em>click để chọn</em>
-                            </div>
-                        </el-upload>
                     </div>
-                </el-form-item>
 
-                <el-form-item>
-                    <el-button type="primary" @click="submit">{{ isEdit ? 'Cập nhật' : 'Thêm' }}</el-button>
-                    <el-button @click="$router.back()">Hủy</el-button>
-                </el-form-item>
-            </el-form>
+                    <!-- IT Role Section -->
+                    <div class="form-section-full">
+                        <div class="form-section-title">{{ `${t('admin.form.itRole')} & ${t('admin.form.skills')}` }}
+                        </div>
+                        <div class="form-grid">
+                            <el-form-item prop="itRole" style="max-width: 100%;">
+                                <template #label>
+                                    <RequiredLabel :label="t('admin.form.itRole')" :required="true" />
+                                </template>
+                                <el-select v-model="form.itRole" :placeholder="t('admin.form.selectItRole')"
+                                    style="width: 100%;">
+                                    <el-option label="Frontend Developer" value="FRONTEND_DEVELOPER" />
+                                    <el-option label="Backend Developer" value="BACKEND_DEVELOPER" />
+                                    <el-option label="Fullstack Developer" value="FULLSTACK_DEVELOPER" />
+                                    <el-option label="Mobile Developer" value="MOBILE_DEVELOPER" />
+                                    <el-option label="DevOps Engineer" value="DEVOPS_ENGINEER" />
+                                    <el-option label="QA Manual Tester" value="QA_MANUAL" />
+                                    <el-option label="QA Automation" value="QA_AUTOMATION" />
+                                    <el-option label="Business Analyst" value="BUSINESS_ANALYST" />
+                                    <el-option label="Product Owner" value="PRODUCT_OWNER" />
+                                    <el-option label="Project Manager" value="PROJECT_MANAGER" />
+                                    <el-option label="Scrum Master" value="SCRUM_MASTER" />
+                                    <el-option label="Tech Lead" value="TECH_LEAD" />
+                                    <el-option label="Solution Architect" value="SOLUTION_ARCHITECT" />
+                                    <el-option label="UI/UX Designer" value="UI_UX_DESIGNER" />
+                                    <el-option label="Data Engineer" value="DATA_ENGINEER" />
+                                    <el-option label="Data Analyst" value="DATA_ANALYST" />
+                                    <el-option label="Security Engineer" value="SECURITY_ENGINEER" />
+                                    <el-option label="Database Administrator" value="DATABASE_ADMINISTRATOR" />
+                                    <el-option label="System Administrator" value="SYSTEM_ADMINISTRATOR" />
+                                </el-select>
+                            </el-form-item>
+                        </div>
+
+                        <!-- Skills Section -->
+                        <el-form-item :label="t('admin.form.skills')" style="max-width: 100%; margin-top: 16px;">
+                            <div class="skills-section">
+                                <!-- Add new skill -->
+                                <div class="skill-input-group">
+                                    <el-select v-model="newSkill.skillId" :placeholder="t('admin.form.selectSkill')"
+                                        style="flex: 1; margin-right: 8px;">
+                                        <el-option v-for="skill in availableSkills" :key="skill.id" :label="skill.name"
+                                            :value="skill.id" />
+                                    </el-select>
+                                    <el-select v-model="newSkill.level"
+                                        :placeholder="t('admin.placeholders.skillLevel')"
+                                        style="width: 180px; margin-right: 8px;">
+                                        <el-option label="Intern" value="INTERN" />
+                                        <el-option label="Fresher" value="FRESHER" />
+                                        <el-option label="Junior" value="JUNIOR" />
+                                        <el-option label="Middle" value="MIDDLE" />
+                                        <el-option label="Senior" value="SENIOR" />
+                                        <el-option label="Lead" value="LEAD" />
+                                        <el-option label="Principal" value="PRINCIPAL" />
+                                        <el-option label="Architect" value="ARCHITECT" />
+                                        <el-option label="Expert" value="EXPERT" />
+                                    </el-select>
+                                    <el-input-number v-model="newSkill.yearsOfExperience" :min="0" :max="50"
+                                        :placeholder="t('admin.placeholders.yearsOfExperience')"
+                                        style="width: 160px; margin-right: 8px;" />
+                                    <el-button type="primary" @click="addSkill" :disabled="!newSkill.skillId">
+                                        {{ t('admin.actions.add') }}
+                                    </el-button>
+                                </div>
+
+                                <!-- Skills list -->
+                                <div class="skills-list" v-if="form.skills && form.skills.length > 0">
+                                    <div class="skill-item" v-for="(skill, index) in form.skills" :key="index">
+                                        <span class="skill-text">
+                                            {{ getSkillName(skill.skillId) }} - {{ formatSkillLevel(skill.level) }} ({{
+                                                skill.yearsOfExperience }} {{ t('admin.form.yearsLabel') }})
+                                        </span>
+                                        <el-button type="danger" size="small" @click="removeSkill(index)">
+                                            {{ t('admin.actions.delete') }}
+                                        </el-button>
+                                    </div>
+                                </div>
+                                <div class="help-text" v-if="!form.skills || form.skills.length === 0">
+                                    {{ t('admin.form.addSkill') }}
+                                </div>
+                            </div>
+                        </el-form-item>
+                    </div>
+
+                    <!-- Avatar Section -->
+                    <div class="form-section-full">
+                        <div class="form-section-title">{{ t('admin.form.avatar') }}</div>
+                        <el-form-item>
+                            <div class="avatar-upload">
+                                <div class="avatar-preview" v-if="form.avatar || previewUrl">
+                                    <img :src="previewUrl || form.avatar" alt="preview" />
+                                </div>
+                                <el-upload :on-change="handleAvatarChange" :auto-upload="false" accept="image/*" drag
+                                    action="#">
+                                    <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+                                    <div class="el-upload__text">
+                                        {{ t('admin.form.dragOrClick') }} <em>{{ t('admin.form.selectFile') }}</em>
+                                    </div>
+                                </el-upload>
+                            </div>
+                        </el-form-item>
+                    </div>
+
+                </el-form>
+            </div>
         </SectionCard>
     </div>
 </template>
@@ -125,13 +182,16 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { UploadFilled } from '@element-plus/icons-vue'
 import SectionCard from '@/components/admin/SectionCard.vue'
+import RequiredLabel from '@/components/common/RequiredLabel.vue'
 import { apiUsers } from '@/services/apiUsers'
 import { apiSkills } from '@/services/apiSkills'
 import { staffRules } from '@/validations/staffRules'
 
+const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const formRef = ref()
@@ -166,7 +226,7 @@ onMounted(async () => {
         availableSkills.value = skillsData || []
     } catch (error) {
         console.error('Failed to load skills:', error)
-        ElMessage.error('Lỗi khi tải danh sách kỹ năng')
+        ElMessage.error(t('admin.messages.loadSkillsError'))
     }
 
     if (route.params.id) {
@@ -183,7 +243,7 @@ onMounted(async () => {
             form.avatar = staffMember.avatar || ''
         } catch (error) {
             console.error('Failed to load staff:', error)
-            ElMessage.error('Lỗi khi tải dữ liệu nhân viên')
+            ElMessage.error(t('admin.messages.loadStaffError'))
         }
     }
 })
@@ -193,19 +253,34 @@ const getSkillName = (skillId) => {
     return skill ? skill.name : 'Unknown'
 }
 
+const formatSkillLevel = (level) => {
+    const levelMap = {
+        'INTERN': 'Intern',
+        'FRESHER': 'Fresher',
+        'JUNIOR': 'Junior',
+        'MIDDLE': 'Middle',
+        'SENIOR': 'Senior',
+        'LEAD': 'Lead',
+        'PRINCIPAL': 'Principal',
+        'ARCHITECT': 'Architect',
+        'EXPERT': 'Expert'
+    }
+    return levelMap[level] || level
+}
+
 const addSkill = () => {
     if (!newSkill.skillId) {
-        ElMessage.warning('Vui lòng chọn kỹ năng')
+        ElMessage.warning(t('admin.messages.selectSkillWarning'))
         return
     }
     if (!newSkill.level) {
-        ElMessage.warning('Vui lòng chọn cấp độ')
+        ElMessage.warning(t('admin.messages.selectLevelWarning'))
         return
     }
 
     // Check if skill already exists
     if (form.skills.find(s => s.skillId === newSkill.skillId)) {
-        ElMessage.warning('Kỹ năng này đã được thêm')
+        ElMessage.warning(t('admin.messages.skillExistsWarning'))
         return
     }
 
@@ -223,6 +298,23 @@ const addSkill = () => {
 
 const removeSkill = (index) => {
     form.skills.splice(index, 1)
+}
+
+const confirmCancel = async () => {
+    try {
+        await ElMessageBox.confirm(
+            t('admin.messages.confirmCancel') || 'Bạn có chắc muốn hủy? Mọi thay đổi sẽ không được lưu.',
+            t('admin.actions.cancel'),
+            {
+                confirmButtonText: t('admin.actions.cancel'),
+                cancelButtonText: t('admin.actions.close'),
+                type: 'warning'
+            }
+        )
+        router.back()
+    } catch (error) {
+        // user cancelled
+    }
 }
 
 const handleAvatarChange = (file) => {
@@ -269,37 +361,179 @@ const submit = async () => {
 
             if (isEdit.value) {
                 await apiUsers.updateStaff(route.params.id, formData)
-                ElMessage.success('Cập nhật nhân viên thành công')
+                ElMessage.success(t('admin.messages.staffUpdated'))
             } else {
                 await apiUsers.createStaff(formData)
-                ElMessage.success('Thêm nhân viên thành công')
+                ElMessage.success(t('admin.messages.staffCreated'))
             }
 
             router.push({ name: 'admin-staff' })
         } catch (error) {
             console.error('Failed to submit:', error)
-            ElMessage.error('Lỗi khi lưu dữ liệu')
+            ElMessage.error(t('admin.messages.saveError'))
         }
     })
 }
 </script>
 
 <style scoped>
-.grid {
+.page {
     display: grid;
     gap: 16px;
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.eyebrow {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #6b7280;
+    margin: 0;
+}
+
+.page-title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.header-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.form-wrapper {
+    background: linear-gradient(180deg, #f8fafc 0%, #fdfefe 100%);
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 16px;
+    width: 100%;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.05);
+}
+
+:deep(.el-form) {
+    width: 100%;
+}
+
+:deep(.el-form-item__label-wrap) {
+    margin-left: 0 !important;
+}
+
+.form-section-full {
+    padding: 20px;
+    margin-bottom: 16px;
+    border: 1px solid #dce3ed;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: inset 0 1px 0 #f1f5f9, 0 10px 24px rgba(15, 23, 42, 0.05);
+}
+
+.form-section-full:last-of-type {
+    margin-bottom: 0;
+}
+
+.form-section-title {
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 14px;
+    color: #0b132b;
+    letter-spacing: 0.3px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    max-width: 100%;
+}
+
+:deep(.el-form-item) {
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 12px 14px 10px;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.04);
+}
+
+:deep(.el-form-item__label) {
+    font-weight: 700;
+    color: #0b132b;
+    font-size: 13px;
+    margin-bottom: 6px;
+    line-height: 1.2;
+}
+
+:deep(.el-form-item__content) {
+    width: 100%;
+}
+
+:deep(.el-input),
+:deep(.el-select),
+:deep(.el-input-number) {
+    width: 100%;
+}
+
+:deep(.el-input__wrapper),
+:deep(.el-select__wrapper),
+:deep(.el-input-number .el-input__wrapper) {
+    padding: 6px 12px;
+    border-radius: 8px;
+    min-height: 40px;
+}
+
+:deep(.el-input input) {
+    font-size: 13px;
+}
+
+:deep(.el-select__wrapper) {
+    border-radius: 6px;
+}
+
+:deep(.el-button--primary) {
+    background-color: #0066cc;
+    border-color: #0066cc;
+}
+
+:deep(.el-button--primary:hover) {
+    background-color: #0052a3;
+    border-color: #0052a3;
 }
 
 .skills-section {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    padding: 16px;
+    background: #f9f9fb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
 }
 
 .skill-input-group {
     display: flex;
     gap: 8px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .skills-list {
@@ -331,19 +565,49 @@ const submit = async () => {
     display: flex;
     gap: 16px;
     align-items: flex-start;
+    padding: 16px;
+    background: #f9f9fb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
 }
 
 .avatar-preview {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
+    flex-shrink: 0;
 }
 
 .avatar-preview img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 4px;
-    border: 1px solid #ddd;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+:deep(.el-upload) {
+    width: 100%;
+}
+
+:deep(.el-upload-dragger) {
+    border: 2px dashed #b3d8ff;
+    border-radius: 8px;
+    padding: 30px 20px;
+    background-color: #f0f7ff;
+    transition: all 0.3s ease;
+}
+
+:deep(.el-upload-dragger:hover) {
+    border-color: #0066cc;
+    background-color: #f5f9ff;
+}
+
+:deep(.el-icon--upload) {
+    font-size: 36px;
+    color: #0066cc;
+    margin-bottom: 8px;
 }
 
 .help-text {
@@ -351,7 +615,58 @@ const submit = async () => {
     color: #666;
     margin-top: 4px;
     padding: 8px;
-    background-color: #f5f7fa;
+    background-color: #fff;
     border-radius: 4px;
+    border-left: 3px solid #faad14;
+}
+
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .form-section-full {
+        padding: 16px;
+    }
+
+    .skill-input-group {
+        flex-direction: column;
+    }
+
+    .skill-input-group>* {
+        width: 100%;
+    }
+
+    .avatar-upload {
+        flex-direction: column;
+        padding: 12px;
+    }
+
+    .avatar-preview {
+        width: 100px;
+        height: 100px;
+    }
+
+}
+
+@media (max-width: 480px) {
+    .form-section-full {
+        padding: 12px;
+    }
+
+    .form-section-title {
+        font-size: 13px;
+        margin-bottom: 12px;
+    }
+
+    .avatar-preview {
+        width: 80px;
+        height: 80px;
+    }
+
+    :deep(.el-form-item__label) {
+        font-size: 12px;
+    }
 }
 </style>

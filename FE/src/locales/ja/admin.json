@@ -1,0 +1,207 @@
+{
+  "admin": {
+    "title": "管理ワークスペース",
+    "subtitle": "プロジェクト、チーム、日々のタスクを明確に管理します。",
+    "menu": {
+      "projects": "プロジェクト",
+      "currentProjects": "進行中のプロジェクト",
+      "futureProjects": "計画中のプロジェクト",
+      "teams": "プロジェクトチーム",
+      "tasks": "プロジェクト別タスク",
+      "staff": "スタッフ",
+      "users": "ユーザー"
+    },
+    "actions": {
+    "refresh": "更新",
+    "loadTasks": "タスクを読み込む",
+    "back": "戻る",
+    "create": "作成",
+    "add": "新規追加",
+    "edit": "編集",
+    "update": "更新",
+    "delete": "削除",
+    "view": "表示"
+    },
+    "services": {
+      "title": "デジタルトランスフォーメーションの旅へ",
+      "featured": {
+        "title": "私たちのサービス",
+        "subtitle": "総合的なITアウトソーシングでDXの道のりを最適化"
+      },
+      "list": {
+        "strategy": "戦略コンサルティング",
+        "software": "ソフトウェア開発",
+        "modernization": "アプリケーションのモダナイゼーション",
+        "cloud": "クラウド移行",
+        "itManagement": "ITマネジメントサービス",
+        "qa": "QA・テスト",
+        "security": "サイバーセキュリティ"
+      },
+      "viewMore": "もっと見る"
+    },
+    "academy": {
+      "title": "Luvinaアカデミー",
+      "description": "計画的な人材拡大と品質の均一性を実現するため、2008年からLuvinaアカデミー でIT研修を継続的に実施（年約2回）。最終学年のIT専攻だけでなく、電子・建築・機械・金融・経済・国際経営など幅広い専攻の学生を対象としています。",
+      "bullets": {
+        "people": "人を中心に",
+        "quality": "教育品質を重視",
+        "learning": "学び続ける文化",
+        "stability": "安定した高品質人材を確保"
+      }
+    },
+    "overview": {
+      "title": "Luvina 概要",
+      "stats": {
+        "years": "成長年数",
+        "clients": "満足いただいた顧客",
+        "talents": "優秀なIT人材",
+        "projects": "成功したプロジェクト"
+      }
+    },
+    "partners": {
+      "title": "私たちのパートナー",
+      "cta": "パートナーになる"
+    },
+    "awards": {
+      "title": "認証・受賞歴",
+      "items": {
+        "iso": "ISO27001",
+        "cmmiDev": "CMMI DEV LEVEL 3",
+        "cmmiService": "CMMI SERVICE LEVEL 3",
+        "tokyoTech": "TOKYO TECH\nVENTURES",
+        "kuramae": "THE KURAMAE\nVENTURE AWARD",
+        "top10Ict2021": "TOP 10 VIETNAM ICT\nCOMPANIES 2021",
+        "top10Ict2024": "TOP 10 VIETNAM ICT\nCOMPANIES 2024",
+        "top10TechMap2025": "TOP 10 VIETNAM TECH & MAP 2025",
+        "designRush": "DESIGNRUSH"
+      }
+    },
+    "why": {
+      "title": "私たちが選ばれる理由",
+      "cta": "私たちについて",
+      "items": {
+        "project": { "title": "プロジェクトガバナンス", "desc": "ISOやCMMIレベル3などの標準に基づく卓越したプロジェクト管理。" },
+        "training": { "title": "学習文化", "desc": "強い自学文化により新しい業務・技術領域への迅速な適応を実現。" },
+        "quality": { "title": "安定した品質", "desc": "チーム構成が変わっても高品質を持続。" },
+        "cooperation": { "title": "長期的な協業", "desc": "長期的パートナーシップを重視し、顧客と共に成功を目指す。" }
+      },
+      "save": "Save",
+      "cancel": "Cancel",
+      "close": "Close"
+    },
+    "table": {
+       "projectName": "プロジェクト名",
+       "status": "ステータス",
+       "startDate": "開始日",
+       "endDate": "終了日",
+       "teamName": "チーム名",
+       "description": "説明",
+       "members": "メンバー",
+       "title": "タイトル",
+       "assignee": "担当者",
+       "dueDate": "期限",
+       "clientId": "クライアント",
+       "budgetEstimated": "予算",
+       "timelineEstimated": "予定期間（日）",
+       "name": "氏名",
+       "email": "メール",
+       "phone": "電話番号",
+       "role": "役割",
+       "itRole": "IT役割",
+       "skills": "スキル",
+       "avatar": "アバター",
+       "active": "有効",
+       "inactive": "無効"
+    },
+    "filters": {
+      "projectId": "プロジェクトIDを入力",
+      "search": "検索...",
+      "status": "ステータス",
+      "statusAll": "すべて",
+      "statusCurrent": "現在",
+      "statusFuture": "将来"
+    },
+    "form": {
+      "email": "メール",
+      "password": "パスワード",
+      "firstName": "名",
+      "lastName": "姓",
+      "phone": "電話番号",
+      "avatar": "アバター",
+      "projectName": "プロジェクト名",
+      "description": "説明",
+      "status": "ステータス",
+      "startDate": "開始日",
+      "endDate": "終了日",
+      "projectId": "プロジェクトID",
+      "teamId": "チームID",
+      "clientId": "クライアントID",
+      "budgetEstimated": "予算",
+      "timelineEstimated": "タイムライン（日数）",
+      "teamName": "チーム名",
+      "teamDescription": "チーム説明",
+      "userId": "ユーザーID",
+      "memberRole": "役割",
+      "selectRole": "役割を選択",
+      "roleAdmin": "管理者",
+      "rolePM": "プロジェクトマネージャー",
+      "roleStaff": "スタッフ",
+      "roleUser": "ユーザー",
+      "dragOrClick": "画像をここにドラッグするか",
+      "selectFile": "クリックして選択"
+    },
+    "placeholders": {
+      "email": "メールを入力",
+      "password": "パスワードを入力",
+      "firstName": "名を入力",
+      "lastName": "姓を入力",
+      "phone": "電話番号を入力"
+    },
+    "entities": {
+      "project": "プロジェクト",
+      "team": "チーム",
+      "task": "タスク",
+      "user": "ユーザー",
+      "staff": "スタッフ"
+    },
+    "messages": {
+      "created": "{entity} を作成しました",
+      "updated": "{entity} を更新しました",
+      "saveFail": "保存に失敗しました",
+      "loadFail": "読み込みに失敗しました",
+      "userCreated": "ユーザーを作成しました",
+      "userUpdated": "ユーザーを更新しました",
+      "createFailed": "ユーザー作成エラー",
+      "updateFailed": "ユーザー更新エラー",
+      "uploadSuccess": "画像をアップロードしました",
+      "uploadFailed": "画像のアップロードに失敗しました",
+      "imageTypeError": "画像ファイルを選択してください",
+      "imageSizeError": "画像サイズは5MB以下にしてください",
+      "imageSelected": "画像を選択しました。保存をクリックしてアップロードしてください"
+    },
+    "validations": {
+      "required": "{field} は必須です",
+      "max": "{field} は最大 {max} 文字です",
+      "minNumber": "{field} は最低 {min} でなければなりません",
+      "nonNegative": "{field} は0以上でなければなりません",
+      "endAfterStart": "終了日は開始日以降である必要があります",
+      "dueAfterStart": "期限は開始日以降である必要があります"
+    },
+    "formHints": {
+      "project": "プロジェクトの基本情報、予算、タイムラインを入力",
+      "team": "配属チームの概要",
+      "task": "タスクの割り当て、期限、担当者を設定"
+    },
+    "confirm": {
+      "deleteTitle": "レコードを削除",
+      "deleteMessage": "この項目を削除しますか？"
+    },
+    "empty": "データがありません",
+    "sidebar": {
+        "home": "ホーム",
+        "logout": "ログアウト",
+        "collapse": "メニューを折りたたむ",
+        "expand": "メニューを展開"
+    }
+  }
+}
