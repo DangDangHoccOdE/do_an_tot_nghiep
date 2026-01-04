@@ -25,7 +25,7 @@ import com.management_system.oauth2.CustomOAuth2UserService;
 import com.management_system.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.management_system.oauth2.OAuth2AuthenticationFailureHandler;
 import com.management_system.oauth2.OAuth2AuthenticationSuccessHandler;
-import com.management_system.service.impl.UserSecurityService;
+import com.management_system.service.impl.UserSecurityServiceImpl;
 import com.management_system.service.inter.IUserSecurityService;
 
 @Configuration
@@ -43,7 +43,7 @@ public class SecurityConfiguration {
     private HandlerExceptionResolver handlerExceptionResolver;
 
     @Autowired
-    private UserSecurityService userSecurityService;
+    private UserSecurityServiceImpl userSecurityService;
 
     @Autowired
     private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
