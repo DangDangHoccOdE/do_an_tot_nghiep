@@ -18,6 +18,7 @@ import com.management_system.dto.request.TaskRequest;
 import com.management_system.dto.response.TaskResponse;
 import com.management_system.service.inter.ITaskService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -32,16 +33,21 @@ public class TaskController {
         return ResponseEntity.ok(taskService.getByProject(projectId));
     }
 
+    @GetMapping("/tasks/{id}")
+    public ResponseEntity<TaskResponse> detail(@PathVariable UUID id) {
+        return ResponseEntity.ok(taskService.get(id));
+    }
+
     @PostMapping("/projects/{projectId}/tasks")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_PM')")
-    public ResponseEntity<TaskResponse> create(@PathVariable UUID projectId, @RequestBody TaskRequest request) {
+    public ResponseEntity<TaskResponse> create(@PathVariable UUID projectId, @Valid @RequestBody TaskRequest request) {
         request.setProjectId(projectId);
         return ResponseEntity.ok(taskService.create(request));
     }
 
     @PutMapping("/tasks/{id}")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_PM','ROLE_STAFF')")
-    public ResponseEntity<TaskResponse> update(@PathVariable UUID id, @RequestBody TaskRequest request) {
+    public ResponseEntity<TaskResponse> update(@PathVariable UUID id, @Valid @RequestBody TaskRequest request) {
         return ResponseEntity.ok(taskService.update(id, request));
     }
 

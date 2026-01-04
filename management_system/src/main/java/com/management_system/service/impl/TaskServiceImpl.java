@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.management_system.dto.request.TaskRequest;
 import com.management_system.dto.response.TaskResponse;
+import com.management_system.entity.enums.TaskStatus;
 import com.management_system.entity.Project;
 import com.management_system.entity.Task;
+import com.management_system.core.ValidatorWrapper;
 import com.management_system.repository.ProjectRepository;
 import com.management_system.repository.TaskRepository;
 import com.management_system.service.inter.ITaskService;
@@ -24,6 +26,7 @@ public class TaskServiceImpl implements ITaskService {
 
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
+    private final ValidatorWrapper validator;
 
     @Override
     public List<TaskResponse> getByProject(UUID projectId) {
@@ -35,7 +38,15 @@ public class TaskServiceImpl implements ITaskService {
     }
 
     @Override
+    public TaskResponse get(UUID id) {
+        Task task = taskRepository.findByIdAndDeleteFlagFalse(id)
+                .orElseThrow(() -> new EntityNotFoundException("Task not found"));
+        return toResponse(task);
+    }
+
+    @Override
     public TaskResponse create(TaskRequest request) {
+        validateRequest(request);
         ensureProjectExists(request.getProjectId());
         Task task = new Task();
         applyRequest(task, request);
@@ -46,6 +57,7 @@ public class TaskServiceImpl implements ITaskService {
     public TaskResponse update(UUID id, TaskRequest request) {
         Task task = taskRepository.findByIdAndDeleteFlagFalse(id)
                 .orElseThrow(() -> new EntityNotFoundException("Task not found"));
+        validateRequest(request);
         applyRequest(task, request);
         return toResponse(taskRepository.save(task));
     }
@@ -70,6 +82,19 @@ public class TaskServiceImpl implements ITaskService {
         task.setAssignedToUserId(request.getAssignedToUserId());
         task.setStartDate(request.getStartDate());
         task.setDueDate(request.getDueDate());
+    }
+
+    private void validateRequest(TaskRequest request) {
+        validator.validate(request);
+
+        if (request.getStatus() == null) {
+            request.setStatus(TaskStatus.PENDING);
+        }
+
+        if (request.getStartDate() != null && request.getDueDate() != null
+                && request.getDueDate().isBefore(request.getStartDate())) {
+            throw new IllegalArgumentException("Due date must be after start date");
+        }
     }
 
     private void ensureProjectExists(UUID projectId) {

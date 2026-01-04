@@ -4,6 +4,8 @@ import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.management_system.dto.request.ProjectRequest;
 import com.management_system.dto.response.PageResponse;
 import com.management_system.dto.response.ProjectResponse;
+import com.management_system.entity.User;
+import com.management_system.service.impl.UserSecurityServiceImpl;
 import com.management_system.service.inter.IProjectService;
 
 import jakarta.validation.Valid;
@@ -28,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class ProjectController {
 
     private final IProjectService projectService;
+    private final UserSecurityServiceImpl userSecurityService;
 
     @GetMapping
     public ResponseEntity<PageResponse<ProjectResponse>> list(
@@ -35,6 +40,16 @@ public class ProjectController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         return ResponseEntity.ok(projectService.getPage(status, page, size));
+    }
+
+    @GetMapping("/my-projects")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<PageResponse<ProjectResponse>> getMyProjects(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        User user = userSecurityService.findByEmail(userDetails.getUsername());
+        return ResponseEntity.ok(projectService.getMyProjects(user.getId(), page, size));
     }
 
     @GetMapping("/{id}")

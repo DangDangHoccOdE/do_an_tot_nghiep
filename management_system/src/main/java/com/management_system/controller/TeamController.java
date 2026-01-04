@@ -20,6 +20,7 @@ import com.management_system.dto.response.PageResponse;
 import com.management_system.dto.response.TeamResponse;
 import com.management_system.service.inter.ITeamService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -43,13 +44,13 @@ public class TeamController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_PM')")
-    public ResponseEntity<TeamResponse> create(@RequestBody TeamRequest request) {
+    public ResponseEntity<TeamResponse> create(@Valid @RequestBody TeamRequest request) {
         return ResponseEntity.ok(teamService.create(request));
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_PM')")
-    public ResponseEntity<TeamResponse> update(@PathVariable UUID id, @RequestBody TeamRequest request) {
+    public ResponseEntity<TeamResponse> update(@PathVariable UUID id, @Valid @RequestBody TeamRequest request) {
         return ResponseEntity.ok(teamService.update(id, request));
     }
 

@@ -1,5 +1,6 @@
 package com.management_system.repository;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -9,4 +10,6 @@ import com.management_system.entity.Project;
 
 public interface ProjectRepository extends BaseRepository<Project, UUID> {
 	Page<Project> findAllByDeleteFlagFalse(Pageable pageable);
+
+	List<Project> findAllByTeamIdInAndDeleteFlagFalse(List<UUID> teamIds);
 }

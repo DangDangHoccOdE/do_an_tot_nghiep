@@ -14,8 +14,10 @@ import com.management_system.dto.request.ProjectRequest;
 import com.management_system.dto.response.PageResponse;
 import com.management_system.dto.response.ProjectResponse;
 import com.management_system.entity.Project;
+import com.management_system.entity.TeamMember;
 import com.management_system.entity.enums.ProjectStatus;
 import com.management_system.repository.ProjectRepository;
+import com.management_system.repository.TeamMemberRepository;
 import com.management_system.service.inter.IProjectService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -26,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class ProjectServiceImpl implements IProjectService {
 
     private final ProjectRepository projectRepository;
+    private final TeamMemberRepository teamMemberRepository;
     private final ValidatorWrapper validator;
 
     @Override
@@ -67,6 +70,50 @@ public class ProjectServiceImpl implements IProjectService {
         int totalPages = (int) Math.ceil((double) filtered.size() / safeSize);
 
         return new PageResponse<>(content, filtered.size(), totalPages, safePage, safeSize);
+    }
+
+    @Override
+    public PageResponse<ProjectResponse> getMyProjects(UUID userId, int page, int size) {
+        int safePage = Math.max(page, 0);
+        int safeSize = Math.max(size, 1);
+
+        // Tìm tất cả team mà user tham gia
+        List<TeamMember> teamMembers = teamMemberRepository.findAllByUserIdAndDeleteFlagFalse(userId);
+        List<UUID> teamIds = teamMembers.stream()
+                .map(TeamMember::getTeamId)
+                .collect(Collectors.toList());
+
+        // Nếu user không thuộc team nào, trả về danh sách rỗng
+        if (teamIds.isEmpty()) {
+            return new PageResponse<>(new ArrayList<>(), 0, 0, safePage, safeSize);
+        }
+
+        // Tìm tất cả project mà user tham gia thông qua team
+        List<Project> projects = projectRepository.findAllByTeamIdInAndDeleteFlagFalse(teamIds);
+
+        // Sắp xếp theo ngày tạo mới nhất
+        projects.sort((p1, p2) -> {
+            if (p1.getCreatedAt() == null && p2.getCreatedAt() == null)
+                return 0;
+            if (p1.getCreatedAt() == null)
+                return 1;
+            if (p2.getCreatedAt() == null)
+                return -1;
+            return p2.getCreatedAt().compareTo(p1.getCreatedAt());
+        });
+
+        // Phân trang
+        int fromIndex = safePage * safeSize;
+        int toIndex = Math.min(fromIndex + safeSize, projects.size());
+        List<ProjectResponse> content = new ArrayList<>();
+        if (fromIndex < projects.size()) {
+            content = projects.subList(fromIndex, toIndex).stream()
+                    .map(this::toResponse)
+                    .collect(Collectors.toList());
+        }
+        int totalPages = (int) Math.ceil((double) projects.size() / safeSize);
+
+        return new PageResponse<>(content, projects.size(), totalPages, safePage, safeSize);
     }
 
     @Override
