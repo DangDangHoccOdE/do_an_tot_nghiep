@@ -9,6 +9,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import com.management_system.dto.response.ApiResponse;
 
@@ -81,5 +82,11 @@ public class RestExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleForbidden(ForbiddenOperationException e) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(ApiResponse.error(403, e.getMessage()));
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<ApiResponse<Void>> handleMaxUploadSizeExceeded(MaxUploadSizeExceededException ex) {
+        return ResponseEntity.badRequest()
+                .body(ApiResponse.error(400, "File size exceeds maximum limit of 5MB"));
     }
 }

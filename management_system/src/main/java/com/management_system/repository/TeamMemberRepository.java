@@ -10,4 +10,6 @@ public interface TeamMemberRepository extends BaseRepository<TeamMember, UUID> {
 	Optional<TeamMember> findByTeamIdAndUserIdAndDeleteFlagFalse(UUID teamId, UUID userId);
 
 	List<TeamMember> findAllByTeamIdAndDeleteFlagFalse(UUID teamId);
+
+	List<TeamMember> findAllByUserIdAndDeleteFlagFalse(UUID userId);
 }
