@@ -9,14 +9,35 @@ const apiService = import.meta.env.VITE_API_PREFIX || "";
 axios.defaults.timeout = 50000;
 axios.defaults.baseURL = `${baseURL}/${apiService}`;
 
+// Flag để tránh gọi refresh token nhiều lần cùng lúc
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+    failedQueue.forEach(prom => {
+        if (error) {
+            prom.reject(error);
+        } else {
+            prom.resolve(token);
+        }
+    });
+    failedQueue = [];
+};
+
 // Request interceptor
 axios.interceptors.request.use(
     (config) => {
         try {
             // Chỉ gọi store khi Pinia đã được khởi tạo
             const auth = useAuthStore();
+            const locale = localStorage.getItem('locale') || 'en';
+            config.headers["Accept-Language"] = locale;
+            // Không đính kèm access token cho endpoint refresh
+            if (config?.url && config.url.includes('/auth/refresh')) {
+                return config;
+            }
             // Nếu user đã login và có token (có thể lưu trong user object hoặc state riêng)
-            if(auth.isLoggedIn && auth.accessToken) {
+            if(auth.isLoggedIn && auth.accessToken && auth.isTokenValid) {
                 config.headers["Authorization"] = `Bearer ${auth.accessToken}`
             }
         } catch (error) {
@@ -35,15 +56,70 @@ axios.interceptors.response.use(
         // Trả về response như là, để component tự xử lý logic
         return res;
     },
-    (error) => {
+    async (error) => {
+        const originalRequest = error.config;
         const auth = useAuthStore();
         
-        // Nếu là lỗi 401/403 và không phải login page, đăng xuất và redirect
-        if (error?.response?.status === 401 || error?.response?.status === 403) {
+        // Nếu là lỗi 401 và chưa retry và có refresh token
+        if (error?.response?.status === 401 && !originalRequest._retry && auth.refreshToken) {
+            // Nếu đang refresh thì đưa request vào queue
+            if (isRefreshing) {
+                return new Promise((resolve, reject) => {
+                    failedQueue.push({ resolve, reject });
+                }).then(token => {
+                    originalRequest.headers['Authorization'] = `Bearer ${token}`;
+                    return axios(originalRequest);
+                }).catch(err => {
+                    return Promise.reject(err);
+                });
+            }
+
+            originalRequest._retry = true;
+            isRefreshing = true;
+
+            try {
+                // Gọi API refresh token
+                const response = await axios.post('/auth/refresh', {
+                    refreshToken: auth.refreshToken
+                }, {
+                    headers: {
+                        'X-Refresh-Token': auth.refreshToken
+                    }
+                });
+
+                const newAccessToken = response.data.accessToken || response.data.accessTokenJwt;
+                const newRefreshToken = response.data.refreshToken || response.data.refreshTokenJwt;
+
+                // Cập nhật token mới vào store
+                auth.updateTokens(newAccessToken, newRefreshToken);
+
+                // Xử lý các request đang chờ
+                processQueue(null, newAccessToken);
+
+                // Retry request ban đầu với token mới
+                originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+                return axios(originalRequest);
+            } catch (refreshError) {
+                // Refresh token cũng hết hạn, logout user
+                processQueue(refreshError, null);
+                console.warn('Refresh token failed, logging out user');
+                auth.logout(); // Đảm bảo xóa auth khỏi localStorage
+                const path = router.currentRoute.value.fullPath;
+                if (!path.includes('login')) {
+                    router.push(`/login?redirect=${path}`);
+                }
+                return Promise.reject(refreshError);
+            } finally {
+                isRefreshing = false;
+            }
+        }
+        
+        // Nếu là lỗi 403 hoặc không có refresh token
+        if (error?.response?.status === 403) {
             const path = router.currentRoute.value.fullPath;
-            // Chỉ logout nếu đã qua trang login (có token lưu nhưng hết hạn)
             if(!path.includes('login') && auth.accessToken) {
-                auth.logout();
+                console.warn('403 error, logging out user');
+                auth.logout(); // Đảm bảo xóa auth khỏi localStorage
                 router.push(`/login?redirect=${path}`);
             }
         }
