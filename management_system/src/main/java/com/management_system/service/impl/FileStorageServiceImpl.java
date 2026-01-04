@@ -9,14 +9,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.management_system.constant.ErrorCode;
-import com.management_system.service.inter.FileStorageService;
+import com.management_system.service.inter.IFileStorageService;
 import com.management_system.utils.MessageUtil;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class FileStorageServiceImpl implements FileStorageService {
+public class FileStorageServiceImpl implements IFileStorageService {
 
     @Value("${file.upload-dir}")
     private String uploadDir; // directory to store uploaded files
@@ -105,4 +105,3 @@ public class FileStorageServiceImpl implements FileStorageService {
         sourceFile.renameTo(destFile);
     }
 }
-
