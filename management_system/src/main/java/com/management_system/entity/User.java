@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import com.management_system.entity.enums.AuthProvider;
 import com.management_system.entity.enums.Gender;
+import com.management_system.entity.enums.ITRole;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -45,6 +46,9 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    @Column(name = "active")
+    private Boolean active = true;
+
     @Column(name = "activation_code")
     private String activationCode;
 
@@ -73,6 +77,16 @@ public class User extends BaseEntity {
     @Column(name = "avatar")
     private String avatar;
 
-    @Column(name = "refreshToken")
+    @Column(name = "refresh_token")
     private String refreshToken;
+
+    @Column(name = "skill", columnDefinition = "TEXT")
+    private String skill; // e.g., "Middle Java, Senior Python" (deprecated, use employee_skills)
+
+    @Column(name = "cv", columnDefinition = "TEXT")
+    private String cv; // URL to CV file
+
+    @Column(name = "it_role")
+    @Enumerated(EnumType.STRING)
+    private ITRole itRole; // Vai trò trong quy trình IT: DEV, TEST, BA, PM, etc.
 }
