@@ -53,5 +53,11 @@
       }
     },
     "contact": "Liên hệ",
-    "toggleMenu": "Mở/Đóng menu"
+    "toggleMenu": "Mở/Đóng menu",
+    "login": "Đăng nhập",
+    "userMenu": {
+      "myProjects": "Dự án của tôi",
+      "admin": "Quản trị",
+      "logout": "Đăng xuất"
+    }
 }

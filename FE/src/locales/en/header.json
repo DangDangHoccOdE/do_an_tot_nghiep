@@ -1,0 +1,57 @@
+{
+    "menus": {
+      "overview": {
+        "label": "Overview",
+        "submenus": {
+          "companyProfile": "Company Profile",
+          "whyVietnam": "Why Vietnam",
+          "whyLuvina": "Why Luvina",
+          "aboutUs": "About Us"
+        }
+      },
+      "services": {
+        "label": "Services",
+        "submenus": {
+          "strategyConsulting": "Strategy Consulting",
+          "softwareDevelopment": "Software Development",
+          "softwareMigration": "Application Migration & Modernization",
+          "cloudTransformation": "Cloud Transformation",
+          "itManagement": "IT Management Services",
+          "qaTesting": "Software Testing & Quality Assurance",
+          "cyberSecurity": "Cyber Security"
+        }
+      },
+      "solutions": {
+        "label": "Solutions",
+        "submenus": {
+          "erp": "Enterprise Resource Planning (ERP)",
+          "crm": "Customer Relationship Management (CRM)",
+          "cms": "Content Management System (CMS)",
+          "ecommerce": "E-commerce Solutions",
+          "pos": "Point-of-sale (POS) System"
+        }
+      },
+      "business": {
+        "label": "Business",
+        "submenus": {
+          "fintech": "Fintech",
+          "healthcare": "Healthcare",
+          "ecommerce": "E-commerce",
+          "education": "Education"
+        }
+      },
+      "news": {
+        "label": "News"
+      },
+      "resources": {
+        "label": "Resources",
+        "submenus": {
+          "blog": "Blog",
+          "caseStudy": "Case Study",
+          "whitepaper": "Whitepaper"
+        }
+      }
+    },
+    "contact": "Contact",
+    "toggleMenu": "Toggle Menu"
+}

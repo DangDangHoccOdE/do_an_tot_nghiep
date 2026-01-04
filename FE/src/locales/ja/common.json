@@ -1,0 +1,26 @@
+{
+  "titleLogin": "ログイン",
+  "titleRegister": "登録",
+  "welcomeBack": "お帰りなさい！",
+  "haveAccount": "既にアカウントをお持ちですか？",
+  "login": "ログイン",
+  "register": "登録",
+  "firstName": "名",
+  "lastName": "姓",
+  "email": "メール",
+  "password": "パスワード",
+  "placeholder": {
+    "username": "ユーザー名",
+    "password": "パスワード",
+    "email": "メール",
+    "firstName": "名を入力",
+    "lastName": "姓を入力"
+  },
+  "registrationSuccess": "登録が完了しました",
+  "registrationFailed": "登録に失敗しました",
+  "forgotPassword": "パスワードをお忘れですか？",
+  "dontHaveAccount": "アカウントをお持ちでないですか？",
+  "loginFailed": "ログインに失敗しました。もう一度お試しください。",
+  "accountNotActivated": "アカウントがまだ有効化されていません",
+  "socialLogin": "またはソーシャルプラットフォームでログイン"
+}

@@ -1,0 +1,13 @@
+{
+  "myProjects": {
+    "title": "Dự án của tôi",
+    "subtitle": "Xem và quản lý các dự án được giao cho bạn",
+    "noProjects": "Bạn chưa có dự án nào",
+    "viewDetails": "Xem chi tiết",
+    "status": {
+      "current": "Đang thực hiện",
+      "future": "Đang lên kế hoạch",
+      "completed": "Đã hoàn thành"
+    }
+  }
+}

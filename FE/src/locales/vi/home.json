@@ -1,0 +1,95 @@
+{
+  "home": {
+    "experience": {
+      "title": "Kinh nghiệm của chúng tôi",
+      "viewMore": "Xem thêm",
+      "items": {
+        "bfsi": { "title": "Tài chính – Bảo hiểm – <br>Ngân hàng", "alt": "BFSI" },
+        "construction": { "title": "Xây dựng", "alt": "Construction" },
+        "healthcare": { "title": "Y tế", "alt": "Healthcare" },
+        "hr": { "title": "Nhân sự", "alt": "HR" },
+        "logistics": { "title": "Hậu cần &amp; Vận tải", "alt": "Logistics" },
+        "manufacturing": { "title": "Sản xuất", "alt": "Manufacturing" },
+        "media": { "title": "Truyền thông <br>&amp; Tổ chức sự kiện", "alt": "Media" },
+        "realEstate": { "title": "Bất động sản", "alt": "Real Estate" },
+        "retail": { "title": "Bán lẻ &amp; Thương mại<br>điện tử", "alt": "Retail" },
+        "travel": { "title": "Du lịch &amp; Hàng không", "alt": "Travel" }
+      }
+    },
+    "solutions": {
+      "title": "Giải pháp tùy chỉnh cho mọi lĩnh vực",
+      "viewMore": "Xem thêm",
+      "items": {
+        "erp": "Enterprise Resource Planning (ERP)",
+        "cms": "Content Management System (CMS)",
+        "crm": "Customer Relationship Management (CRM)",
+        "pos": "Point-of-sale Systems (POS)",
+        "ecommerce": "E-commerce Solutions"
+      }
+    },
+    "services": {
+      "title": "Hãy cùng chúng tôi tham gia hành trình chuyển đổi số",
+      "featured": {
+        "title": "Dịch vụ của chúng tôi",
+        "subtitle": "Tối ưu hành trình chuyển đổi số doanh nghiệp của bạn với các dịch vụ IT outsourcing toàn diện"
+      },
+      "list": {
+        "strategy": "Tư vấn chiến lược",
+        "software": "Phát triển phần mềm",
+        "modernization": "Di chuyển & hiện đại hóa ứng dụng",
+        "cloud": "Chuyển đổi đám mây",
+        "itManagement": "Dịch vụ quản lý CNTT",
+        "qa": "Kiểm thử & quản lý chất lượng",
+        "security": "Bảo mật công nghệ thông tin"
+      },
+      "viewMore": "Xem thêm"
+    },
+    "academy": {
+      "title": "Luvina Academy",
+      "description": "Để tăng trưởng nhân sự theo kế hoạch định trước và đảm bảo tiêu chuẩn chất lượng nhân sự đồng nhất, từ 2008 chúng tôi liên tục tổ chức các khóa đào tạo CNTT tại Luvina Academy với tần suất trung bình 2 khóa/năm dành cho các sinh viên năm cuối khoa CNTT và cả các khoa khác như điện tử, xây dựng, cơ khí, tài chính, kinh tế, ngoại thương, …",
+      "bullets": {
+        "people": "Con người là trung tâm",
+        "quality": "Đề cao chất lượng giảng dạy",
+        "learning": "Không ngừng học hỏi và phát triển",
+        "stability": "Đảm bảo nguồn nhân lực ổn định và chất lượng"
+      }
+    },
+    "overview": {
+      "title": "Tổng quan Luvina",
+      "stats": {
+        "years": "Năm phát triển",
+        "clients": "Khách hàng hài lòng",
+        "talents": "Nhân sự IT tài năng",
+        "projects": "Dự án thành công"
+      }
+    },
+    "partners": {
+      "title": "Đối tác của chúng tôi",
+      "cta": "Trở thành đối tác của chúng tôi"
+    },
+    "awards": {
+      "title": "Chứng nhận & Giải thưởng",
+      "items": {
+        "iso": "ISO27001",
+        "cmmiDev": "CMMI DEV LEVEL 3",
+        "cmmiService": "CMMI SERVICE LEVEL 3",
+        "tokyoTech": "TOKYO TECH\nVENTURES",
+        "kuramae": "THE KURAMAE\nVENTURE AWARD",
+        "top10Ict2021": "TOP 10 VIETNAM ICT\nCOMPANIES 2021",
+        "top10Ict2024": "TOP 10 VIETNAM ICT\nCOMPANIES 2024",
+        "top10TechMap2025": "TOP 10 VIETNAM TECH & MAP 2025",
+        "designRush": "DESIGNRUSH"
+      }
+    },
+    "why": {
+      "title": "Tại sao nên chọn chúng tôi?",
+      "cta": "Về chúng tôi",
+      "items": {
+        "project": { "title": "Quản trị dự án", "desc": "Khả năng quản trị dự án vượt trội dựa trên các tiêu chuẩn như ISO và CMMI 3." },
+        "training": { "title": "Văn hóa đào tạo & phát triển", "desc": "Đáp ứng nhanh nghiệp vụ và kỹ thuật mới nhờ văn hóa tự học của nhân sự." },
+        "quality": { "title": "Chất lượng ổn định", "desc": "Đảm bảo chất lượng sản phẩm, dịch vụ cao và bền vững dù thay đổi cơ cấu nhân sự." },
+        "cooperation": { "title": "Hợp tác lâu dài", "desc": "Chú trọng hợp tác lâu dài, đồng hành cùng khách hàng đến thành công." }
+      }
+    }
+  }
+}

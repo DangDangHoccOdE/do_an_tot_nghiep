@@ -1,0 +1,62 @@
+{
+  "titleLogin": "Login",
+  "titleRegister": "Register",
+  "placeholder": {
+    "username": "Username",
+    "password": "Password",
+    "email": "Email",
+    "confirmPassword": "Confirm Password",
+    "phone": "Phone Number",
+    "fullName": "Full Name",
+    "firstName": "Enter first name",
+    "lastName": "Enter last name",
+    "companyName": "Company name (if any)"
+  },
+  "errors": {
+    "usernameRequired": "Please enter username",
+    "emailInvalid": "Invalid email",
+    "emailRequired": "Please enter email",
+    "passwordRequired": "Please enter password",
+    "passwordMin": "Password must be at least 6 characters",
+    "passwordNotMatch": "Password confirmation does not match",
+    "confirmPasswordRequired": "Please confirm password",
+    "firstNameRequired": "Please enter first name",
+    "lastNameRequired": "Please enter last name",
+    "genderRequired": "Please select gender",
+    "phoneRequired": "Please enter phone number",
+    "agreementRequired": "Please agree to the terms and conditions"
+  },
+  "haveAccount": "Already have an account?",
+  "loginNow": "Login now",
+  "login": "Login",
+  "register": "Register",
+  "dontHaveAccount": "Don't have an account?",
+  "createNew": "Create new",
+  "forgotPassword": "Forgot password?",
+  "pleaseLogin": "Please login to your account",
+  "emailOrPhone": "Email / Phone",
+  "enterEmailOrPhone": "Enter email or phone",
+  "enterPassword": "Enter password",
+  "form": {
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "gender": "Gender",
+    "selectGender": "Select gender",
+    "male": "Male",
+    "female": "Female",
+    "other": "Other",
+    "phone": "Phone Number",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "companyName": "Company Name",
+    "agreeTerms": "I agree to",
+    "termsAndConditions": "terms and conditions",
+    "agreeTermsFull": "I agree to the terms and conditions"
+  },
+  "userMenu": {
+    "myProjects": "My Projects",
+    "admin": "Admin",
+    "logout": "Logout"
+  }
+}

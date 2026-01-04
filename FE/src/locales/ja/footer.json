@@ -1,0 +1,94 @@
+{
+  "overview": "2004年の創業以来、750名以上のエンジニアを擁し、グローバル市場にサービスを提供するベトナム有数のソフトウェアアウトソーシング企業トップ10の一社です。",
+  "offices": "拠点",
+  "contact": "お問い合わせ",
+  "infoLuvina": "info{'@'}luvina.net",
+  "careerLuvina": "採用窓口 (+84) 2838 110 001",
+  "phoneLuvina": "(+84) 865 032 899",
+  "contactMobile": "お問い合わせ",
+  "contactForCareer": "採用に関するお問い合わせ：",
+  "copyright": "Copyright © Luvina Software JSC.",
+  "privacyPolicy": "プライバシーポリシー",
+  "navigation": {
+    "home": "ホーム",
+    "services": "サービス",
+    "solutions": "ソリューション",
+    "business": "業界",
+    "projects": "プロジェクト",
+    "news": "ニュース",
+    "aboutUs": "会社情報",
+    "resources": "リソース"
+  },
+  "officesData": {
+    "vietnam": {
+      "name": "ベトナム",
+      "hanoi": {
+        "title": "ハノイ本社",
+        "address": "ホアビン・オフィスタワー 106 Hoang Quoc Viet通り、Nghia Do区、ハノイ市",
+        "specificContact": "[個別連絡先情報]",
+        "contactPerson": "担当者：",
+        "contactPersonName": "ブイ・ティ・ビック・クエン",
+        "email": "メール：",
+        "emailValue": "btbquyen{'@'}luvina.net",
+        "tel": "電話：",
+        "telValue": "(84) (24) 3793 1103（内線113）",
+        "generalContact": "[共通連絡先情報]",
+        "generalEmail": "メール：",
+        "generalEmailValue": "info{'@'}luvina.net",
+        "generalTel": "電話：",
+        "generalTelValue": "(84) (24) 3793 1103（内線0）",
+        "fax": "FAX：",
+        "faxValue": "(84) (24) 3793 1106"
+      },
+      "danang": {
+        "title": "ダナン支社",
+        "address": "ベトナム・ダナン市 ハイチャウ区 クアントゥン通り2番ビル18階",
+        "generalContact": "[共通連絡先情報]",
+        "tel": "電話：",
+        "telValue": "(84) (236) 388 8718",
+        "fax": "FAX：",
+        "faxValue": "(84) (236) 388 8721"
+      },
+      "hcm": {
+        "title": "ホーチミン支社",
+        "address": "ベトナム・ホーチミン市 カウキエウ区 Nguyen Van Troi通り38/1",
+        "contact": "[連絡先情報]",
+        "contactPerson": "担当者：",
+        "contactPersonName": "レ・ヴィエット・リン",
+        "tel": "電話：",
+        "telValue": "(84) 903 054 065"
+      }
+    },
+    "japan": {
+      "name": "日本",
+      "tokyo": {
+        "title": "日本支社",
+        "address": "〒213-0012 神奈川県川崎市高津区坂戸3-2-1 神奈川サイエンスパーク（KSP）R612",
+        "specificContact": "[個別連絡先情報]",
+        "contactPerson": "担当者：",
+        "contactPersonName": "横浜 一俊",
+        "email": "メール：",
+        "emailValue": "yokohama{'@'}luvina.jp",
+        "tel": "電話：",
+        "telValue": "(81) (44) 271 7080",
+        "generalContact": "[共通連絡先情報]",
+        "generalEmail": "メール：",
+        "generalEmailValue": "info{'@'}luvina.jp",
+        "generalTel": "電話：",
+        "generalTelValue": "(81) (44) 271 7080"
+      }
+    },
+    "usa": {
+      "name": "アメリカ合衆国",
+      "vdx": {
+        "title": "駐在員事務所 - VDX",
+        "address": "38N Almaden Blvd, Unit 125, San Jose, California 95110-2720, USA",
+        "generalContact": "[共通連絡先情報]",
+        "email": "メール：",
+        "emailValue": "Info{'@'}vdx-usa.com",
+        "tel": "電話：",
+        "telValue": "+1 (408) 805-2148"
+      }
+    }
+  }
+}

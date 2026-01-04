@@ -1,0 +1,13 @@
+{
+  "myProjects": {
+    "title": "My Projects",
+    "subtitle": "View and manage projects assigned to you",
+    "noProjects": "You don't have any projects yet",
+    "viewDetails": "View Details",
+    "status": {
+      "current": "In Progress",
+      "future": "Planned",
+      "completed": "Completed"
+    }
+  }
+}

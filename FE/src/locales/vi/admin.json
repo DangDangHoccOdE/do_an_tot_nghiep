@@ -1,0 +1,125 @@
+{
+  "admin": {
+    "title": "Không gian quản trị",
+    "subtitle": "Quản lý dự án, đội nhóm và báo cáo task mỗi ngày.",
+    "menu": {
+      "projects": "Dự án",
+      "currentProjects": "Dự án hiện tại",
+      "futureProjects": "Dự án tương lai",
+      "teams": "Đội dự án",
+      "tasks": "Task theo dự án"
+    },
+    "actions": {
+      "refresh": "Làm mới",
+      "loadTasks": "Tải task",
+      "back": "Quay lại",
+      "create": "Tạo mới",
+      "add": "Thêm mới",
+      "edit": "Chỉnh sửa",
+      "update": "Cập nhật",
+      "delete": "Xóa",
+      "view": "Xem",
+      "save": "Lưu",
+      "cancel": "Hủy",
+      "close": "Đóng"
+    },
+    "table": {
+      "projectName": "Tên dự án",
+      "status": "Trạng thái",
+      "startDate": "Bắt đầu",
+      "endDate": "Kết thúc",
+      "teamName": "Tên đội",
+      "description": "Mô tả",
+      "members": "Thành viên",
+      "title": "Tiêu đề",
+      "assignee": "Giao cho",
+      "dueDate": "Hạn",
+      "clientId": "Khách hàng",
+      "budgetEstimated": "Ngân sách",
+      "timelineEstimated": "Thời gian (ngày)"
+    },
+    "filters": {
+      "projectId": "Nhập mã Project",
+      "search": "Tìm kiếm...",
+      "status": "Trạng thái",
+      "statusAll": "Tất cả",
+      "statusCurrent": "Hiện tại",
+      "statusFuture": "Tương lai"
+    },
+    "form": {
+      "email": "Email",
+      "password": "Mật khẩu",
+      "firstName": "Tên",
+      "lastName": "Họ",
+      "phone": "Số điện thoại",
+      "avatar": "Ảnh đại diện",
+      "projectName": "Tên dự án",
+      "description": "Mô tả",
+      "status": "Trạng thái",
+      "startDate": "Ngày bắt đầu",
+      "endDate": "Ngày kết thúc",
+      "projectId": "Mã dự án",
+      "teamId": "Mã đội",
+      "clientId": "Mã khách hàng",
+      "budgetEstimated": "Ngân sách dự kiến",
+      "timelineEstimated": "Thời gian (ngày)",
+      "teamName": "Tên đội",
+      "teamDescription": "Mô tả đội",
+      "userId": "Mã nhân viên",
+      "memberRole": "Vai trò trong đội",
+      "selectRole": "Chọn quyền hạn",
+      "roleAdmin": "Quản trị viên",
+      "rolePM": "Quản lý dự án",
+      "roleStaff": "Nhân viên",
+      "roleUser": "Người dùng",
+      "dragOrClick": "Kéo ảnh vào đây hoặc ",
+      "selectFile": "nhấp để chọn"
+    },
+    "placeholders": {
+      "email": "Nhập email",
+      "password": "Nhập mật khẩu",
+      "firstName": "Nhập tên",
+      "lastName": "Nhập họ",
+      "phone": "Nhập số điện thoại"
+    },
+    "entities": {
+      "project": "Dự án",
+      "team": "Đội",
+      "task": "Task",
+      "user": "Người dùng"
+    },
+    "messages": {
+      "created": "{entity} đã được tạo",
+      "updated": "{entity} đã được cập nhật",
+      "saveFail": "Lưu thất bại",
+      "loadFail": "Tải dữ liệu thất bại",
+      "userCreated": "Tạo người dùng thành công",
+      "userUpdated": "Cập nhật người dùng thành công",
+      "createFailed": "Lỗi khi tạo người dùng",
+      "updateFailed": "Lỗi khi cập nhật người dùng",
+      "uploadSuccess": "Upload ảnh thành công",
+      "uploadFailed": "Upload ảnh thất bại",
+      "imageTypeError": "Vui lòng chọn file ảnh",
+      "imageSizeError": "Kích thước ảnh không được vượt quá 5MB",
+      "imageSelected": "Đã chọn ảnh. Nhấn Lưu để upload"
+    },
+    "validations": {
+      "required": "{field} là bắt buộc",
+      "max": "{field} tối đa {max} ký tự",
+      "minNumber": "{field} phải lớn hơn hoặc bằng {min}",
+      "nonNegative": "{field} phải lớn hơn hoặc bằng 0",
+      "endAfterStart": "Ngày kết thúc phải sau ngày bắt đầu",
+      "dueAfterStart": "Hạn phải sau ngày bắt đầu"
+    },
+    "formHints": {
+      "project": "Nhập thông tin dự án, ngân sách và timeline",
+      "team": "Mô tả đội triển khai",
+      "task": "Giao task với hạn và người phụ trách"
+    },
+    "confirm": {
+      "deleteTitle": "Xóa bản ghi",
+      "deleteMessage": "Bạn có chắc muốn xóa mục này?"
+    },
+    "empty": "Không có dữ liệu"
+  }
+}

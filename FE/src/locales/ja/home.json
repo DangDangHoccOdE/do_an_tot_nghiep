@@ -1,0 +1,95 @@
+{
+  "home": {
+    "experience": {
+      "title": "当社の業界経験",
+      "viewMore": "もっと見る",
+      "items": {
+        "bfsi": { "title": "金融・保険・<br>銀行", "alt": "BFSI" },
+        "construction": { "title": "建設", "alt": "Construction" },
+        "healthcare": { "title": "ヘルスケア", "alt": "Healthcare" },
+        "hr": { "title": "人事", "alt": "HR" },
+        "logistics": { "title": "物流・輸送", "alt": "Logistics" },
+        "manufacturing": { "title": "製造", "alt": "Manufacturing" },
+        "media": { "title": "メディア・イベント企画", "alt": "Media" },
+        "realEstate": { "title": "不動産", "alt": "Real Estate" },
+        "retail": { "title": "小売・EC", "alt": "Retail" },
+        "travel": { "title": "旅行・航空", "alt": "Travel" }
+      }
+    },
+    "solutions": {
+      "title": "あらゆる業界に合わせたソリューション",
+      "viewMore": "もっと見る",
+      "items": {
+        "erp": "Enterprise Resource Planning (ERP)",
+        "cms": "Content Management System (CMS)",
+        "crm": "Customer Relationship Management (CRM)",
+        "pos": "Point-of-sale Systems (POS)",
+        "ecommerce": "E-commerce Solutions"
+      }
+    },
+    "services": {
+      "title": "デジタルトランスフォーメーションの旅へ",
+      "featured": {
+        "title": "私たちのサービス",
+        "subtitle": "総合的なITアウトソーシングでDXの道のりを最適化"
+      },
+      "list": {
+        "strategy": "戦略コンサルティング",
+        "software": "ソフトウェア開発",
+        "modernization": "アプリケーションのモダナイゼーション",
+        "cloud": "クラウド移行",
+        "itManagement": "ITマネジメントサービス",
+        "qa": "QA・テスト",
+        "security": "サイバーセキュリティ"
+      },
+      "viewMore": "もっと見る"
+    },
+    "academy": {
+      "title": "Luvina Academy",
+      "description": "計画的な人材拡大と品質の均一性を実現するため、2008年からLuvina AcademyでIT研修を継続的に実施（年約2回）。最終学年のIT専攻だけでなく、電子・建築・機械・金融・経済・国際経営など幅広い専攻の学生を対象としています。",
+      "bullets": {
+        "people": "人を中心に",
+        "quality": "教育品質を重視",
+        "learning": "学び続ける文化",
+        "stability": "安定した高品質人材を確保"
+      }
+    },
+    "overview": {
+      "title": "Luvina 概要",
+      "stats": {
+        "years": "成長年数",
+        "clients": "満足いただいた顧客",
+        "talents": "優秀なIT人材",
+        "projects": "成功したプロジェクト"
+      }
+    },
+    "partners": {
+      "title": "私たちのパートナー",
+      "cta": "パートナーになる"
+    },
+    "awards": {
+      "title": "認証・受賞歴",
+      "items": {
+        "iso": "ISO27001",
+        "cmmiDev": "CMMI DEV LEVEL 3",
+        "cmmiService": "CMMI SERVICE LEVEL 3",
+        "tokyoTech": "TOKYO TECH\nVENTURES",
+        "kuramae": "THE KURAMAE\nVENTURE AWARD",
+        "top10Ict2021": "TOP 10 VIETNAM ICT\nCOMPANIES 2021",
+        "top10Ict2024": "TOP 10 VIETNAM ICT\nCOMPANIES 2024",
+        "top10TechMap2025": "TOP 10 VIETNAM TECH & MAP 2025",
+        "designRush": "DESIGNRUSH"
+      }
+    },
+    "why": {
+      "title": "私たちが選ばれる理由",
+      "cta": "私たちについて",
+      "items": {
+        "project": { "title": "プロジェクトガバナンス", "desc": "ISOやCMMIレベル3などの標準に基づく卓越したプロジェクト管理。" },
+        "training": { "title": "学習文化", "desc": "強い自学文化により新しい業務・技術領域への迅速な適応を実現。" },
+        "quality": { "title": "安定した品質", "desc": "チーム構成が変わっても高品質を持続。" },
+        "cooperation": { "title": "長期的な協業", "desc": "長期的パートナーシップを重視し、顧客と共に成功を目指す。" }
+      }
+    }
+  }
+}

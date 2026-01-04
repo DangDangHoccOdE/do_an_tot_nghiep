@@ -1,0 +1,189 @@
+{
+  "admin": {
+    "title": "Admin workspace",
+    "subtitle": "Manage projects, teams and daily tasks with clarity.",
+    "menu": {
+      "projects": "Projects",
+      "currentProjects": "Current projects",
+      "futureProjects": "Future projects",
+      "teams": "Project teams",
+      "tasks": "Tasks by project"
+    },
+    "actions": {
+      "refresh": "Refresh",
+      "loadTasks": "Load tasks",
+      "back": "Back",
+      "create": "Create",
+      "add": "Add new",
+      "edit": "Edit",
+      "update": "Update",
+      "delete": "Delete",
+      "view": "View"
+    },
+    "services": {
+      "title": "Join us on the digital transformation journey",
+      "featured": {
+        "title": "Our services",
+        "subtitle": "Optimize your digital transformation with comprehensive IT outsourcing services"
+      },
+      "list": {
+        "strategy": "Strategy consulting",
+        "software": "Software development",
+        "modernization": "Application modernization",
+        "cloud": "Cloud transformation",
+        "itManagement": "IT management services",
+        "qa": "QA & testing",
+        "security": "Cyber security"
+      },
+      "viewMore": "View more"
+    },
+    "academy": {
+      "title": "Luvina Academy",
+      "description": "To meet planned workforce growth and maintain consistent quality standards, since 2008 we have continuously run IT training courses at Luvina Academy (about twice per year) for final-year IT students and many other majors such as electronics, construction, engineering, finance, economics, international business, etc.",
+      "bullets": {
+        "people": "People at the center",
+        "quality": "Emphasis on teaching quality",
+        "learning": "Continuous learning and growth",
+        "stability": "Ensure stable, high-quality workforce"
+      }
+    },
+    "overview": {
+      "title": "Luvina overview",
+      "stats": {
+        "years": "Years of growth",
+        "clients": "Satisfied clients",
+        "talents": "Talented IT staff",
+        "projects": "Successful projects"
+      }
+    },
+    "partners": {
+      "title": "Our partners",
+      "cta": "Become our partner"
+    },
+    "awards": {
+      "title": "Certifications & Awards",
+      "items": {
+        "iso": "ISO27001",
+        "cmmiDev": "CMMI DEV LEVEL 3",
+        "cmmiService": "CMMI SERVICE LEVEL 3",
+        "tokyoTech": "TOKYO TECH\nVENTURES",
+        "kuramae": "THE KURAMAE\nVENTURE AWARD",
+        "top10Ict2021": "TOP 10 VIETNAM ICT\nCOMPANIES 2021",
+        "top10Ict2024": "TOP 10 VIETNAM ICT\nCOMPANIES 2024",
+        "top10TechMap2025": "TOP 10 VIETNAM TECH & MAP 2025",
+        "designRush": "DESIGNRUSH"
+      }
+    },
+    "why": {
+      "title": "Why choose us?",
+      "cta": "About us",
+      "items": {
+        "project": { "title": "Project governance", "desc": "Superior project governance grounded in standards like ISO and CMMI Level 3." },
+        "training": { "title": "Learning culture", "desc": "Ability to quickly embrace new business and technical domains thanks to a strong self-learning culture." },
+        "quality": { "title": "Stable quality", "desc": "Deliver consistently high quality even when team composition changes." },
+        "cooperation": { "title": "Long-term partnership", "desc": "Focus on long-term cooperation, accompanying clients to success." }
+      },
+      "save": "Save",
+      "cancel": "Cancel",
+      "close": "Close"
+    },
+    "table": {
+      "projectName": "Project name",
+      "status": "Status",
+      "startDate": "Start",
+      "endDate": "End",
+      "teamName": "Team name",
+      "description": "Description",
+      "members": "Members",
+      "title": "Title",
+      "assignee": "Assignee",
+      "dueDate": "Due date",
+      "clientId": "Client",
+      "budgetEstimated": "Budget",
+      "timelineEstimated": "Timeline (days)"
+    },
+    "filters": {
+      "projectId": "Enter project ID",
+      "search": "Search...",
+      "status": "Status",
+      "statusAll": "All",
+      "statusCurrent": "Current",
+      "statusFuture": "Future"
+    },
+    "form": {
+      "email": "Email",
+      "password": "Password",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phone": "Phone number",
+      "avatar": "Avatar",
+      "projectName": "Project name",
+      "description": "Description",
+      "status": "Status",
+      "startDate": "Start date",
+      "endDate": "End date",
+      "projectId": "Project ID",
+      "teamId": "Team ID",
+      "clientId": "Client ID",
+      "budgetEstimated": "Budget estimated",
+      "timelineEstimated": "Timeline (days)",
+      "teamName": "Team name",
+      "teamDescription": "Description",
+      "userId": "User ID",
+      "memberRole": "Role in team",
+      "selectRole": "Select role",
+      "roleAdmin": "Administrator",
+      "rolePM": "Project Manager",
+      "roleStaff": "Staff",
+      "roleUser": "User",
+      "dragOrClick": "Drag image here or ",
+      "selectFile": "click to select"
+    },
+    "placeholders": {
+      "email": "Enter email",
+      "password": "Enter password",
+      "firstName": "Enter first name",
+      "lastName": "Enter last name",
+      "phone": "Enter phone number"
+    },
+    "entities": {
+      "project": "Project",
+      "team": "Team",
+      "task": "Task",
+      "user": "User"
+    },
+    "messages": {
+      "created": "{entity} created successfully",
+      "updated": "{entity} updated successfully",
+      "saveFail": "Save failed",
+      "loadFail": "Load failed",
+      "userCreated": "User created successfully",
+      "userUpdated": "User updated successfully",
+      "createFailed": "Error creating user",
+      "updateFailed": "Error updating user",
+      "uploadSuccess": "Image uploaded successfully",
+      "uploadFailed": "Image upload failed",
+      "imageTypeError": "Please select an image file",
+      "imageSizeError": "Image size must not exceed 5MB",
+      "imageSelected": "Image selected. Click Save to upload"
+    },
+    "validations": {
+      "required": "{field} is required",
+      "max": "{field} must be at most {max} characters",
+      "minNumber": "{field} must be at least {min}",
+      "nonNegative": "{field} must be zero or positive",
+      "endAfterStart": "End date must be after start date",
+      "dueAfterStart": "Due date must be after start date"
+    },
+    "formHints": {
+      "project": "Fill project basics, budget and timeline",
+      "team": "Summarize your delivery team",
+      "task": "Assign tasks, due dates and owners"
+    },
+    "confirm": {
+      "deleteTitle": "Delete record",
+      "deleteMessage": "Are you sure you want to delete this item?"
+    },
+    "empty": "No data"
+  }
+}

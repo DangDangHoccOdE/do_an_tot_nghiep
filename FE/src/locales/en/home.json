@@ -1,0 +1,95 @@
+{
+  "home": {
+    "experience": {
+      "title": "Our industry experience",
+      "viewMore": "View more",
+      "items": {
+        "bfsi": { "title": "Finance – Insurance – <br>Banking", "alt": "BFSI" },
+        "construction": { "title": "Construction", "alt": "Construction" },
+        "healthcare": { "title": "Healthcare", "alt": "Healthcare" },
+        "hr": { "title": "Human Resources", "alt": "HR" },
+        "logistics": { "title": "Logistics &amp; Transportation", "alt": "Logistics" },
+        "manufacturing": { "title": "Manufacturing", "alt": "Manufacturing" },
+        "media": { "title": "Media &amp; Event Planning", "alt": "Media" },
+        "realEstate": { "title": "Real Estate", "alt": "Real Estate" },
+        "retail": { "title": "Retail &amp; E-commerce", "alt": "Retail" },
+        "travel": { "title": "Travel &amp; Aviation", "alt": "Travel" }
+      }
+    },
+    "solutions": {
+      "title": "Tailored solutions for every industry",
+      "viewMore": "View more",
+      "items": {
+        "erp": "Enterprise Resource Planning (ERP)",
+        "cms": "Content Management System (CMS)",
+        "crm": "Customer Relationship Management (CRM)",
+        "pos": "Point-of-Sale Systems (POS)",
+        "ecommerce": "E-commerce Solutions"
+      }
+    },
+    "services": {
+      "title": "Join us on the digital transformation journey",
+      "featured": {
+        "title": "Our services",
+        "subtitle": "Optimize your digital transformation with comprehensive IT outsourcing services"
+      },
+      "list": {
+        "strategy": "Strategy consulting",
+        "software": "Software development",
+        "modernization": "Application modernization",
+        "cloud": "Cloud transformation",
+        "itManagement": "IT management services",
+        "qa": "QA & testing",
+        "security": "Cyber security"
+      },
+      "viewMore": "View more"
+    },
+    "academy": {
+      "title": "Luvina Academy",
+      "description": "To meet planned workforce growth and maintain consistent quality standards, since 2008 we have continuously run IT training courses at Luvina Academy (about twice per year) for final-year IT students and many other majors such as electronics, construction, engineering, finance, economics, international business, etc.",
+      "bullets": {
+        "people": "People at the center",
+        "quality": "Emphasis on teaching quality",
+        "learning": "Continuous learning and growth",
+        "stability": "Ensure stable, high-quality workforce"
+      }
+    },
+    "overview": {
+      "title": "Luvina overview",
+      "stats": {
+        "years": "Years of growth",
+        "clients": "Satisfied clients",
+        "talents": "Talented IT staff",
+        "projects": "Successful projects"
+      }
+    },
+    "partners": {
+      "title": "Our partners",
+      "cta": "Become our partner"
+    },
+    "awards": {
+      "title": "Certifications & Awards",
+      "items": {
+        "iso": "ISO27001",
+        "cmmiDev": "CMMI DEV LEVEL 3",
+        "cmmiService": "CMMI SERVICE LEVEL 3",
+        "tokyoTech": "TOKYO TECH\nVENTURES",
+        "kuramae": "THE KURAMAE\nVENTURE AWARD",
+        "top10Ict2021": "TOP 10 VIETNAM ICT\nCOMPANIES 2021",
+        "top10Ict2024": "TOP 10 VIETNAM ICT\nCOMPANIES 2024",
+        "top10TechMap2025": "TOP 10 VIETNAM TECH & MAP 2025",
+        "designRush": "DESIGNRUSH"
+      }
+    },
+    "why": {
+      "title": "Why choose us?",
+      "cta": "About us",
+      "items": {
+        "project": { "title": "Project governance", "desc": "Superior project governance grounded in standards like ISO and CMMI Level 3." },
+        "training": { "title": "Learning culture", "desc": "Ability to quickly embrace new business and technical domains thanks to a strong self-learning culture." },
+        "quality": { "title": "Stable quality", "desc": "Deliver consistently high quality even when team composition changes." },
+        "cooperation": { "title": "Long-term partnership", "desc": "Focus on long-term cooperation, accompanying clients to success." }
+      }
+    }
+  }
+}

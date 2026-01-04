@@ -1,0 +1,63 @@
+{
+  "menus": {
+    "overview": {
+      "label": "概要",
+      "submenus": {
+        "companyProfile": "会社概要",
+        "whyVietnam": "なぜベトナムなのか",
+        "whyLuvina": "なぜLuvinaなのか",
+        "aboutUs": "私たちについて"
+      }
+    },
+    "services": {
+      "label": "サービス",
+      "submenus": {
+        "strategyConsulting": "戦略コンサルティング",
+        "softwareDevelopment": "ソフトウェア開発",
+        "softwareMigration": "アプリケーション移行・モダナイゼーション",
+        "cloudTransformation": "クラウド変革",
+        "itManagement": "ITマネジメントサービス",
+        "qaTesting": "品質保証・テスト",
+        "cyberSecurity": "サイバーセキュリティ"
+      }
+    },
+    "solutions": {
+      "label": "ソリューション",
+      "submenus": {
+        "erp": "統合基幹業務システム（ERP）",
+        "crm": "顧客関係管理（CRM）",
+        "cms": "コンテンツ管理システム（CMS）",
+        "ecommerce": "ECソリューション",
+        "pos": "POSシステム"
+      }
+    },
+    "business": {
+      "label": "業界",
+      "submenus": {
+        "fintech": "フィンテック",
+        "healthcare": "ヘルスケア",
+        "ecommerce": "Eコマース",
+        "education": "教育"
+      }
+    },
+    "news": {
+      "label": "ニュース"
+    },
+    "resources": {
+      "label": "リソース",
+      "submenus": {
+        "blog": "ブログ",
+        "caseStudy": "導入事例",
+        "whitepaper": "ホワイトペーパー"
+      }
+    }
+  },
+  "contact": "お問い合わせ",
+  "toggleMenu": "メニューを開く／閉じる",
+  "login": "ログイン",
+  "userMenu": {
+    "myProjects": "私のプロジェクト",
+    "admin": "管理",
+    "logout": "ログアウト"
+  }
+}
