@@ -19,11 +19,13 @@ import jaHome from "@/locales/ja/home.json";
 import jaAuth from "@/locales/ja/auth.json";
 import jaHeader from "@/locales/ja/header.json";
 import jaFooter from "@/locales/ja/footer.json";
+import jaAdmin from "@/locales/ja/admin.json";
 
 const messages = {
     en: {
         ...enCommon,
         ...enHeader,
+        ...jaAdmin,
         ...enFooter,
         ...enHome,
         ...enAdmin,
@@ -45,6 +47,7 @@ const messages = {
         ...jaHome,
         ...jaHeader,
         ...jaFooter,
+        ...jaAdmin,
         auth: jaAuth
     }
 }

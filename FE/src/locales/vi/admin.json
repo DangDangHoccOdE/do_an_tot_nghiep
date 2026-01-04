@@ -7,7 +7,9 @@
       "currentProjects": "Dự án hiện tại",
       "futureProjects": "Dự án tương lai",
       "teams": "Đội dự án",
-      "tasks": "Task theo dự án"
+      "tasks": "Task theo dự án",
+      "staff": "Nhân viên",
+      "users": "Người dùng"
     },
     "actions": {
       "refresh": "Làm mới",
@@ -36,7 +38,16 @@
       "dueDate": "Hạn",
       "clientId": "Khách hàng",
       "budgetEstimated": "Ngân sách",
-      "timelineEstimated": "Thời gian (ngày)"
+      "timelineEstimated": "Thời gian (ngày)",
+      "name": "Họ và tên",
+      "email": "Email",
+      "phone": "Số điện thoại",
+      "role": "Vai trò",
+      "itRole": "Vai trò IT",
+      "skills": "Kỹ năng",
+      "avatar": "Avatar",
+      "active": "Hoạt động",
+      "inactive": "Vô hiệu"
     },
     "filters": {
       "projectId": "Nhập mã Project",
@@ -44,7 +55,8 @@
       "status": "Trạng thái",
       "statusAll": "Tất cả",
       "statusCurrent": "Hiện tại",
-      "statusFuture": "Tương lai"
+      "statusFuture": "Tương lai",
+      "filterByRole": "Lọc theo role"
     },
     "form": {
       "email": "Email",
@@ -53,6 +65,14 @@
       "lastName": "Họ",
       "phone": "Số điện thoại",
       "avatar": "Ảnh đại diện",
+      "cv": "CV",
+      "itRole": "Vai trò IT",
+      "skills": "Kỹ năng",
+      "skillLevel": "Cấp độ",
+      "yearsOfExperience": "Số năm kinh nghiệm",
+      "yearsLabel": "năm",
+      "accountInfo": "Thông tin tài khoản",
+      "personalInfo": "Thông tin cá nhân",
       "projectName": "Tên dự án",
       "description": "Mô tả",
       "status": "Trạng thái",
@@ -68,6 +88,9 @@
       "userId": "Mã nhân viên",
       "memberRole": "Vai trò trong đội",
       "selectRole": "Chọn quyền hạn",
+      "selectItRole": "Chọn vai trò IT",
+      "selectSkill": "Chọn kỹ năng",
+      "addSkill": "Thêm kỹ năng",
       "roleAdmin": "Quản trị viên",
       "rolePM": "Quản lý dự án",
       "roleStaff": "Nhân viên",
@@ -80,13 +103,18 @@
       "password": "Nhập mật khẩu",
       "firstName": "Nhập tên",
       "lastName": "Nhập họ",
-      "phone": "Nhập số điện thoại"
+      "phone": "Nhập số điện thoại",
+      "cv": "Đường dẫn tới CV hoặc file URL",
+      "skill": "Chọn kỹ năng",
+      "skillLevel": "Chọn cấp độ",
+      "yearsOfExperience": "Số năm kinh nghiệm"
     },
     "entities": {
       "project": "Dự án",
       "team": "Đội",
       "task": "Task",
-      "user": "Người dùng"
+      "user": "Người dùng",
+      "staff": "Nhân viên"
     },
     "messages": {
       "created": "{entity} đã được tạo",
@@ -101,11 +129,27 @@
       "uploadFailed": "Upload ảnh thất bại",
       "imageTypeError": "Vui lòng chọn file ảnh",
       "imageSizeError": "Kích thước ảnh không được vượt quá 5MB",
-      "imageSelected": "Đã chọn ảnh. Nhấn Lưu để upload"
+      "imageSelected": "Đã chọn ảnh. Nhấn Lưu để upload",
+      "deleteUserSuccess": "Xóa người dùng thành công",
+      "deleteUserFailed": "Lỗi khi xóa người dùng",
+      "deleteStaffSuccess": "Xóa nhân viên thành công",
+      "deleteStaffFailed": "Lỗi khi xóa nhân viên",
+      "loadUsersError": "Lỗi khi tải danh sách người dùng",
+      "loadStaffError": "Lỗi khi tải danh sách nhân viên",
+      "confirmCancel": "Bạn có chắc muốn hủy? Mọi thay đổi sẽ không được lưu.",
+      "loadSkillsError": "Lỗi khi tải danh sách kỹ năng",
+      "staffCreated": "Thêm nhân viên thành công",
+      "staffUpdated": "Cập nhật nhân viên thành công",
+      "saveError": "Lỗi khi lưu dữ liệu",
+      "selectSkillWarning": "Vui lòng chọn kỹ năng",
+      "selectLevelWarning": "Vui lòng chọn cấp độ",
+      "skillExistsWarning": "Kỹ năng này đã được thêm"
     },
     "validations": {
       "required": "{field} là bắt buộc",
       "max": "{field} tối đa {max} ký tự",
+      "min": "{field} phải có ít nhất {min} ký tự",
+      "invalidEmail": "{field} không hợp lệ",
       "minNumber": "{field} phải lớn hơn hoặc bằng {min}",
       "nonNegative": "{field} phải lớn hơn hoặc bằng 0",
       "endAfterStart": "Ngày kết thúc phải sau ngày bắt đầu",
@@ -120,6 +164,19 @@
       "deleteTitle": "Xóa bản ghi",
       "deleteMessage": "Bạn có chắc muốn xóa mục này?"
     },
-    "empty": "Không có dữ liệu"
+    "stats": {
+      "totalUsers": "Tổng người dùng",
+      "admins": "Quản trị viên",
+      "staff": "Nhân viên",
+      "users": "Người dùng",
+      "totalStaff": "Tổng nhân viên"
+    },
+    "empty": "Không có dữ liệu",
+    "sidebar": {
+        "home": "Trang chính",
+        "logout": "Đăng xuất",
+        "collapse": "Thu gọn menu",
+        "expand": "Mở menu"
+    }
   }
 }
