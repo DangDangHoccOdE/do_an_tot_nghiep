@@ -50,7 +50,7 @@
                                     <RequiredLabel :label="t('admin.form.email')" :required="true" />
                                 </template>
                                 <el-input v-model="form.email" :placeholder="t('admin.placeholders.email')"
-                                    :disabled="isEdit" />
+                                    :disabled="isEdit" clearable />
                             </el-form-item>
 
                             <el-form-item prop="password" v-if="!isEdit">
@@ -58,7 +58,7 @@
                                     <RequiredLabel :label="t('admin.form.password')" :required="true" />
                                 </template>
                                 <el-input v-model="form.password" type="password"
-                                    :placeholder="t('admin.placeholders.password')" show-password />
+                                    :placeholder="t('admin.placeholders.password')" show-password clearable />
                             </el-form-item>
                         </div>
                     </div>
@@ -71,31 +71,23 @@
                                 <template #label>
                                     <RequiredLabel :label="t('admin.form.firstName')" :required="true" />
                                 </template>
-                                <el-input v-model="form.firstName" :placeholder="t('admin.placeholders.firstName')" />
+                                <el-input v-model="form.firstName" :placeholder="t('admin.placeholders.firstName')"
+                                    clearable />
                             </el-form-item>
 
                             <el-form-item prop="lastName">
                                 <template #label>
                                     <RequiredLabel :label="t('admin.form.lastName')" :required="true" />
                                 </template>
-                                <el-input v-model="form.lastName" :placeholder="t('admin.placeholders.lastName')" />
+                                <el-input v-model="form.lastName" :placeholder="t('admin.placeholders.lastName')"
+                                    clearable />
                             </el-form-item>
 
                             <el-form-item prop="phone">
                                 <template #label>
                                     <RequiredLabel :label="t('admin.form.phone')" :required="true" />
                                 </template>
-                                <el-input v-model="form.phone" :placeholder="t('admin.placeholders.phone')" />
-                            </el-form-item>
-
-                            <el-form-item prop="roleId">
-                                <template #label>
-                                    <RequiredLabel :label="t('admin.form.memberRole')" :required="true" />
-                                </template>
-                                <el-select v-model="form.roleId" :placeholder="t('admin.form.selectRole')">
-                                    <el-option v-for="role in roles" :key="role.id" :label="getRoleLabel(role.name)"
-                                        :value="role.id" />
-                                </el-select>
+                                <el-input v-model="form.phone" :placeholder="t('admin.placeholders.phone')" clearable />
                             </el-form-item>
                         </div>
                     </div>
@@ -148,6 +140,13 @@ const rules = createUserRules(t, form)
 
 onMounted(async () => {
     await fetchRoles()
+    // Tự động set role là ROLE_USER cho user mới
+    if (!isEdit.value) {
+        const userRole = roles.value.find(r => r.name === 'ROLE_USER')
+        if (userRole) {
+            form.roleId = userRole.id
+        }
+    }
     if (isEdit.value && props.id) {
         await fetchUser()
     }
@@ -222,6 +221,18 @@ const handleSubmit = async () => {
 
     try {
         await formRef.value.validate()
+
+        if (isEdit.value) {
+            await ElMessageBox.confirm(
+                t('admin.messages.confirmEdit') || 'Bạn có chắc muốn cập nhật người dùng này?',
+                t('admin.actions.update'),
+                {
+                    confirmButtonText: t('admin.actions.confirm'),
+                    cancelButtonText: t('admin.actions.cancel'),
+                    type: 'warning'
+                }
+            )
+        }
         isLoading.value = true
 
         const formData = new FormData()

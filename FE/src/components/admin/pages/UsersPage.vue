@@ -6,48 +6,33 @@
                     <h2 class="page-title">{{ t('admin.menu.users') }}</h2>
                 </div>
                 <div class="header-actions">
-                    <el-button size="small" @click="fetchUsers()">{{ t('admin.actions.refresh') }}</el-button>
-                    <el-button type="primary" size="small" @click="goCreate">{{ t('admin.actions.add') }}</el-button>
+                    <el-button @click="fetchUsers()">{{ t('admin.actions.refresh') }}</el-button>
+                    <el-button type="primary" @click="goCreate">{{ t('admin.actions.add') }}</el-button>
                 </div>
             </div>
 
-            <div class="filters-row">
-                <el-input v-model="userSearch" :placeholder="t('admin.filters.search')" size="small"
-                    class="search-input" clearable />
-                <el-select v-model="roleFilter" size="small" class="filter-select" clearable
-                    :placeholder="t('admin.filters.filterByRole')">
-                    <el-option v-for="role in roles" :key="role.id" :label="role.name" :value="role.id" />
-                </el-select>
-            </div>
-
-            <div class="meta-row" v-if="userStats.total">
-                <div class="pill">
-                    <span class="pill-label">{{ t('admin.stats.totalUsers') }}</span>
-                    <strong>{{ userStats.total }}</strong>
-                </div>
-                <div class="pill info">
-                    <span class="pill-label">{{ t('admin.stats.admins') }}</span>
-                    <strong>{{ userStats.admin }}</strong>
-                </div>
-                <div class="pill success">
-                    <span class="pill-label">{{ t('admin.stats.staff') }}</span>
-                    <strong>{{ userStats.staff }}</strong>
-                </div>
-                <div class="pill warning">
-                    <span class="pill-label">{{ t('admin.stats.users') }}</span>
-                    <strong>{{ userStats.user }}</strong>
-                </div>
+            <div class="search-section">
+                <el-input v-model="userSearch" :placeholder="t('admin.filters.search')" class="search-input" clearable
+                    size="large">
+                    <template #prefix>
+                        <el-icon>
+                            <Search />
+                        </el-icon>
+                    </template>
+                </el-input>
             </div>
 
             <div class="table-wrapper">
-                <el-table :data="filteredUsers" stripe :empty-text="t('admin.empty')" style="width: 100%">
+                <el-table :data="filteredUsers" stripe :empty-text="t('admin.empty')" style="height: 430px;width: 100%">
+                    <el-table-column type="index" :label="t('admin.table.index')" width="60" :index="getTableIndex" />
                     <el-table-column :label="t('admin.table.avatar')" width="80">
                         <template #default="scope">
-                            <div class="avatar-cell" v-if="scope.row.avatar">
-                                <img :src="scope.row.avatar" :alt="scope.row.firstName" class="avatar-img" />
-                            </div>
-                            <div class="avatar-cell empty" v-else>
-                                --
+                            <div class="avatar-cell">
+                                <img v-if="scope.row.avatar" :src="scope.row.avatar" :alt="scope.row.firstName"
+                                    class="avatar-img" />
+                                <div v-else class="avatar-default">
+                                    {{ getInitials(scope.row.firstName, scope.row.lastName) }}
+                                </div>
                             </div>
                         </template>
                     </el-table-column>
@@ -89,13 +74,9 @@
                                 <el-button text size="small" type="primary" @click="goEdit(scope.row.id)">
                                     {{ t('admin.actions.edit') }}
                                 </el-button>
-                                <el-popconfirm :title="t('admin.confirm.deleteMessage')"
-                                    @confirm="deleteUser(scope.row.id)">
-                                    <template #reference>
-                                        <el-button text size="small" type="danger">{{ t('admin.actions.delete')
-                                        }}</el-button>
-                                    </template>
-                                </el-popconfirm>
+                                <el-button text size="small" type="danger" @click="confirmDelete(scope.row.id)">
+                                    {{ t('admin.actions.delete') }}
+                                </el-button>
                             </el-space>
                         </template>
                     </el-table-column>
@@ -114,7 +95,8 @@
 import { computed, reactive, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { Search } from '@element-plus/icons-vue'
 import SectionCard from '@/components/admin/SectionCard.vue'
 import { apiUsers } from '@/services/apiUsers'
 import { apiRoles } from '@/services/apiRoles'
@@ -126,7 +108,6 @@ const router = useRouter()
 const users = ref([])
 const roles = ref([])
 const userSearch = ref('')
-const roleFilter = ref(null)
 const isLoading = ref(false)
 
 const userPage = reactive({
@@ -180,21 +161,12 @@ const filteredUsers = computed(() => {
         )
     }
 
-    if (roleFilter.value) {
-        result = result.filter(u => u.roleId === roleFilter.value)
-    }
-
     return result
 })
 
-const userStats = computed(() => {
-    return {
-        total: users.value.length,
-        admin: users.value.filter(u => getRoleName(u.roleId) === 'ROLE_ADMIN').length,
-        staff: users.value.filter(u => getRoleName(u.roleId) === 'ROLE_STAFF').length,
-        user: users.value.filter(u => getRoleName(u.roleId) === 'ROLE_USER').length
-    }
-})
+const getTableIndex = (index) => {
+    return (userPage.page - 1) * userPage.size + index + 1
+}
 
 const getRoleName = (roleId) => {
     const role = roles.value.find(r => r.id === roleId)
@@ -221,8 +193,31 @@ const goCreate = () => {
     router.push({ name: 'admin-users-new' })
 }
 
+const getInitials = (firstName, lastName) => {
+    const first = firstName?.charAt(0)?.toUpperCase() || ''
+    const last = lastName?.charAt(0)?.toUpperCase() || ''
+    return first + last || '?'
+}
+
 const goEdit = (id) => {
     router.push({ name: 'admin-users-edit', params: { id } })
+}
+
+const confirmDelete = async (id) => {
+    try {
+        await ElMessageBox.confirm(
+            t('admin.messages.confirmDelete') || 'Bạn có chắc muốn xóa người dùng này? Hành động này không thể hoàn tác.',
+            t('admin.actions.delete'),
+            {
+                confirmButtonText: t('admin.actions.delete'),
+                cancelButtonText: t('admin.actions.cancel'),
+                type: 'error'
+            }
+        )
+        deleteUser(id)
+    } catch (error) {
+        // user cancelled
+    }
 }
 
 const deleteUser = async (id) => {
@@ -280,22 +275,12 @@ const deleteUser = async (id) => {
     justify-content: flex-end;
 }
 
-.filters-row {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    flex-wrap: wrap;
-    margin: 12px 0 16px;
+.search-section {
+    margin: 16px 0 20px;
 }
 
 .search-input {
-    flex: 1;
-    min-width: 240px;
-    max-width: 360px;
-}
-
-.filter-select {
-    min-width: 180px;
+    max-width: 600px;
 }
 
 .table-wrapper {
@@ -305,73 +290,6 @@ const deleteUser = async (id) => {
     overflow-x: auto;
     overflow-y: hidden;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-.meta-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 12px;
-    margin-bottom: 16px;
-    padding: 16px 0;
-}
-
-.pill {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-    padding: 14px 16px;
-    background: #f0f7ff;
-    border: 1px solid #b3d8ff;
-    border-radius: 8px;
-    font-size: 12px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.pill:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.pill-label {
-    color: #666;
-    font-weight: 500;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.pill strong {
-    font-size: 20px;
-    color: #0066cc;
-}
-
-.pill.success {
-    background: #f6ffed;
-    border-color: #b7eb8f;
-}
-
-.pill.success strong {
-    color: #52c41a;
-}
-
-.pill.warning {
-    background: #fffbe6;
-    border-color: #ffe58f;
-}
-
-.pill.warning strong {
-    color: #faad14;
-}
-
-.pill.info {
-    background: #f6f8fc;
-    border-color: #d9d9d9;
-}
-
-.pill.info strong {
-    color: #1890ff;
 }
 
 .title-col {
@@ -398,11 +316,6 @@ const deleteUser = async (id) => {
     height: 50px;
 }
 
-.avatar-cell.empty {
-    color: #ccc;
-    font-weight: 600;
-}
-
 .avatar-img {
     width: 45px;
     height: 45px;
@@ -410,6 +323,21 @@ const deleteUser = async (id) => {
     object-fit: cover;
     border: 1px solid #ddd;
     background: #f5f5f5;
+}
+
+.avatar-default {
+    width: 45px;
+    height: 45px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    text-transform: uppercase;
 }
 
 .muted {
@@ -498,22 +426,6 @@ const deleteUser = async (id) => {
         padding: 8px 4px;
     }
 
-    .meta-row {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        margin-bottom: 12px;
-        padding: 12px 0;
-    }
-
-    .pill {
-        padding: 12px 14px;
-        font-size: 11px;
-    }
-
-    .pill strong {
-        font-size: 18px;
-    }
-
     .avatar-img {
         width: 40px;
         height: 40px;
@@ -540,14 +452,6 @@ const deleteUser = async (id) => {
 @media (max-width: 480px) {
     .action-row {
         gap: 8px;
-    }
-
-    .meta-row {
-        grid-template-columns: 1fr;
-    }
-
-    .pill {
-        padding: 10px 12px;
     }
 
     :deep(.el-table) {
