@@ -13,8 +13,10 @@ import com.management_system.dto.request.TeamRequest;
 import com.management_system.dto.response.PageResponse;
 import com.management_system.dto.response.TeamMemberResponse;
 import com.management_system.dto.response.TeamResponse;
+import com.management_system.entity.Project;
 import com.management_system.entity.Team;
 import com.management_system.entity.TeamMember;
+import com.management_system.repository.ProjectRepository;
 import com.management_system.repository.TeamMemberRepository;
 import com.management_system.repository.TeamRepository;
 import com.management_system.service.inter.ITeamService;
@@ -28,6 +30,7 @@ public class TeamServiceImpl implements ITeamService {
 
     private final TeamRepository teamRepository;
     private final TeamMemberRepository teamMemberRepository;
+    private final ProjectRepository projectRepository;
 
     @Override
     public PageResponse<TeamResponse> getPage(int page, int size) {
@@ -59,9 +62,14 @@ public class TeamServiceImpl implements ITeamService {
 
     @Override
     public TeamResponse create(TeamRequest request) {
+        // Validate project exists
+        Project project = projectRepository.findByIdAndDeleteFlagFalse(request.getProjectId())
+                .orElseThrow(() -> new EntityNotFoundException("Project not found with ID: " + request.getProjectId()));
+
         Team team = new Team();
         team.setName(request.getName());
         team.setDescription(request.getDescription());
+        team.setProjectId(project.getId());
         return toResponse(teamRepository.save(team));
     }
 
@@ -69,6 +77,15 @@ public class TeamServiceImpl implements ITeamService {
     public TeamResponse update(UUID id, TeamRequest request) {
         Team team = teamRepository.findByIdAndDeleteFlagFalse(id)
                 .orElseThrow(() -> new EntityNotFoundException("Team not found"));
+
+        // Validate project exists if projectId is changed
+        if (!team.getProjectId().equals(request.getProjectId())) {
+            Project project = projectRepository.findByIdAndDeleteFlagFalse(request.getProjectId())
+                    .orElseThrow(
+                            () -> new EntityNotFoundException("Project not found with ID: " + request.getProjectId()));
+            team.setProjectId(project.getId());
+        }
+
         team.setName(request.getName());
         team.setDescription(request.getDescription());
         return toResponse(teamRepository.save(team));
@@ -110,10 +127,20 @@ public class TeamServiceImpl implements ITeamService {
                         .build())
                 .collect(Collectors.toList());
 
+        // Get project info
+        String projectName = null;
+        if (team.getProjectId() != null) {
+            projectName = projectRepository.findByIdAndDeleteFlagFalse(team.getProjectId())
+                    .map(Project::getProjectName)
+                    .orElse(null);
+        }
+
         return TeamResponse.builder()
                 .id(team.getId())
                 .name(team.getName())
                 .description(team.getDescription())
+                .projectId(team.getProjectId())
+                .projectName(projectName)
                 .members(members)
                 .build();
     }
