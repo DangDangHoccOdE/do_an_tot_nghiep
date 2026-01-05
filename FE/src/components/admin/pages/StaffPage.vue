@@ -6,32 +6,32 @@
                     <h2 class="page-title">{{ t('admin.entities.staff') }}</h2>
                 </div>
                 <div class="header-actions">
-                    <el-button size="small" @click="fetchStaff()">{{ t('admin.actions.refresh') }}</el-button>
-                    <el-button type="primary" size="small" @click="goCreate">{{ t('admin.actions.add') }}</el-button>
+                    <el-button @click="fetchStaff()">{{ t('admin.actions.refresh') }}</el-button>
+                    <el-button type="primary" @click="goCreate">{{ t('admin.actions.add') }}</el-button>
                 </div>
             </div>
 
-            <div class="filters-row">
-                <el-input v-model="staffSearch" :placeholder="t('admin.filters.search')" size="small"
-                    class="search-input" clearable />
-            </div>
-
-            <div class="meta-row" v-if="staffStats.total">
-                <div class="pill">
-                    <span class="pill-label">{{ t('admin.stats.totalStaff') }}</span>
-                    <strong>{{ staffStats.total }}</strong>
-                </div>
+            <div class="search-section">
+                <el-input v-model="staffSearch" :placeholder="t('admin.filters.search')" class="search-input" clearable
+                    size="large">
+                    <template #prefix>
+                        <el-icon>
+                            <Search />
+                        </el-icon>
+                    </template>
+                </el-input>
             </div>
 
             <div class="table-wrapper">
                 <el-table :data="filteredStaff" stripe :empty-text="t('admin.empty')" style="width: 100%">
                     <el-table-column :label="t('admin.table.avatar')" width="80">
                         <template #default="scope">
-                            <div class="avatar-cell" v-if="scope.row.avatar">
-                                <img :src="scope.row.avatar" :alt="scope.row.firstName" class="avatar-img" />
-                            </div>
-                            <div class="avatar-cell empty" v-else>
-                                --
+                            <div class="avatar-cell">
+                                <img v-if="scope.row.avatar" :src="scope.row.avatar" :alt="scope.row.firstName"
+                                    class="avatar-img" />
+                                <div v-else class="avatar-default">
+                                    {{ getInitials(scope.row.firstName, scope.row.lastName) }}
+                                </div>
                             </div>
                         </template>
                     </el-table-column>
@@ -89,13 +89,9 @@
                                 <el-button text size="small" type="primary" @click="goEdit(scope.row.id)">
                                     {{ t('admin.actions.edit') }}
                                 </el-button>
-                                <el-popconfirm :title="t('admin.confirm.deleteMessage')"
-                                    @confirm="deleteStaff(scope.row.id)">
-                                    <template #reference>
-                                        <el-button text size="small" type="danger">{{ t('admin.actions.delete')
-                                            }}</el-button>
-                                    </template>
-                                </el-popconfirm>
+                                <el-button text size="small" type="danger" @click="confirmDelete(scope.row.id)">
+                                    {{ t('admin.actions.delete') }}
+                                </el-button>
                             </el-space>
                         </template>
                     </el-table-column>
@@ -114,7 +110,8 @@
 import { computed, reactive, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { Search } from '@element-plus/icons-vue'
 import SectionCard from '@/components/admin/SectionCard.vue'
 import { apiUsers } from '@/services/apiUsers'
 
@@ -184,6 +181,12 @@ const staffStats = computed(() => {
     }
 })
 
+const getInitials = (firstName = '', lastName = '') => {
+    const first = firstName.trim()[0]?.toUpperCase() || ''
+    const last = lastName.trim()[0]?.toUpperCase() || ''
+    return `${first}${last}` || '??'
+}
+
 const handleStaffPage = (page) => {
     staffPage.page = page
     fetchStaff()
@@ -205,6 +208,23 @@ const deleteStaff = async (id) => {
     } catch (error) {
         console.error('Failed to delete staff:', error)
         ElMessage.error(t('admin.messages.deleteStaffFailed'))
+    }
+}
+
+const confirmDelete = async (id) => {
+    try {
+        await ElMessageBox.confirm(
+            t('admin.messages.confirmDelete'),
+            t('admin.actions.delete'),
+            {
+                confirmButtonText: t('admin.actions.delete'),
+                cancelButtonText: t('admin.actions.close'),
+                type: 'warning'
+            }
+        )
+        await deleteStaff(id)
+    } catch (error) {
+        // user cancelled
     }
 }
 
@@ -293,63 +313,24 @@ const formatSkillLevel = (level) => {
     justify-content: flex-end;
 }
 
-.filters-row {
+.search-section {
     display: flex;
-    gap: 10px;
-    align-items: center;
-    flex-wrap: wrap;
+    justify-content: flex-end;
     margin: 12px 0 16px;
 }
 
 .search-input {
     flex: 1;
-    min-width: 240px;
-    max-width: 360px;
+    min-width: 260px;
+    max-width: 420px;
 }
 
 .table-wrapper {
     background: #fff;
     border: 1px solid #e5e7eb;
     border-radius: 8px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-.meta-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 12px;
-    margin-bottom: 16px;
-    padding: 16px 0;
-}
-
-.pill {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-    padding: 14px 16px;
-    background: #f0f7ff;
-    border: 1px solid #b3d8ff;
-    border-radius: 8px;
-    font-size: 12px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.pill:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.pill-label {
-    color: #666;
-    font-weight: 500;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
 
 .pill strong {
     font-size: 20px;
@@ -392,6 +373,19 @@ const formatSkillLevel = (level) => {
     object-fit: cover;
     border: 1px solid #ddd;
     background: #f5f5f5;
+}
+
+.avatar-default {
+    width: 45px;
+    height: 45px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    color: #1d4ed8;
+    font-weight: 700;
+    border: 1px solid #cbd5e1;
 }
 
 .skills-display {
@@ -509,22 +503,6 @@ const formatSkillLevel = (level) => {
         padding: 8px 4px;
     }
 
-    .meta-row {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        margin-bottom: 12px;
-        padding: 12px 0;
-    }
-
-    .pill {
-        padding: 12px 14px;
-        font-size: 11px;
-    }
-
-    .pill strong {
-        font-size: 18px;
-    }
-
     .avatar-img {
         width: 40px;
         height: 40px;
@@ -559,14 +537,6 @@ const formatSkillLevel = (level) => {
 @media (max-width: 480px) {
     .action-row {
         gap: 8px;
-    }
-
-    .meta-row {
-        grid-template-columns: 1fr;
-    }
-
-    .pill {
-        padding: 10px 12px;
     }
 
     :deep(.el-table) {

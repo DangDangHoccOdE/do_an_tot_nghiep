@@ -14,6 +14,28 @@
             </div>
             <div class="form-wrapper">
                 <el-form ref="formRef" :model="form" :rules="staffRules" label-width="auto">
+                    <!-- Avatar Upload Section -->
+                    <div class="form-section-full">
+                        <div class="form-section-title">{{ t('admin.form.avatar') }}</div>
+                        <div class="avatar-upload-container">
+                            <div v-if="form.avatar" class="avatar-preview">
+                                <img :src="form.avatar" alt="Avatar" class="preview-img" />
+                                <el-button text type="danger" size="small" @click="removeAvatar">
+                                    {{ t('admin.actions.delete') }}
+                                </el-button>
+                            </div>
+                            <el-upload v-else action="#" :auto-upload="false" :on-change="handleAvatarChange"
+                                :file-list="[]" accept="image/*" drag class="avatar-upload">
+                                <el-icon class="el-icon--upload">
+                                    <UploadFilled />
+                                </el-icon>
+                                <div class="el-upload__text">
+                                    {{ t('admin.form.dragOrClick') }}<em>{{ t('admin.form.selectFile') }}</em>
+                                </div>
+                            </el-upload>
+                        </div>
+                    </div>
+
                     <!-- Account Information -->
                     <div class="form-section-full">
                         <div class="form-section-title">{{ t('admin.form.accountInfo') }}</div>
@@ -22,7 +44,7 @@
                                 <template #label>
                                     <RequiredLabel :label="t('admin.form.email')" :required="true" />
                                 </template>
-                                <el-input v-model="form.email" :disabled="isEdit"
+                                <el-input v-model="form.email" :disabled="isEdit" clearable
                                     :placeholder="t('admin.placeholders.email')" />
                             </el-form-item>
 
@@ -30,42 +52,44 @@
                                 <template #label>
                                     <RequiredLabel :label="t('admin.form.password')" :required="true" />
                                 </template>
-                                <el-input v-model="form.password" type="password"
-                                    :placeholder="t('admin.placeholders.password')" />
+                                <el-input v-model="form.password" type="password" clearable
+                                    :placeholder="t('admin.placeholders.password')" show-password />
                             </el-form-item>
                         </div>
                     </div>
 
                     <!-- Personal Information -->
                     <div class="form-section-full">
-                        <div class="form-section-title">{{ t('admin.form.personalInfo') }}</div>
+                        <div class="form-section-title">
+                            {{ t('admin.form.personalInfo') }}
+                        </div>
                         <div class="form-grid">
                             <el-form-item prop="firstName">
                                 <template #label>
                                     <RequiredLabel :label="t('admin.form.firstName')" :required="true" />
                                 </template>
-                                <el-input v-model="form.firstName" :placeholder="t('admin.placeholders.firstName')" />
+                                <el-input v-model="form.firstName" clearable />
                             </el-form-item>
 
                             <el-form-item prop="lastName">
                                 <template #label>
                                     <RequiredLabel :label="t('admin.form.lastName')" :required="true" />
                                 </template>
-                                <el-input v-model="form.lastName" :placeholder="t('admin.placeholders.lastName')" />
+                                <el-input v-model="form.lastName" clearable />
                             </el-form-item>
 
                             <el-form-item prop="phone">
                                 <template #label>
                                     <RequiredLabel :label="t('admin.form.phone')" :required="true" />
                                 </template>
-                                <el-input v-model="form.phone" :placeholder="t('admin.placeholders.phone')" />
+                                <el-input v-model="form.phone" clearable />
                             </el-form-item>
 
                             <el-form-item prop="cv">
                                 <template #label>
                                     <RequiredLabel :label="t('admin.form.cv')" :required="false" />
                                 </template>
-                                <el-input v-model="form.cv" :placeholder="t('admin.placeholders.cv')" />
+                                <el-input v-model="form.cv" clearable />
                             </el-form-item>
                         </div>
                     </div>
@@ -80,7 +104,7 @@
                                     <RequiredLabel :label="t('admin.form.itRole')" :required="true" />
                                 </template>
                                 <el-select v-model="form.itRole" :placeholder="t('admin.form.selectItRole')"
-                                    style="width: 100%;">
+                                    style="width: 100%;" clearable>
                                     <el-option label="Frontend Developer" value="FRONTEND_DEVELOPER" />
                                     <el-option label="Backend Developer" value="BACKEND_DEVELOPER" />
                                     <el-option label="Fullstack Developer" value="FULLSTACK_DEVELOPER" />
@@ -110,13 +134,13 @@
                                 <!-- Add new skill -->
                                 <div class="skill-input-group">
                                     <el-select v-model="newSkill.skillId" :placeholder="t('admin.form.selectSkill')"
-                                        style="flex: 1; margin-right: 8px;">
+                                        style="width: 180px; flex: 1; margin-right: 8px;" clearable>
                                         <el-option v-for="skill in availableSkills" :key="skill.id" :label="skill.name"
                                             :value="skill.id" />
                                     </el-select>
                                     <el-select v-model="newSkill.level"
                                         :placeholder="t('admin.placeholders.skillLevel')"
-                                        style="width: 180px; margin-right: 8px;">
+                                        style="width: 180px; margin-right: 8px;" clearable>
                                         <el-option label="Intern" value="INTERN" />
                                         <el-option label="Fresher" value="FRESHER" />
                                         <el-option label="Junior" value="JUNIOR" />
@@ -153,26 +177,6 @@
                             </div>
                         </el-form-item>
                     </div>
-
-                    <!-- Avatar Section -->
-                    <div class="form-section-full">
-                        <div class="form-section-title">{{ t('admin.form.avatar') }}</div>
-                        <el-form-item>
-                            <div class="avatar-upload">
-                                <div class="avatar-preview" v-if="form.avatar || previewUrl">
-                                    <img :src="previewUrl || form.avatar" alt="preview" />
-                                </div>
-                                <el-upload :on-change="handleAvatarChange" :auto-upload="false" accept="image/*" drag
-                                    action="#">
-                                    <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-                                    <div class="el-upload__text">
-                                        {{ t('admin.form.dragOrClick') }} <em>{{ t('admin.form.selectFile') }}</em>
-                                    </div>
-                                </el-upload>
-                            </div>
-                        </el-form-item>
-                    </div>
-
                 </el-form>
             </div>
         </SectionCard>
@@ -197,7 +201,6 @@ const route = useRoute()
 const formRef = ref()
 
 const isEdit = ref(false)
-const previewUrl = ref('')
 const avatarFile = ref(null)
 const availableSkills = ref([])
 
@@ -318,12 +321,29 @@ const confirmCancel = async () => {
 }
 
 const handleAvatarChange = (file) => {
-    avatarFile.value = file.raw
-    const reader = new FileReader()
-    reader.onload = (e) => {
-        previewUrl.value = e.target.result
+    // Validate file type
+    if (!file.raw.type.startsWith('image/')) {
+        ElMessage.error(t('admin.messages.imageTypeError'))
+        return
     }
-    reader.readAsDataURL(file.raw)
+
+    // Validate file size (5MB)
+    const maxSize = 5 * 1024 * 1024
+    if (file.raw.size > maxSize) {
+        ElMessage.error(t('admin.messages.imageSizeError'))
+        return
+    }
+
+    // Save file and create preview URL
+    avatarFile.value = file.raw
+    form.avatar = URL.createObjectURL(file.raw)
+    ElMessage.success(t('admin.messages.imageSelected'))
+}
+
+const removeAvatar = () => {
+    form.avatar = ''
+    avatarFile.value = null
+    ElMessage.info(t('admin.messages.imageRemoved'))
 }
 
 const submit = async () => {
@@ -331,6 +351,22 @@ const submit = async () => {
 
     await formRef.value.validate(async (valid) => {
         if (!valid) return
+
+        if (isEdit.value) {
+            try {
+                await ElMessageBox.confirm(
+                    t('admin.messages.confirmEdit'),
+                    t('admin.actions.update'),
+                    {
+                        confirmButtonText: t('admin.actions.update'),
+                        cancelButtonText: t('admin.actions.close'),
+                        type: 'warning'
+                    }
+                )
+            } catch (error) {
+                return
+            }
+        }
 
         try {
             const formData = new FormData()
@@ -561,30 +597,32 @@ const submit = async () => {
     color: #333;
 }
 
-.avatar-upload {
+.avatar-upload-container {
     display: flex;
-    gap: 16px;
-    align-items: flex-start;
-    padding: 16px;
-    background: #f9f9fb;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
 }
 
 .avatar-preview {
-    width: 120px;
-    height: 120px;
-    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
 }
 
-.avatar-preview img {
-    width: 100%;
-    height: 100%;
+.avatar-preview .preview-img {
+    width: 150px;
+    height: 150px;
     object-fit: cover;
     border-radius: 8px;
-    border: 2px solid #ddd;
-    background: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 2px solid #e5e7eb;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-upload {
+    width: 100%;
+    max-width: 400px;
 }
 
 :deep(.el-upload) {
