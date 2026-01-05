@@ -207,17 +207,11 @@ onMounted(() => {
 
 <style scoped>
 .form-page {
-    padding: 18px;
     background: radial-gradient(circle at 20% 20%, #fff5f5, #ffffff 45%);
 }
 
 .full-input {
     width: 100%;
-}
-
-.form-shell {
-    max-width: 1080px;
-    margin: 0 auto;
 }
 
 .form-meta {

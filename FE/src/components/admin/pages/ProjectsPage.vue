@@ -1,17 +1,29 @@
 <template>
-  <div class="grid">
-    <SectionCard :title="sectionLabel">
-      <template #actions>
-        <div class="action-row">
-          <el-input v-model="projectSearch" :placeholder="t('admin.filters.search')" size="small" class="search-input"
-            clearable />
-          <el-select v-model="statusFilter" size="small" class="filter-select">
-            <el-option v-for="opt in statusOptions" :key="opt.value" :label="opt.label" :value="opt.value" />
-          </el-select>
-          <el-button type="primary" size="small" @click="goCreate">{{ t('admin.actions.add') }}</el-button>
-          <el-button size="small" @click="fetchProjects()">{{ t('admin.actions.refresh') }}</el-button>
+  <div class="page">
+    <SectionCard>
+      <div class="page-header">
+        <div class="title-group">
+          <h2 class="page-title">{{ sectionLabel }}</h2>
         </div>
-      </template>
+        <div class="header-actions">
+          <el-button @click="fetchProjects()">{{ t('admin.actions.refresh') }}</el-button>
+          <el-button type="primary" @click="goCreate">{{ t('admin.actions.add') }}</el-button>
+        </div>
+      </div>
+
+      <div class="search-section">
+        <el-input v-model="projectSearch" :placeholder="t('admin.filters.search')" class="search-input" clearable
+          size="large">
+          <template #prefix>
+            <el-icon>
+              <Search />
+            </el-icon>
+          </template>
+        </el-input>
+        <el-select v-model="statusFilter" size="large" class="filter-select" clearable>
+          <el-option v-for="opt in statusOptions" :key="opt.value" :label="opt.label" :value="opt.value" />
+        </el-select>
+      </div>
 
       <div class="meta-row" v-if="projectStats.total">
         <div class="pill">
@@ -93,6 +105,7 @@
 import { computed, reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { Search } from '@element-plus/icons-vue'
 import SectionCard from '@/components/admin/SectionCard.vue'
 import { apiProjects } from '@/services/apiProjects'
 
@@ -217,26 +230,55 @@ watch(
 </script>
 
 <style scoped>
-.grid {
+.page {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-  gap: 14px;
+  gap: 16px;
 }
 
-.action-row {
+.page-header {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
   align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
   justify-content: flex-end;
 }
 
+.search-section {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
 .search-input {
-  max-width: 240px;
+  flex: 1;
+  min-width: 240px;
+  max-width: 400px;
 }
 
 .filter-select {
-  width: 150px;
+  width: 180px;
 }
 
 .meta-row {
@@ -304,9 +346,19 @@ watch(
   color: #9ca3af;
 }
 
+.table-wrapper {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow-x: auto;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
 .pagination {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 12px;
+  justify-content: center;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #e5e7eb;
 }
 </style>
