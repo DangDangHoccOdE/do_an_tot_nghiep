@@ -20,7 +20,11 @@
     "edit": "編集",
     "update": "更新",
     "delete": "削除",
-    "view": "表示"
+    "view": "表示",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "close": "閉じる",
+    "confirm": "確認"
     },
     "services": {
       "title": "デジタルトランスフォーメーションの旅へ",
@@ -90,6 +94,7 @@
       "close": "Close"
     },
     "table": {
+       "index": "No.",
        "projectName": "プロジェクト名",
        "status": "ステータス",
        "startDate": "開始日",
@@ -143,6 +148,7 @@
       "userId": "ユーザーID",
       "memberRole": "役割",
       "selectRole": "役割を選択",
+      "selectProject": "プロジェクトを選択",
       "roleAdmin": "管理者",
       "rolePM": "プロジェクトマネージャー",
       "roleStaff": "スタッフ",
@@ -177,7 +183,12 @@
       "uploadFailed": "画像のアップロードに失敗しました",
       "imageTypeError": "画像ファイルを選択してください",
       "imageSizeError": "画像サイズは5MB以下にしてください",
-      "imageSelected": "画像を選択しました。保存をクリックしてアップロードしてください"
+      "imageSelected": "画像を選択しました。保存をクリックしてアップロードしてください",
+      "deleteUserSuccess": "ユーザーを削除しました",
+      "deleteUserFailed": "ユーザーの削除に失敗しました",
+      "confirmCancel": "本当にキャンセルしますか？変更は保存されません。",
+      "confirmEdit": "このユーザーを編集してもよろしいですか？",
+      "confirmDelete": "このユーザーを削除してもよろしいですか？この操作は元に戻せません。"
     },
     "validations": {
       "required": "{field} は必須です",

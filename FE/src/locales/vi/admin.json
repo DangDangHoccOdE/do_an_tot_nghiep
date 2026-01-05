@@ -23,9 +23,11 @@
       "view": "Xem",
       "save": "Lưu",
       "cancel": "Hủy",
-      "close": "Đóng"
+      "close": "Đóng",
+      "confirm": "Xác nhận"
     },
     "table": {
+      "index": "STT",
       "projectName": "Tên dự án",
       "status": "Trạng thái",
       "startDate": "Bắt đầu",
@@ -90,6 +92,7 @@
       "selectRole": "Chọn quyền hạn",
       "selectItRole": "Chọn vai trò IT",
       "selectSkill": "Chọn kỹ năng",
+      "selectProject": "Chọn dự án",
       "addSkill": "Thêm kỹ năng",
       "roleAdmin": "Quản trị viên",
       "rolePM": "Quản lý dự án",
@@ -130,6 +133,7 @@
       "imageTypeError": "Vui lòng chọn file ảnh",
       "imageSizeError": "Kích thước ảnh không được vượt quá 5MB",
       "imageSelected": "Đã chọn ảnh. Nhấn Lưu để upload",
+      "imageRemoved": "Đã xóa ảnh",
       "deleteUserSuccess": "Xóa người dùng thành công",
       "deleteUserFailed": "Lỗi khi xóa người dùng",
       "deleteStaffSuccess": "Xóa nhân viên thành công",
@@ -137,6 +141,8 @@
       "loadUsersError": "Lỗi khi tải danh sách người dùng",
       "loadStaffError": "Lỗi khi tải danh sách nhân viên",
       "confirmCancel": "Bạn có chắc muốn hủy? Mọi thay đổi sẽ không được lưu.",
+      "confirmEdit": "Bạn có chắc muốn chỉnh sửa người dùng này?",
+      "confirmDelete": "Bạn có chắc muốn xóa người dùng này? Hành động này không thể hoàn tác.",
       "loadSkillsError": "Lỗi khi tải danh sách kỹ năng",
       "staffCreated": "Thêm nhân viên thành công",
       "staffUpdated": "Cập nhật nhân viên thành công",

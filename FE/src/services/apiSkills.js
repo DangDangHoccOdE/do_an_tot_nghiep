@@ -1,23 +1,21 @@
 import { del, get, post, put } from '@/utils/http';
 
-const API_URL = '/api/v1/skills';
-
 export const apiSkills = {
   // Skill management
-  list: () => get(API_URL),
+  list: () => get('/skills'),
 
-  getById: (id) => get(`${API_URL}/${id}`),
+  getById: (id) => get(`/skills/${id}`),
 
-  create: (data) => post(API_URL, data),
+  create: (data) => post('/skills', data),
 
-  update: (id, data) => put(`${API_URL}/${id}`, data),
-  delete: (id) => del(`${API_URL}/${id}`),
+  update: (id, data) => put(`/skills/${id}`, data),
+  delete: (id) => del(`/skills/${id}`),
 
   // Employee skills
-  addSkillToStaff: (staffId, skillData) => post(`/api/v1/staff/${staffId}/skills`, skillData),
+  addSkillToStaff: (staffId, skillData) => post(`/staff/${staffId}/skills`, skillData),
 
-  removeSkillFromStaff: (staffId, skillId) => del(`/api/v1/staff/${staffId}/skills/${skillId}`),
-  getStaffSkills: (staffId) => get(`/api/v1/staff/${staffId}/skills`),
+  removeSkillFromStaff: (staffId, skillId) => del(`/staff/${staffId}/skills/${skillId}`),
+  getStaffSkills: (staffId) => get(`/staff/${staffId}/skills`),
 
-  updateStaffSkill: (staffId, skillId, data) => put(`/api/v1/staff/${staffId}/skills/${skillId}`, data),
+  updateStaffSkill: (staffId, skillId, data) => put(`/staff/${staffId}/skills/${skillId}`, data),
 };

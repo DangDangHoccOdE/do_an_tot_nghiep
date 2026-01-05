@@ -60,8 +60,30 @@ axios.interceptors.response.use(
         const originalRequest = error.config;
         const auth = useAuthStore();
         
-        // Nếu là lỗi 401 và chưa retry và có refresh token
-        if (error?.response?.status === 401 && !originalRequest._retry && auth.refreshToken) {
+        // Nếu là lỗi 401 và chưa retry
+        if (error?.response?.status === 401 && !originalRequest._retry) {
+            // Kiểm tra xem có phải lỗi từ API refresh không - nếu có thì logout luôn
+            if (originalRequest.url && originalRequest.url.includes('/auth/refresh')) {
+                console.warn('Refresh token expired or invalid, logging out');
+                auth.logout();
+                const path = router.currentRoute.value.fullPath;
+                if (!path.includes('login')) {
+                    router.push(`/login?redirect=${encodeURIComponent(path)}`);
+                }
+                return Promise.reject(error);
+            }
+
+            // Kiểm tra có refresh token không
+            if (!auth.refreshToken) {
+                console.warn('No refresh token available, logging out');
+                auth.logout();
+                const path = router.currentRoute.value.fullPath;
+                if (!path.includes('login')) {
+                    router.push(`/login?redirect=${encodeURIComponent(path)}`);
+                }
+                return Promise.reject(error);
+            }
+
             // Nếu đang refresh thì đưa request vào queue
             if (isRefreshing) {
                 return new Promise((resolve, reject) => {
@@ -78,6 +100,8 @@ axios.interceptors.response.use(
             isRefreshing = true;
 
             try {
+                console.log('Access token expired, attempting to refresh...');
+                
                 // Gọi API refresh token
                 const response = await axios.post('/auth/refresh', {
                     refreshToken: auth.refreshToken
@@ -90,6 +114,12 @@ axios.interceptors.response.use(
                 const newAccessToken = response.data.accessToken || response.data.accessTokenJwt;
                 const newRefreshToken = response.data.refreshToken || response.data.refreshTokenJwt;
 
+                if (!newAccessToken) {
+                    throw new Error('No access token received from refresh');
+                }
+
+                console.log('Token refreshed successfully');
+
                 // Cập nhật token mới vào store
                 auth.updateTokens(newAccessToken, newRefreshToken);
 
@@ -100,13 +130,13 @@ axios.interceptors.response.use(
                 originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
                 return axios(originalRequest);
             } catch (refreshError) {
-                // Refresh token cũng hết hạn, logout user
+                // Refresh token cũng hết hạn hoặc invalid, logout user
                 processQueue(refreshError, null);
                 console.warn('Refresh token failed, logging out user');
-                auth.logout(); // Đảm bảo xóa auth khỏi localStorage
+                auth.logout();
                 const path = router.currentRoute.value.fullPath;
                 if (!path.includes('login')) {
-                    router.push(`/login?redirect=${path}`);
+                    router.push(`/login?redirect=${encodeURIComponent(path)}`);
                 }
                 return Promise.reject(refreshError);
             } finally {
@@ -114,13 +144,13 @@ axios.interceptors.response.use(
             }
         }
         
-        // Nếu là lỗi 403 hoặc không có refresh token
+        // Nếu là lỗi 403 (Forbidden) 
         if (error?.response?.status === 403) {
             const path = router.currentRoute.value.fullPath;
             if(!path.includes('login') && auth.accessToken) {
-                console.warn('403 error, logging out user');
-                auth.logout(); // Đảm bảo xóa auth khỏi localStorage
-                router.push(`/login?redirect=${path}`);
+                console.warn('403 Forbidden error, logging out user');
+                auth.logout();
+                router.push(`/login?redirect=${encodeURIComponent(path)}`);
             }
         }
         

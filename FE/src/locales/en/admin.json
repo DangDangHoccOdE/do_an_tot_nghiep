@@ -20,7 +20,11 @@
       "edit": "Edit",
       "update": "Update",
       "delete": "Delete",
-      "view": "View"
+      "view": "View",
+      "save": "Save",
+      "cancel": "Cancel",
+      "close": "Close",
+      "confirm": "Confirm"
     },
     "services": {
       "title": "Join us on the digital transformation journey",
@@ -98,6 +102,7 @@
       "close": "Close"
     },
     "table": {
+      "index": "No.",
       "projectName": "Project Name",
       "status": "Status",
       "startDate": "Start Date",
@@ -151,6 +156,7 @@
       "userId": "User ID",
       "memberRole": "Role in team",
       "selectRole": "Select role",
+      "selectProject": "Select project",
       "roleAdmin": "Administrator",
       "rolePM": "Project Manager",
       "roleStaff": "Staff",
@@ -185,7 +191,12 @@
       "uploadFailed": "Image upload failed",
       "imageTypeError": "Please select an image file",
       "imageSizeError": "Image size must not exceed 5MB",
-      "imageSelected": "Image selected. Click Save to upload"
+      "imageSelected": "Image selected. Click Save to upload",
+      "deleteUserSuccess": "User deleted successfully",
+      "deleteUserFailed": "Error deleting user",
+      "confirmCancel": "Are you sure you want to cancel? Changes will not be saved.",
+      "confirmEdit": "Are you sure you want to edit this user?",
+      "confirmDelete": "Are you sure you want to delete this user? This action cannot be undone."
     },
     "validations": {
       "required": "{field} is required",
