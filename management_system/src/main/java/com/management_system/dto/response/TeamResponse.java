@@ -12,5 +12,7 @@ public class TeamResponse {
     private UUID id;
     private String name;
     private String description;
+    private UUID projectId;
+    private String projectName;
     private List<TeamMemberResponse> members;
 }
