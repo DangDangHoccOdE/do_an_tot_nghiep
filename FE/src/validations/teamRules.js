@@ -3,6 +3,9 @@ export const createTeamRules = (t) => {
   const msg = (key, params) => t(`admin.validations.${key}`, params)
 
   return {
+    projectId: [
+      { required: true, message: msg('required', { field: field('projectName') }), trigger: ['blur', 'change'] }
+    ],
     name: [
       { required: true, message: msg('required', { field: field('teamName') }), trigger: ['blur', 'change'] },
       { max: 150, message: msg('max', { field: field('teamName'), max: 150 }), trigger: ['blur', 'change'] }

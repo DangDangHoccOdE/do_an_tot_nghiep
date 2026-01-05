@@ -17,6 +17,14 @@
                 </div>
 
                 <el-form ref="formRef" :model="form" :rules="rules" label-width="140px" :disabled="loading || isView">
+                    <el-form-item :label="t('admin.form.projectName')" prop="projectId">
+                        <el-select v-model="form.projectId" :placeholder="t('admin.form.selectProject')" filterable
+                            clearable style="width: 100%">
+                            <el-option v-for="project in projects" :key="project.id" :label="project.projectName"
+                                :value="project.id" />
+                        </el-select>
+                    </el-form-item>
+
                     <el-form-item :label="t('admin.form.teamName')" prop="name">
                         <el-input v-model="form.name" maxlength="150" show-word-limit />
                     </el-form-item>
@@ -37,6 +45,7 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import SectionCard from '@/components/admin/SectionCard.vue'
 import { apiTeams } from '@/services/apiTeams'
+import { apiProjects } from '@/services/apiProjects'
 import { handleError, handleSuccess } from '@/utils/handleMessage'
 import { createTeamRules } from '@/validations/teamRules'
 
@@ -51,10 +60,12 @@ const router = useRouter()
 const formRef = ref()
 const loading = ref(false)
 const submitting = ref(false)
+const projects = ref([])
 
 const form = reactive({
     name: '',
-    description: ''
+    description: '',
+    projectId: null
 })
 
 const isView = computed(() => props.mode === 'view')
@@ -67,6 +78,19 @@ const pageTitle = computed(() => {
 
 const rules = computed(() => createTeamRules(t))
 
+const fetchProjects = async () => {
+    try {
+        // Fetch all projects (current and future)
+        const [currentData, futureData] = await Promise.all([
+            apiProjects.list({ status: 'current', page: 0, size: 1000 }),
+            apiProjects.list({ status: 'future', page: 0, size: 1000 })
+        ])
+        projects.value = [...(currentData.content || []), ...(futureData.content || [])]
+    } catch (error) {
+        handleError(error, t, t('admin.messages.loadFail'))
+    }
+}
+
 const loadDetail = async () => {
     if (!props.id) return
     loading.value = true
@@ -74,7 +98,8 @@ const loadDetail = async () => {
         const data = await apiTeams.detail(props.id)
         Object.assign(form, {
             name: data.name || '',
-            description: data.description || ''
+            description: data.description || '',
+            projectId: data.projectId || null
         })
     } catch (error) {
         handleError(error, t, t('admin.messages.loadFail'))
@@ -110,7 +135,8 @@ const submitForm = () => {
 
 const goBack = () => redirectToList()
 
-onMounted(() => {
+onMounted(async () => {
+    await fetchProjects()
     if (!isCreate.value) {
         loadDetail()
     }
@@ -119,7 +145,6 @@ onMounted(() => {
 
 <style scoped>
 .form-page {
-    padding: 18px;
     background: radial-gradient(circle at 20% 20%, #fff5f5, #ffffff 45%);
 }
 

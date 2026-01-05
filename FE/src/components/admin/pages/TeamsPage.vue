@@ -1,14 +1,26 @@
 <template>
-  <div class="grid">
-    <SectionCard :eyebrow="t('admin.menu.teams')" :title="t('admin.menu.teams')">
-      <template #actions>
-        <div class="action-row">
-          <el-input v-model="teamSearch" :placeholder="t('admin.filters.search')" size="small" class="search-input"
-            clearable />
-          <el-button type="primary" size="small" @click="goCreate">{{ t('admin.actions.add') }}</el-button>
-          <el-button size="small" @click="fetchTeams()">{{ t('admin.actions.refresh') }}</el-button>
+  <div class="page">
+    <SectionCard>
+      <div class="page-header">
+        <div class="title-group">
+          <h2 class="page-title">{{ t('admin.menu.teams') }}</h2>
         </div>
-      </template>
+        <div class="header-actions">
+          <el-button @click="fetchTeams()">{{ t('admin.actions.refresh') }}</el-button>
+          <el-button type="primary" @click="goCreate">{{ t('admin.actions.add') }}</el-button>
+        </div>
+      </div>
+
+      <div class="search-section">
+        <el-input v-model="teamSearch" :placeholder="t('admin.filters.search')" class="search-input" clearable
+          size="large">
+          <template #prefix>
+            <el-icon>
+              <Search />
+            </el-icon>
+          </template>
+        </el-input>
+      </div>
 
       <div class="meta-row" v-if="teamStats.total">
         <div class="pill">
@@ -28,6 +40,14 @@
               <span class="title">{{ scope.row.name }}</span>
               <span class="subtitle" v-if="scope.row.description">{{ scope.row.description }}</span>
             </div>
+          </template>
+        </el-table-column>
+        <el-table-column :label="t('admin.table.projectName')" min-width="180">
+          <template #default="scope">
+            <el-tag v-if="scope.row.projectName" type="primary" size="small" effect="plain">
+              {{ scope.row.projectName }}
+            </el-tag>
+            <span v-else class="muted">--</span>
           </template>
         </el-table-column>
         <el-table-column :label="t('admin.table.members')" min-width="220">
@@ -74,6 +94,7 @@
 import { computed, reactive, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { Search } from '@element-plus/icons-vue'
 import SectionCard from '@/components/admin/SectionCard.vue'
 import { apiTeams } from '@/services/apiTeams'
 
@@ -131,22 +152,51 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.grid {
+.page {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-  gap: 14px;
+  gap: 16px;
 }
 
-.action-row {
+.page-header {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
   align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
   justify-content: flex-end;
 }
 
+.search-section {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
 .search-input {
-  max-width: 240px;
+  flex: 1;
+  min-width: 240px;
+  max-width: 400px;
 }
 
 .meta-row {
@@ -218,9 +268,19 @@ onMounted(() => {
   color: #0f172a;
 }
 
+.table-wrapper {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow-x: auto;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
 .pagination {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 12px;
+  justify-content: center;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #e5e7eb;
 }
 </style>
