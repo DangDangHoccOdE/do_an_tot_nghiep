@@ -85,9 +85,13 @@ public class JwtFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(request, response);
         } catch (ExpiredJwtException e) {
+            // Khi JWT hết hạn, trả về 401 để frontend có thể gọi refresh token
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.setContentType("application/json");
-            response.getWriter().write("{\"code\":401,\"message\":\"JWT expired\"}");
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write("{\"code\":401,\"message\":\"JWT expired\",\"error\":\"token_expired\"}");
+            response.getWriter().flush();
+            // KHÔNG gọi filterChain.doFilter() - dừng xử lý tại đây
+            return;
         } catch (UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
             resolver.resolveException(request, response, null, e);
         }

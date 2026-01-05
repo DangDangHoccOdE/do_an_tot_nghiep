@@ -13,6 +13,7 @@ public class Endpoints {
                         "/oauth2/**",
                         "/login/oauth2/**",
                         "/api/v1/projects",
+                        "/api/v1/skills"
         };
 
         public static final String[] PUBLIC_POST_ENDPOINTS = {

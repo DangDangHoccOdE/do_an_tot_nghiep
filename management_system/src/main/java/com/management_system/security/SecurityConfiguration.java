@@ -28,6 +28,8 @@ import com.management_system.oauth2.OAuth2AuthenticationSuccessHandler;
 import com.management_system.service.impl.UserSecurityServiceImpl;
 import com.management_system.service.inter.IUserSecurityService;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -111,8 +113,15 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, Endpoints.PUBLIC_GET_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_POST_ENDPOINTS).permitAll()
                         .anyRequest().authenticated())
-                // Xử lý lỗi 403
-                .exceptionHandling(handling -> handling.accessDeniedHandler(customAccessDeniedHandler))
+                // Xử lý lỗi authentication (401) - trả về JSON thay vì redirect
+                .exceptionHandling(handling -> handling
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.setContentType("application/json;charset=UTF-8");
+                            response.getWriter()
+                                    .write("{\"code\":401,\"message\":\"Unauthorized - Authentication required\"}");
+                        })
+                        .accessDeniedHandler(customAccessDeniedHandler))
                 // Dùng JWT filter
                 .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
                 // Session cho JWT
