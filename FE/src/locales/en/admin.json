@@ -6,10 +6,17 @@
       "projects": "Projects",
       "currentProjects": "Current projects",
       "futureProjects": "Future projects",
+      "revenueManagement": "Revenue Management",
+      "dailyTasks": "Daily Tasks",
+      "metrics": "Project Metrics",
       "teams": "Project teams",
       "tasks": "Tasks by project",
       "staff": "Staff",
       "users": "Users"
+    },
+    "sections": {
+      "projectMembers": "Project members",
+      "selectedMembers": "Selected members"
     },
     "actions": {
       "refresh": "Refresh",
@@ -39,16 +46,8 @@
         "cloud": "Cloud transformation",
         "itManagement": "IT management services",
         "qa": "QA & testing",
-        "security": "Cyber security",
-        "loadStaffError": "Failed to load staff",
-        "confirmCancel": "Are you sure you want to cancel? Changes will not be saved.",
-        "loadSkillsError": "Failed to load skills",
-        "staffCreated": "Staff created successfully",
-        "staffUpdated": "Staff updated successfully",
-        "saveError": "Error while saving",
-        "selectSkillWarning": "Please select a skill",
-        "selectLevelWarning": "Please select a level",
-        "skillExistsWarning": "Skill already added",
+        "security": "Cyber security"
+      },
       "viewMore": "View more"
     },
     "academy": {
@@ -96,10 +95,22 @@
         "training": { "title": "Learning culture", "desc": "Ability to quickly embrace new business and technical domains thanks to a strong self-learning culture." },
         "quality": { "title": "Stable quality", "desc": "Deliver consistently high quality even when team composition changes." },
         "cooperation": { "title": "Long-term partnership", "desc": "Focus on long-term cooperation, accompanying clients to success." }
-      },
+      }
+    },
+    "actions": {
+      "refresh": "Refresh",
+      "loadTasks": "Load tasks",
+      "back": "Back",
+      "create": "Create",
+      "add": "Add new",
+      "edit": "Edit",
+      "update": "Update",
+      "delete": "Delete",
+      "view": "View",
       "save": "Save",
       "cancel": "Cancel",
-      "close": "Close"
+      "close": "Close",
+      "confirm": "Confirm"
     },
     "table": {
       "index": "No.",
@@ -115,6 +126,7 @@
       "dueDate": "Due Date",
       "clientId": "Client",
       "budgetEstimated": "Estimated Budget",
+      "currencyUnit": "Currency Unit",
       "timelineEstimated": "Estimated Timeline (days)",
       "name": "Full Name",
       "email": "Email",
@@ -126,13 +138,35 @@
       "active": "Active",
       "inactive": "Inactive"
     },
+    "itRoles": {
+      "frontend": "Frontend Developer",
+      "backend": "Backend Developer",
+      "fullstack": "Fullstack Developer",
+      "mobile": "Mobile Developer",
+      "qa": "QA Engineer",
+      "ba": "Business Analyst",
+      "po": "Product Owner",
+      "pm": "Project Manager",
+      "scrum": "Scrum Master",
+      "techLead": "Tech Lead",
+      "architect": "Solution Architect"
+    },
+    "projectStatus": {
+      "PENDING": "Pending",
+      "APPROVED": "Approved",
+      "IN_PROGRESS": "In progress",
+      "DONE": "Done",
+      "CANCELLED": "Cancelled"
+    },
     "filters": {
       "projectId": "Enter project ID",
       "search": "Search...",
       "status": "Status",
       "statusAll": "All",
       "statusCurrent": "Current",
-      "statusFuture": "Future"
+      "statusFuture": "Future",
+      "filterByRole": "Filter by role",
+      "selectClient": "Select client"
     },
     "form": {
       "email": "Email",
@@ -183,6 +217,8 @@
       "updated": "{entity} updated successfully",
       "saveFail": "Save failed",
       "loadFail": "Load failed",
+      "exportSuccess": "Export successful",
+      "exportFail": "Export failed",
       "userCreated": "User created successfully",
       "userUpdated": "User updated successfully",
       "createFailed": "Error creating user",
@@ -196,7 +232,18 @@
       "deleteUserFailed": "Error deleting user",
       "confirmCancel": "Are you sure you want to cancel? Changes will not be saved.",
       "confirmEdit": "Are you sure you want to edit this user?",
-      "confirmDelete": "Are you sure you want to delete this user? This action cannot be undone."
+      "confirmDelete": "Are you sure you want to delete this user? This action cannot be undone.",
+      "loadStaffError": "Failed to load staff",
+      "deleteStaffSuccess": "Delete staff successfully",
+      "deleteStaffFailed": "Error deleting staff",
+      "loadUsersError": "Error loading users",
+      "loadSkillsError": "Failed to load skills",
+      "staffCreated": "Staff created successfully",
+      "staffUpdated": "Staff updated successfully",
+      "saveError": "Error while saving",
+      "selectSkillWarning": "Please select a skill",
+      "selectLevelWarning": "Please select a level",
+      "skillExistsWarning": "Skill already added"
     },
     "validations": {
       "required": "{field} is required",
@@ -206,10 +253,13 @@
       "minNumber": "{field} must be at least {min}",
       "nonNegative": "{field} must be zero or positive",
       "endAfterStart": "End date must be after start date",
-      "dueAfterStart": "Due date must be after start date"
+      "dueAfterStart": "Due date must be after start date",
+      "projectNameExists": "Project name already exists in the system"
     },
     "formHints": {
       "project": "Fill project basics, budget and timeline",
+      "projectMembers": "Search staff by IT role and add them to this project",
+      "selectedMembers": "Members added below will be saved with this project",
       "team": "Summarize your delivery team",
       "task": "Assign tasks, due dates and owners"
     },
@@ -223,7 +273,79 @@
         "logout": "Logout",
         "collapse": "Collapse menu",
         "expand": "Expand menu"
+    },
+    "revenue": {
+      "totalRevenue": "Total Revenue",
+      "thisMonth": "This Month",
+      "completedProjects": "Completed Projects",
+      "avgProjectValue": "Average Project Value",
+      "monthlyChart": "Monthly Revenue Chart",
+      "monthlyRevenue": "Monthly Revenue",
+      "topByRevenue": "Top 5 Highest Revenue Projects",
+      "topCompleted": "Top 5 Earliest Completed Projects",
+      "revenue": "Revenue"
+    },
+    "daily": {
+      "taskBoard": "Daily Task Board",
+      "taskTitle": "Task Title",
+      "taskTitlePlaceholder": "Enter task title",
+      "description": "Description",
+      "descriptionPlaceholder": "Enter task description",
+      "project": "Project",
+      "selectProject": "Select project",
+      "assignedTo": "Assigned To",
+      "selectAssignee": "Select assignee",
+      "taskDate": "Task Date",
+      "selectDate": "Select date",
+      "priority": "Priority",
+      "selectPriority": "Select priority",
+      "estimatedHours": "Estimated Hours",
+      "status": "Status",
+      "selectStatus": "Select status",
+      "createTask": "Create Task",
+      "editTask": "Edit Task",
+      "titleRequired": "Task title is required",
+      "titleLength": "Task title must be between 5 and 255 characters",
+      "projectRequired": "Project is required",
+      "assignedToRequired": "Assigned to is required",
+      "dateRequired": "Task date is required",
+      "priorityRequired": "Priority is required",
+      "estimatedHoursRequired": "Estimated hours is required"
+    },
+    "reports": {
+      "title": "Daily Task Reports",
+      "reportTitle": "Report",
+      "taskReport": "Task Report",
+      "taskReportPlaceholder": "Enter report title",
+      "reportedBy": "Reported By",
+      "reportedAt": "Report Time",
+      "completedHours": "Completed Hours",
+      "completionPercentage": "Completion Percentage",
+      "notes": "Notes",
+      "notesPlaceholder": "Enter notes",
+      "evidenceLink": "Evidence Link",
+      "createReport": "Create Report",
+      "editReport": "Edit Report",
+      "reportStatus": "Report Status"
+    },
+    "metrics": {
+      "title": "Project Daily Metrics",
+      "selectProject": "Select project",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "calculate": "Calculate",
+      "totalTasks": "Total Tasks",
+      "completed": "Completed",
+      "inProgress": "In Progress",
+      "blocked": "Blocked",
+      "pending": "Pending",
+      "completionRate": "Completion Rate",
+      "teamMembers": "Team Members",
+      "project": "Project",
+      "date": "Date",
+      "calculateSuccess": "Metrics calculated successfully",
+      "calculateFailed": "Failed to calculate metrics",
+      "selectProjectFirst": "Please select a project first"
     }
   }
-}
 }

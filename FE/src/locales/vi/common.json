@@ -11,5 +11,16 @@
     "ERR010": "Lỗi kết nối API. Vui lòng thử lại sau.",
     "MSG0010": "Đang xử lý...",
     "MSG006": "Không có dữ liệu"
+  },
+  "unauthorized": {
+    "title": "Phiên đăng nhập đã hết hạn",
+    "message": "Phiên làm việc của bạn đã hết hạn hoặc không hợp lệ. Vui lòng đăng nhập lại để tiếp tục.",
+    "reason": "Có thể do các lý do sau:",
+    "sessionExpired": "Phiên đăng nhập đã hết hạn",
+    "tokenExpired": "Token xác thực không còn hợp lệ",
+    "invalidCredentials": "Thông tin đăng nhập không đúng",
+    "loginAgain": "Đăng nhập lại",
+    "goHome": "Về trang chủ",
+    "needHelp": "Cần hỗ trợ? Liên hệ:"
   }
 }

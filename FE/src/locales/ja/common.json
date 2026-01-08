@@ -22,5 +22,16 @@
   "dontHaveAccount": "アカウントをお持ちでないですか？",
   "loginFailed": "ログインに失敗しました。もう一度お試しください。",
   "accountNotActivated": "アカウントがまだ有効化されていません",
-  "socialLogin": "またはソーシャルプラットフォームでログイン"
+  "socialLogin": "またはソーシャルプラットフォームでログイン",
+  "unauthorized": {
+    "title": "セッションの有効期限が切れました",
+    "message": "セッションの有効期限が切れているか、無効です。続行するには再度ログインしてください。",
+    "reason": "次の理由が考えられます：",
+    "sessionExpired": "セッションの有効期限が切れました",
+    "tokenExpired": "認証トークンが無効になりました",
+    "invalidCredentials": "ログイン情報が正しくありません",
+    "loginAgain": "再ログイン",
+    "goHome": "ホームへ",
+    "needHelp": "サポートが必要ですか？お問い合わせ："
+  }
 }

@@ -6,10 +6,17 @@
       "projects": "プロジェクト",
       "currentProjects": "進行中のプロジェクト",
       "futureProjects": "計画中のプロジェクト",
+      "revenueManagement": "収益管理",
+      "dailyTasks": "日次タスク",
+      "metrics": "プロジェクトメトリクス",
       "teams": "プロジェクトチーム",
       "tasks": "プロジェクト別タスク",
       "staff": "スタッフ",
       "users": "ユーザー"
+    },
+    "sections": {
+      "projectMembers": "プロジェクトメンバー",
+      "selectedMembers": "選択済みメンバー"
     },
     "actions": {
     "refresh": "更新",
@@ -88,10 +95,7 @@
         "training": { "title": "学習文化", "desc": "強い自学文化により新しい業務・技術領域への迅速な適応を実現。" },
         "quality": { "title": "安定した品質", "desc": "チーム構成が変わっても高品質を持続。" },
         "cooperation": { "title": "長期的な協業", "desc": "長期的パートナーシップを重視し、顧客と共に成功を目指す。" }
-      },
-      "save": "Save",
-      "cancel": "Cancel",
-      "close": "Close"
+      }
     },
     "table": {
        "index": "No.",
@@ -107,6 +111,7 @@
        "dueDate": "期限",
        "clientId": "クライアント",
        "budgetEstimated": "予算",
+       "currencyUnit": "通貨単位",
        "timelineEstimated": "予定期間（日）",
        "name": "氏名",
        "email": "メール",
@@ -118,13 +123,35 @@
        "active": "有効",
        "inactive": "無効"
     },
+    "itRoles": {
+      "frontend": "フロントエンド開発者",
+      "backend": "バックエンド開発者",
+      "fullstack": "フルスタック開発者",
+      "mobile": "モバイル開発者",
+      "qa": "QAエンジニア",
+      "ba": "ビジネスアナリスト",
+      "po": "プロダクトオーナー",
+      "pm": "プロジェクトマネージャー",
+      "scrum": "スクラムマスター",
+      "techLead": "テックリード",
+      "architect": "ソリューションアーキテクト"
+    },
+    "projectStatus": {
+      "PENDING": "承認待ち",
+      "APPROVED": "承認済み",
+      "IN_PROGRESS": "進行中",
+      "DONE": "完了",
+      "CANCELLED": "キャンセル"
+    },
     "filters": {
       "projectId": "プロジェクトIDを入力",
       "search": "検索...",
       "status": "ステータス",
       "statusAll": "すべて",
       "statusCurrent": "現在",
-      "statusFuture": "将来"
+      "statusFuture": "将来",
+      "filterByRole": "役割でフィルタ",
+      "selectClient": "クライアントを選択"
     },
     "form": {
       "email": "メール",
@@ -141,7 +168,8 @@
       "projectId": "プロジェクトID",
       "teamId": "チームID",
       "clientId": "クライアントID",
-      "budgetEstimated": "予算",
+      "budgetEstimated": "予算",      
+      "currencyUnit": "銀行を選択",      
       "timelineEstimated": "タイムライン（日数）",
       "teamName": "チーム名",
       "teamDescription": "チーム説明",
@@ -175,6 +203,8 @@
       "updated": "{entity} を更新しました",
       "saveFail": "保存に失敗しました",
       "loadFail": "読み込みに失敗しました",
+      "exportSuccess": "エクスポートに成功しました",
+      "exportFail": "エクスポートに失敗しました",
       "userCreated": "ユーザーを作成しました",
       "userUpdated": "ユーザーを更新しました",
       "createFailed": "ユーザー作成エラー",
@@ -188,7 +218,8 @@
       "deleteUserFailed": "ユーザーの削除に失敗しました",
       "confirmCancel": "本当にキャンセルしますか？変更は保存されません。",
       "confirmEdit": "このユーザーを編集してもよろしいですか？",
-      "confirmDelete": "このユーザーを削除してもよろしいですか？この操作は元に戻せません。"
+      "confirmDelete": "このユーザーを削除してもよろしいですか？この操作は元に戻せません。",
+      "loadStaffError": "スタッフの読み込みに失敗しました"
     },
     "validations": {
       "required": "{field} は必須です",
@@ -200,6 +231,8 @@
     },
     "formHints": {
       "project": "プロジェクトの基本情報、予算、タイムラインを入力",
+      "projectMembers": "IT役割でスタッフを検索し、プロジェクトに追加",
+      "selectedMembers": "追加したメンバーはこのプロジェクトに保存されます",
       "team": "配属チームの概要",
       "task": "タスクの割り当て、期限、担当者を設定"
     },
@@ -213,6 +246,79 @@
         "logout": "ログアウト",
         "collapse": "メニューを折りたたむ",
         "expand": "メニューを展開"
+    },
+    "revenue": {
+      "totalRevenue": "総収益",
+      "thisMonth": "今月",
+      "completedProjects": "完了したプロジェクト",
+      "avgProjectValue": "平均プロジェクト価値",
+      "monthlyChart": "月間収益チャート",
+      "monthlyRevenue": "月間収益",
+      "topByRevenue": "トップ5収益プロジェクト",
+      "topCompleted": "トップ5最速完了プロジェクト",
+      "revenue": "収益"
+    },
+    "daily": {
+      "taskBoard": "日次タスクボード",
+      "taskTitle": "タスクタイトル",
+      "taskTitlePlaceholder": "タスクタイトルを入力",
+      "description": "説明",
+      "descriptionPlaceholder": "タスクの説明を入力",
+      "project": "プロジェクト",
+      "selectProject": "プロジェクトを選択",
+      "assignedTo": "割り当て先",
+      "selectAssignee": "割り当て先を選択",
+      "taskDate": "タスク日付",
+      "selectDate": "日付を選択",
+      "priority": "優先度",
+      "selectPriority": "優先度を選択",
+      "estimatedHours": "推定時間",
+      "status": "ステータス",
+      "selectStatus": "ステータスを選択",
+      "createTask": "タスクを作成",
+      "editTask": "タスクを編集",
+      "titleRequired": "タスクタイトルは必須です",
+      "titleLength": "タスクタイトルは5〜255文字である必要があります",
+      "projectRequired": "プロジェクトは必須です",
+      "assignedToRequired": "割り当て先は必須です",
+      "dateRequired": "タスク日付は必須です",
+      "priorityRequired": "優先度は必須です",
+      "estimatedHoursRequired": "推定時間は必須です"
+    },
+    "reports": {
+      "title": "日次タスク報告書",
+      "reportTitle": "報告",
+      "taskReport": "タスク報告",
+      "taskReportPlaceholder": "報告タイトルを入力",
+      "reportedBy": "報告者",
+      "reportedAt": "報告時刻",
+      "completedHours": "完了時間",
+      "completionPercentage": "完了率",
+      "notes": "メモ",
+      "notesPlaceholder": "メモを入力",
+      "evidenceLink": "証拠リンク",
+      "createReport": "報告を作成",
+      "editReport": "報告を編集",
+      "reportStatus": "報告ステータス"
+    },
+    "metrics": {
+      "title": "プロジェクト日次メトリクス",
+      "selectProject": "プロジェクトを選択",
+      "startDate": "開始日",
+      "endDate": "終了日",
+      "calculate": "計算",
+      "totalTasks": "総タスク数",
+      "completed": "完了",
+      "inProgress": "進行中",
+      "blocked": "ブロック",
+      "pending": "保留中",
+      "completionRate": "完了率",
+      "teamMembers": "チームメンバー",
+      "project": "プロジェクト",
+      "date": "日付",
+      "calculateSuccess": "メトリクスが正常に計算されました",
+      "calculateFailed": "メトリクスの計算に失敗しました",
+      "selectProjectFirst": "まずプロジェクトを選択してください"
     }
   }
 }

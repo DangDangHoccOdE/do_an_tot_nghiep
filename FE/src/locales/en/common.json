@@ -58,5 +58,16 @@
     "myProjects": "My Projects",
     "admin": "Admin",
     "logout": "Logout"
+  },
+  "unauthorized": {
+    "title": "Session Expired",
+    "message": "Your session has expired or is invalid. Please login again to continue.",
+    "reason": "This may be due to:",
+    "sessionExpired": "Session has expired",
+    "tokenExpired": "Authentication token is no longer valid",
+    "invalidCredentials": "Invalid login credentials",
+    "loginAgain": "Login Again",
+    "goHome": "Go Home",
+    "needHelp": "Need help? Contact:"
   }
 }

@@ -6,10 +6,17 @@
       "projects": "Dự án",
       "currentProjects": "Dự án hiện tại",
       "futureProjects": "Dự án tương lai",
+      "revenueManagement": "Quản Lý Doanh Thu",
+      "dailyTasks": "Công Việc Hàng Ngày",
+      "metrics": "Thống Kê Dự Án",
       "teams": "Đội dự án",
       "tasks": "Task theo dự án",
       "staff": "Nhân viên",
       "users": "Người dùng"
+    },
+    "sections": {
+      "projectMembers": "Thành viên dự án",
+      "selectedMembers": "Danh sách đã chọn"
     },
     "actions": {
       "refresh": "Làm mới",
@@ -51,6 +58,26 @@
       "active": "Hoạt động",
       "inactive": "Vô hiệu"
     },
+    "itRoles": {
+      "frontend": "Lập trình viên Frontend",
+      "backend": "Lập trình viên Backend",
+      "fullstack": "Lập trình viên Fullstack",
+      "mobile": "Lập trình viên Mobile",
+      "qa": "Kỹ sư QA",
+      "ba": "Chuyên viên BA",
+      "po": "Product Owner",
+      "pm": "Quản lý dự án",
+      "scrum": "Scrum Master",
+      "techLead": "Tech Lead",
+      "architect": "Kiến trúc sư giải pháp"
+    },
+    "projectStatus": {
+      "PENDING": "Đang duyệt",
+      "APPROVED": "Đã duyệt",
+      "IN_PROGRESS": "Đang thực hiện",
+      "DONE": "Hoàn thành",
+      "CANCELLED": "Hủy bỏ"
+    },
     "filters": {
       "projectId": "Nhập mã Project",
       "search": "Tìm kiếm...",
@@ -58,7 +85,8 @@
       "statusAll": "Tất cả",
       "statusCurrent": "Hiện tại",
       "statusFuture": "Tương lai",
-      "filterByRole": "Lọc theo role"
+      "filterByRole": "Lọc theo role",
+      "selectClient": "Chọn khách hàng"
     },
     "form": {
       "email": "Email",
@@ -84,6 +112,7 @@
       "teamId": "Mã đội",
       "clientId": "Mã khách hàng",
       "budgetEstimated": "Ngân sách dự kiến",
+      "currencyUnit": "Đơn vị tiền tệ",
       "timelineEstimated": "Thời gian (ngày)",
       "teamName": "Tên đội",
       "teamDescription": "Mô tả đội",
@@ -124,6 +153,8 @@
       "updated": "{entity} đã được cập nhật",
       "saveFail": "Lưu thất bại",
       "loadFail": "Tải dữ liệu thất bại",
+      "exportSuccess": "Xuất file thành công",
+      "exportFail": "Xuất file thất bại",
       "userCreated": "Tạo người dùng thành công",
       "userUpdated": "Cập nhật người dùng thành công",
       "createFailed": "Lỗi khi tạo người dùng",
@@ -159,10 +190,13 @@
       "minNumber": "{field} phải lớn hơn hoặc bằng {min}",
       "nonNegative": "{field} phải lớn hơn hoặc bằng 0",
       "endAfterStart": "Ngày kết thúc phải sau ngày bắt đầu",
-      "dueAfterStart": "Hạn phải sau ngày bắt đầu"
+      "dueAfterStart": "Hạn phải sau ngày bắt đầu",
+      "projectNameExists": "Tên dự án đã tồn tại trong hệ thống"
     },
     "formHints": {
       "project": "Nhập thông tin dự án, ngân sách và timeline",
+      "projectMembers": "Lọc nhân viên theo vai trò IT và thêm vào dự án",
+      "selectedMembers": "Các nhân viên bên dưới sẽ được lưu cùng dự án",
       "team": "Mô tả đội triển khai",
       "task": "Giao task với hạn và người phụ trách"
     },
@@ -183,6 +217,79 @@
         "logout": "Đăng xuất",
         "collapse": "Thu gọn menu",
         "expand": "Mở menu"
+    },
+    "revenue": {
+      "totalRevenue": "Tổng Doanh Thu",
+      "thisMonth": "Tháng Này",
+      "completedProjects": "Dự Án Hoàn Thành",
+      "avgProjectValue": "Giá Trị Trung Bình",
+      "monthlyChart": "Biểu Đồ Doanh Thu Hàng Tháng",
+      "monthlyRevenue": "Doanh Thu Hàng Tháng",
+      "topByRevenue": "Top 5 Dự Án Cao Nhất",
+      "topCompleted": "Top 5 Dự Án Hoàn Thành Sớm Nhất",
+      "revenue": "Doanh Thu"
+    },
+    "daily": {
+      "taskBoard": "Bảng Công Việc Hàng Ngày",
+      "taskTitle": "Tiêu Đề Công Việc",
+      "taskTitlePlaceholder": "Nhập tiêu đề công việc",
+      "description": "Mô Tả",
+      "descriptionPlaceholder": "Nhập mô tả công việc",
+      "project": "Dự Án",
+      "selectProject": "Chọn dự án",
+      "assignedTo": "Giao Cho",
+      "selectAssignee": "Chọn người giao",
+      "taskDate": "Ngày Công Việc",
+      "selectDate": "Chọn ngày",
+      "priority": "Độ Ưu Tiên",
+      "selectPriority": "Chọn độ ưu tiên",
+      "estimatedHours": "Giờ Ước Tính",
+      "status": "Trạng Thái",
+      "selectStatus": "Chọn trạng thái",
+      "createTask": "Tạo Công Việc",
+      "editTask": "Chỉnh Sửa Công Việc",
+      "titleRequired": "Tiêu đề công việc là bắt buộc",
+      "titleLength": "Tiêu đề phải từ 5 đến 255 ký tự",
+      "projectRequired": "Dự án là bắt buộc",
+      "assignedToRequired": "Người giao là bắt buộc",
+      "dateRequired": "Ngày công việc là bắt buộc",
+      "priorityRequired": "Độ ưu tiên là bắt buộc",
+      "estimatedHoursRequired": "Giờ ước tính là bắt buộc"
+    },
+    "reports": {
+      "title": "Báo Cáo Công Việc Hàng Ngày",
+      "reportTitle": "Báo Cáo",
+      "taskReport": "Báo Cáo Công Việc",
+      "taskReportPlaceholder": "Nhập tiêu đề báo cáo",
+      "reportedBy": "Báo Cáo Bởi",
+      "reportedAt": "Thời Gian Báo Cáo",
+      "completedHours": "Giờ Hoàn Thành",
+      "completionPercentage": "Phần Trăm Hoàn Thành",
+      "notes": "Ghi Chú",
+      "notesPlaceholder": "Nhập ghi chú",
+      "evidenceLink": "Liên Kết Bằng Chứng",
+      "createReport": "Tạo Báo Cáo",
+      "editReport": "Chỉnh Sửa Báo Cáo",
+      "reportStatus": "Trạng Thái Báo Cáo"
+    },
+    "metrics": {
+      "title": "Thống Kê Công Việc Dự Án",
+      "selectProject": "Chọn dự án",
+      "startDate": "Ngày Bắt Đầu",
+      "endDate": "Ngày Kết Thúc",
+      "calculate": "Tính Toán",
+      "totalTasks": "Tổng Công Việc",
+      "completed": "Hoàn Thành",
+      "inProgress": "Đang Tiến Hành",
+      "blocked": "Bị Chặn",
+      "pending": "Chờ Xử Lý",
+      "completionRate": "Tỷ Lệ Hoàn Thành",
+      "teamMembers": "Thành Viên Đội",
+      "project": "Dự Án",
+      "date": "Ngày",
+      "calculateSuccess": "Tính toán thành công",
+      "calculateFailed": "Tính toán thất bại",
+      "selectProjectFirst": "Vui lòng chọn dự án trước"
     }
   }
 }
