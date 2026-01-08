@@ -104,7 +104,7 @@
                                     <RequiredLabel :label="t('admin.form.itRole')" :required="true" />
                                 </template>
                                 <el-select v-model="form.itRole" :placeholder="t('admin.form.selectItRole')"
-                                    style="width: 100%;" clearable>
+                                    style="width: 100%;" clearable filterable>
                                     <el-option label="Frontend Developer" value="FRONTEND_DEVELOPER" />
                                     <el-option label="Backend Developer" value="BACKEND_DEVELOPER" />
                                     <el-option label="Fullstack Developer" value="FULLSTACK_DEVELOPER" />
@@ -133,7 +133,8 @@
                             <div class="skills-section">
                                 <!-- Add new skill -->
                                 <div class="skill-input-group">
-                                    <el-select v-model="newSkill.skillId" :placeholder="t('admin.form.selectSkill')"
+                                    <el-select filterable v-model="newSkill.skillId"
+                                        :placeholder="t('admin.form.selectSkill')"
                                         style="width: 180px; flex: 1; margin-right: 8px;" clearable>
                                         <el-option v-for="skill in availableSkills" :key="skill.id" :label="skill.name"
                                             :value="skill.id" />

@@ -140,8 +140,8 @@ const fetchStaff = async () => {
             size: staffPage.size
         }
         const data = await apiUsers.listStaff(params)
-        staff.value = data.data?.content || []
-        staffPage.total = data.data?.totalElements || 0
+        staff.value = data?.content || []
+        staffPage.total = data?.totalElements || 0
     } catch (error) {
         console.error('Failed to fetch staff:', error)
         ElMessage.error(t('admin.messages.loadStaffError'))
