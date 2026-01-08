@@ -50,6 +50,27 @@ axios.interceptors.request.use(
     (error) => Promise.reject(error)
 )
 
+// Helper function to decode JWT and check expiration
+function isTokenExpired(token) {
+    if (!token) return true;
+    try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        const decoded = JSON.parse(jsonPayload);
+        if (!decoded || !decoded.exp) return true;
+        // exp is in seconds, Date.now() is in milliseconds
+        // Add 10 second buffer to avoid edge cases
+        const currentTime = (Date.now() / 1000) + 10;
+        return decoded.exp < currentTime;
+    } catch (error) {
+        console.error('Error checking token expiration:', error);
+        return true;
+    }
+}
+
 // Response interceptor
 axios.interceptors.response.use(
     (res) => {
@@ -62,9 +83,17 @@ axios.interceptors.response.use(
         
         // Nếu là lỗi 401 và chưa retry
         if (error?.response?.status === 401 && !originalRequest._retry) {
-            // Kiểm tra xem có phải lỗi từ API refresh không - nếu có thì logout luôn
+            // Kiểm tra xem có phải lỗi từ API refresh không - nếu có thì redirect đến trang 401
             if (originalRequest.url && originalRequest.url.includes('/auth/refresh')) {
-                console.warn('Refresh token expired or invalid, logging out');
+                console.warn('Refresh token expired or invalid');
+                auth.logout();
+                router.push('/unauthorized');
+                return Promise.reject(error);
+            }
+
+            // Kiểm tra có refresh token không
+            if (!auth.refreshToken) {
+                console.warn('No refresh token available');
                 auth.logout();
                 const path = router.currentRoute.value.fullPath;
                 if (!path.includes('login')) {
@@ -73,14 +102,19 @@ axios.interceptors.response.use(
                 return Promise.reject(error);
             }
 
-            // Kiểm tra có refresh token không
-            if (!auth.refreshToken) {
-                console.warn('No refresh token available, logging out');
+            // Kiểm tra refresh token có hết hạn không
+            if (isTokenExpired(auth.refreshToken)) {
+                console.warn('Refresh token is expired');
                 auth.logout();
-                const path = router.currentRoute.value.fullPath;
-                if (!path.includes('login')) {
-                    router.push(`/login?redirect=${encodeURIComponent(path)}`);
-                }
+                router.push('/unauthorized');
+                return Promise.reject(error);
+            }
+
+            // Kiểm tra access token có thực sự hết hạn không
+            // Chỉ gọi refresh nếu access token thực sự hết hạn
+            if (!isTokenExpired(auth.accessToken)) {
+                // Access token chưa hết hạn, lỗi 401 do lý do khác (không có quyền truy cập)
+                console.warn('401 error but access token is still valid - insufficient permissions');
                 return Promise.reject(error);
             }
 
@@ -130,14 +164,11 @@ axios.interceptors.response.use(
                 originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
                 return axios(originalRequest);
             } catch (refreshError) {
-                // Refresh token cũng hết hạn hoặc invalid, logout user
+                // Refresh token cũng hết hạn hoặc invalid, redirect đến trang 401
                 processQueue(refreshError, null);
-                console.warn('Refresh token failed, logging out user');
+                console.warn('Refresh token failed');
                 auth.logout();
-                const path = router.currentRoute.value.fullPath;
-                if (!path.includes('login')) {
-                    router.push(`/login?redirect=${encodeURIComponent(path)}`);
-                }
+                router.push('/unauthorized');
                 return Promise.reject(refreshError);
             } finally {
                 isRefreshing = false;
@@ -153,24 +184,34 @@ axios.interceptors.response.use(
                 router.push(`/login?redirect=${encodeURIComponent(path)}`);
             }
         }
+
+        // Nếu là lỗi 404 (Not Found) - endpoint không tồn tại
+        if (error?.response?.status === 404) {
+            console.warn('404 Not Found:', error.config?.url);
+            // Không logout, chỉ hiển thị thông báo lỗi
+        }
         
         return Promise.reject(error);
     }
 );
 
 // API methods
-export function get(url, params = {}) {
-  return axios.get(url, { params }).then((res) => res.data);
+export function get(url, params = {}, config = {}) {
+  return axios.get(url, { params, ...config }).then((res) => res.data);
 }
 
-export function post(url, data = {}) {
-  return axios.post(url, data).then((res) => res.data);
+export function post(url, data = {}, config = {}) {
+  // Nếu responseType là blob, trả về toàn bộ response để xử lý download
+  if (config.responseType === 'blob') {
+    return axios.post(url, data, config).then((res) => res);
+  }
+  return axios.post(url, data, config).then((res) => res.data);
 }
 
-export function put(url, data = {}) {
-  return axios.put(url, data).then((res) => res.data);
+export function put(url, data = {}, config = {}) {
+  return axios.put(url, data, config).then((res) => res.data);
 }
 
-export function del(url, data = {}) {
-  return axios.delete(url, { data }).then((res) => res.data);
+export function del(url, data = {}, config = {}) {
+  return axios.delete(url, { data, ...config }).then((res) => res.data);
 }
