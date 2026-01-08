@@ -1,4 +1,6 @@
-export const createProjectRules = (t, model) => {
+import { apiProjects } from '@/services/apiProjects'
+
+export const createProjectRules = (t, model, projectId = null) => {
   const field = (key) => t(`admin.form.${key}`)
   const msg = (key, params) => t(`admin.validations.${key}`, params)
 
@@ -14,10 +16,31 @@ export const createProjectRules = (t, model) => {
     callback()
   }
 
+  const validateProjectName = async (rule, value, callback) => {
+    if (!value || value.trim().length === 0) {
+      callback()
+      return
+    }
+
+    try {
+      const response = await apiProjects.checkDuplicateName(value.trim(), projectId)
+      if (response?.exists) {
+        callback(new Error(msg('projectNameExists')))
+      } else {
+        callback()
+      }
+    } catch (error) {
+      // Nếu API lỗi, vẫn cho phép tiếp tục (không block user)
+      console.error('Error checking duplicate project name:', error)
+      callback()
+    }
+  }
+
   return {
     projectName: [
       { required: true, message: msg('required', { field: field('projectName') }), trigger: ['blur', 'change'] },
-      { max: 200, message: msg('max', { field: field('projectName'), max: 200 }), trigger: ['blur', 'change'] }
+      { max: 200, message: msg('max', { field: field('projectName'), max: 200 }), trigger: ['blur', 'change'] },
+      { validator: validateProjectName, trigger: 'blur' }
     ],
     clientId: [
       { required: true, message: msg('required', { field: field('clientId') }), trigger: ['blur', 'change'] }

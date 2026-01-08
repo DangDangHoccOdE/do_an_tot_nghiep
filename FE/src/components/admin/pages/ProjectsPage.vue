@@ -26,30 +26,31 @@
       </div>
 
       <div class="meta-row" v-if="projectStats.total">
-        <div class="pill">
+        <div class="pill" :class="{ 'future-pill': props.status === 'future' }">
           <span class="pill-label">Tổng dự án</span>
           <strong>{{ projectStats.total }}</strong>
         </div>
-        <div class="pill warning">
+        <div class="pill warning" :class="{ 'future-pill': props.status === 'future' }">
           <span class="pill-label">Đang duyệt</span>
           <strong>{{ projectStats.pending }}</strong>
         </div>
-        <div class="pill info">
+        <div class="pill info" v-if="props.status !== 'future'" :class="{ 'future-pill': props.status === 'future' }">
           <span class="pill-label">Đang thực hiện</span>
           <strong>{{ projectStats.inProgress }}</strong>
         </div>
-        <div class="pill success">
+        <div class="pill success" v-if="props.status !== 'future'"
+          :class="{ 'future-pill': props.status === 'future' }">
           <span class="pill-label">Hoàn thành</span>
           <strong>{{ projectStats.done }}</strong>
         </div>
       </div>
 
       <el-table :data="filteredProjects" stripe :empty-text="t('admin.empty')" style="width: 100%">
-        <el-table-column :label="t('admin.table.projectName')" min-width="200">
+        <el-table-column :label="t('admin.table.projectName')" min-width="260">
           <template #default="scope">
             <div class="title-col">
               <span class="title">{{ scope.row.projectName }}</span>
-              <span class="subtitle" v-if="scope.row.clientId">Client: {{ scope.row.clientId }}</span>
+              <span class="subtitle" v-if="scope.row.clientName">{{ scope.row.clientName }}</span>
             </div>
           </template>
         </el-table-column>
@@ -60,36 +61,32 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column :label="t('admin.table.startDate')" width="140">
+        <el-table-column :label="t('admin.table.startDate')" width="130">
           <template #default="scope">{{ formatDate(scope.row.startDate) }}</template>
         </el-table-column>
-        <el-table-column :label="t('admin.table.endDate')" width="140">
+        <el-table-column :label="t('admin.table.endDate')" width="130">
           <template #default="scope">{{ formatDate(scope.row.endDate) }}</template>
         </el-table-column>
-        <el-table-column :label="t('admin.form.teamId')" width="120">
+        <el-table-column :label="t('admin.form.budgetEstimated')" width="180">
           <template #default="scope">
-            <el-tag v-if="scope.row.teamId" size="small" type="info" effect="plain">{{ scope.row.teamId }}</el-tag>
-            <span v-else class="muted">--</span>
+            {{ formatCurrency(scope.row.budgetEstimated, scope.row.currencyUnit) }}
           </template>
         </el-table-column>
-        <el-table-column :label="t('admin.form.budgetEstimated')" width="140">
-          <template #default="scope">{{ formatCurrency(scope.row.budgetEstimated) }}</template>
-        </el-table-column>
-        <el-table-column width="200" :label="t('admin.actions.view')">
+        <el-table-column width="240" align="center" :label="t('admin.actions.view')">
           <template #default="scope">
-            <el-space wrap size="4">
-              <el-button text size="small" @click="goView(scope.row.id)">
+            <div class="action-buttons">
+              <el-button @click="goView(scope.row.id)" plain size="small">
                 {{ t('admin.actions.view') }}
               </el-button>
-              <el-button text size="small" type="primary" @click="goEdit(scope.row.id)">
+              <el-button type="primary" @click="goEdit(scope.row.id)" plain size="small">
                 {{ t('admin.actions.edit') }}
               </el-button>
               <el-popconfirm :title="t('admin.confirm.deleteMessage')" @confirm="deleteProject(scope.row.id)">
                 <template #reference>
-                  <el-button text size="small" type="danger">{{ t('admin.actions.delete') }}</el-button>
+                  <el-button type="danger" plain size="small">{{ t('admin.actions.delete') }}</el-button>
                 </template>
               </el-popconfirm>
-            </el-space>
+            </div>
           </template>
         </el-table-column>
       </el-table>
@@ -108,6 +105,7 @@ import { useI18n } from 'vue-i18n'
 import { Search } from '@element-plus/icons-vue'
 import SectionCard from '@/components/admin/SectionCard.vue'
 import { apiProjects } from '@/services/apiProjects'
+import { apiUsers } from '@/services/apiUsers'
 
 const props = defineProps({
   status: { type: String, default: 'current' }
@@ -119,23 +117,35 @@ const router = useRouter()
 const projectPage = reactive({ data: [], total: 0, page: 1, size: 10, status: props.status })
 const projectSearch = ref('')
 const statusFilter = ref('all')
+const customers = ref([])
 
-const statusOptions = [
-  { label: 'Tất cả', value: 'all' },
-  { label: 'Pending', value: 'PENDING' },
-  { label: 'Approved', value: 'APPROVED' },
-  { label: 'In progress', value: 'IN_PROGRESS' },
-  { label: 'Done', value: 'DONE' },
-  { label: 'Cancelled', value: 'CANCELLED' }
-]
+const statusOptions = computed(() => {
+  // Nếu là dự án tương lai, chỉ hiển thị PENDING
+  if (props.status === 'future') {
+    return [
+      { label: 'Tất cả', value: 'all' },
+      { label: t('admin.projectStatus.PENDING'), value: 'PENDING' }
+    ]
+  }
 
-const statusLookup = {
-  PENDING: { label: 'Pending', type: 'warning' },
-  APPROVED: { label: 'Approved', type: 'info' },
-  IN_PROGRESS: { label: 'In progress', type: 'info' },
-  DONE: { label: 'Done', type: 'success' },
-  CANCELLED: { label: 'Cancelled', type: 'danger' }
-}
+  // Dự án hiện tại - hiển thị tất cả trạng thái
+  return [
+    { label: 'Tất cả', value: 'all' },
+    { label: t('admin.projectStatus.PENDING'), value: 'PENDING' },
+    { label: t('admin.projectStatus.APPROVED'), value: 'APPROVED' },
+    { label: t('admin.projectStatus.IN_PROGRESS'), value: 'IN_PROGRESS' },
+    { label: t('admin.projectStatus.DONE'), value: 'DONE' },
+    { label: t('admin.projectStatus.CANCELLED'), value: 'CANCELLED' }
+  ]
+})
+
+const statusLookup = computed(() => ({
+  PENDING: { label: t('admin.projectStatus.PENDING'), type: 'warning' },
+  APPROVED: { label: t('admin.projectStatus.APPROVED'), type: 'info' },
+  IN_PROGRESS: { label: t('admin.projectStatus.IN_PROGRESS'), type: 'info' },
+  DONE: { label: t('admin.projectStatus.DONE'), type: 'success' },
+  CANCELLED: { label: t('admin.projectStatus.CANCELLED'), type: 'danger' }
+}))
 
 const sectionLabel = computed(() =>
   props.status === 'current' ? t('admin.menu.currentProjects') : t('admin.menu.futureProjects')
@@ -156,7 +166,7 @@ const filteredProjects = computed(() => {
   return list
 })
 
-const statusMeta = (status) => statusLookup[status] ?? { label: status || '--', type: 'info' }
+const statusMeta = (status) => statusLookup.value[status] ?? { label: status || '--', type: 'info' }
 
 const projectStats = computed(() => {
   const counts = projectPage.data.reduce(
@@ -177,8 +187,25 @@ const fetchProjects = async () => {
     page: projectPage.page - 1,
     size: projectPage.size
   })
-  projectPage.data = data.content
+
+  // Map tên khách hàng vào dự án
+  projectPage.data = data.content.map(project => {
+    const customer = customers.value.find(c => c.id === project.clientId)
+    return {
+      ...project,
+      clientName: customer ? `${customer.firstName || ''} ${customer.lastName || ''}`.trim() || customer.email : null
+    }
+  })
   projectPage.total = data.totalElements
+}
+
+const fetchCustomers = async () => {
+  try {
+    const data = await apiUsers.listCustomers({ page: 0, size: 1000 })
+    customers.value = data.content || []
+  } catch (error) {
+    console.error('Failed to load customers:', error)
+  }
 }
 
 const handleProjectPage = (page) => {
@@ -200,17 +227,24 @@ const goView = (id) => {
 
 const formatDate = (value) => {
   if (!value) return '--'
-  const date = typeof value === 'string' ? value : value.toISOString()
-  return date.split('T')[0]
+  const date = new Date(value)
+  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const year = date.getFullYear()
+  return `${day}/${month}/${year}`
 }
 
-const formatCurrency = (value) => {
+
+const formatCurrency = (value, currencyUnit = 'VND') => {
   if (value === null || value === undefined || value === '') return '--'
-  return new Intl.NumberFormat('vi-VN', {
+  const locale = currencyUnit === 'JPY' ? 'ja-JP' : currencyUnit === 'USD' ? 'en-US' : 'vi-VN'
+  const currency = currencyUnit || 'VND'
+  const options = {
     style: 'currency',
-    currency: 'VND',
-    maximumFractionDigits: 0
-  }).format(value)
+    currency: currency,
+    maximumFractionDigits: currency === 'JPY' ? 0 : 2
+  }
+  return new Intl.NumberFormat(locale, options).format(value)
 }
 
 const deleteProject = async (id) => {
@@ -220,10 +254,11 @@ const deleteProject = async (id) => {
 
 watch(
   () => props.status,
-  (nextStatus) => {
+  async (nextStatus) => {
     projectPage.status = nextStatus
     projectPage.page = 1
-    fetchProjects()
+    await fetchCustomers()
+    await fetchProjects()
   },
   { immediate: true }
 )
@@ -308,6 +343,11 @@ watch(
   color: #a30f1a;
 }
 
+.pill.future-pill .pill-label {
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+
 .pill.warning {
   background: #fff8eb;
   border-color: #ffe3b8;
@@ -332,6 +372,22 @@ watch(
   gap: 4px;
 }
 
+.project-col {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.project-col .title-col {
+  flex: 1;
+  min-width: 180px;
+}
+
+.project-col .status-tag {
+  flex-shrink: 0;
+}
+
 .title {
   font-weight: 700;
   color: #0f172a;
@@ -344,6 +400,31 @@ watch(
 
 .muted {
   color: #9ca3af;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+.action-buttons .el-button {
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 6px;
+}
+
+.budget-cell {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.budget-amount {
+  font-weight: 500;
+  color: #10b981;
 }
 
 .table-wrapper {

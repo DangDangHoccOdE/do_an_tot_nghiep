@@ -9,5 +9,9 @@ export const apiProjects = {
   createFuture: (payload) => post(`${basePath}/future`, payload),
   update: (id, payload) => put(`${basePath}/${id}`, payload),
   remove: (id) => del(`${basePath}/${id}`),
-  myProjects: (params) => get(`${basePath}/my-projects`, params)
+  myProjects: (params) => get(`${basePath}/my-projects`, params),
+  checkDuplicateName: (projectName, excludeId) => {
+    const params = excludeId ? { excludeId } : {}
+    return get(`${basePath}/check-name/${encodeURIComponent(projectName)}`, params)
+  }
 }
