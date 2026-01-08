@@ -27,6 +27,7 @@ import com.management_system.dto.response.UserResponse;
 import com.management_system.entity.User;
 import com.management_system.entity.enums.AuthProvider;
 import com.management_system.entity.enums.Gender;
+import com.management_system.entity.enums.ITRole;
 import com.management_system.exception.ResourceAlreadyExistsException;
 import com.management_system.repository.RoleRepository;
 import com.management_system.repository.UserRepository;
@@ -263,6 +264,29 @@ public class UserServiceImpl implements IUserService {
 
         Pageable pageable = PageRequest.of(page, size);
         Page<User> pageResult = userRepository.findAllByRoleIdAndDeleteFlagFalse(roleId, pageable);
+
+        return new PageResponse<>(
+                pageResult.getContent().stream()
+                        .map(this::toResponse)
+                        .collect(Collectors.toList()),
+                pageResult.getTotalElements(),
+                pageResult.getTotalPages(),
+                page,
+                size);
+    }
+
+    @Override
+    public PageResponse<UserResponse> getStaffPage(int page, int size, ITRole itRole, String keyword) {
+        UUID roleId = roleRepository.findByName("ROLE_STAFF")
+                .map(role -> role.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Role not found: ROLE_STAFF"));
+
+        Pageable pageable = PageRequest.of(page, size);
+        String pattern = (keyword != null && !keyword.isBlank())
+                ? "%" + keyword.trim().toLowerCase() + "%"
+                : null;
+
+        Page<User> pageResult = userRepository.searchStaff(roleId, itRole, pattern, pageable);
 
         return new PageResponse<>(
                 pageResult.getContent().stream()

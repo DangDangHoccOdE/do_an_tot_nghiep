@@ -75,8 +75,18 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PageResponse<UserResponse>> listStaff(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        PageResponse<UserResponse> response = iUserService.getPageByRole("ROLE_STAFF", page, size);
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(value = "itRole", required = false) String itRoleStr,
+            @RequestParam(value = "keyword", required = false) String keyword) {
+        ITRole itRole = null;
+        if (itRoleStr != null && !itRoleStr.isEmpty()) {
+            try {
+                itRole = ITRole.valueOf(itRoleStr);
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Invalid IT role: " + itRoleStr);
+            }
+        }
+        PageResponse<UserResponse> response = iUserService.getStaffPage(page, size, itRole, keyword);
         return ResponseEntity.ok(response);
     }
 

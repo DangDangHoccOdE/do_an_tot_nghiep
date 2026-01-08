@@ -7,12 +7,14 @@ import java.util.UUID;
 import com.management_system.entity.enums.AuthProvider;
 import com.management_system.entity.enums.Gender;
 import com.management_system.entity.enums.ITRole;
+import com.management_system.entity.converter.ITRoleConverter;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import jakarta.persistence.Convert;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -87,6 +89,6 @@ public class User extends BaseEntity {
     private String cv; // URL to CV file
 
     @Column(name = "it_role")
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = ITRoleConverter.class)
     private ITRole itRole; // Vai trò trong quy trình IT: DEV, TEST, BA, PM, etc.
 }

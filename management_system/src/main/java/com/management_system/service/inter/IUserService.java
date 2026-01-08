@@ -11,6 +11,7 @@ import com.management_system.dto.response.PageResponse;
 import com.management_system.dto.response.UserResponse;
 import com.management_system.entity.User;
 import com.management_system.entity.enums.AuthProvider;
+import com.management_system.entity.enums.ITRole;
 
 public interface IUserService {
     MessageResponse registerUser(UserRequest userRequest) throws IOException;
@@ -34,6 +35,8 @@ public interface IUserService {
     PageResponse<UserResponse> getPage(int page, int size);
 
     PageResponse<UserResponse> getPageByRole(String roleName, int page, int size);
+
+    PageResponse<UserResponse> getStaffPage(int page, int size, ITRole itRole, String keyword);
 
     // Customer management (ROLE_USER)
     UserResponse createCustomer(UserRequest request, MultipartFile avatarFile);
