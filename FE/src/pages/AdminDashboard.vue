@@ -28,6 +28,9 @@ const isSidebarCollapsed = ref(false)
 const navItems = computed(() => [
   { key: 'current', label: t('admin.menu.currentProjects'), icon: '📈', routeName: 'admin-projects-current' },
   { key: 'future', label: t('admin.menu.futureProjects'), icon: '🗓️', routeName: 'admin-projects-future' },
+  { key: 'revenue', label: t('admin.menu.revenueManagement'), icon: '💰', routeName: 'admin-revenue' },
+  { key: 'dailyTasks', label: t('admin.menu.dailyTasks'), icon: '📋', routeName: 'admin-daily-tasks' },
+  { key: 'metrics', label: t('admin.menu.metrics'), icon: '📊', routeName: 'admin-metrics' },
   { key: 'teams', label: t('admin.menu.teams'), icon: '👥', routeName: 'admin-teams' },
   { key: 'tasks', label: t('admin.menu.tasks'), icon: '✅', routeName: 'admin-tasks' },
   { key: 'staff', label: t('admin.menu.staff'), icon: '👨‍💼', routeName: 'admin-staff' },

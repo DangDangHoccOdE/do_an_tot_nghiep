@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Login from "@/pages/Login.vue";
 import Register from "@/pages/Register.vue";
 import ActivateAccount from "@/pages/ActivateAccount.vue";
+import Unauthorized from "@/pages/Unauthorized.vue";
 import OAuth2RedirectHandler from "@/pages/OAuth2RedirectHandler.vue";
 import AdminDashboard from "@/pages/AdminDashboard.vue";
 import MyProjects from "@/pages/MyProjects.vue";
@@ -17,12 +18,16 @@ import UsersPage from "@/components/admin/pages/UsersPage.vue";
 import UserFormPage from "@/components/admin/pages/UserFormPage.vue";
 import StaffPage from "@/components/admin/pages/StaffPage.vue";
 import StaffFormPage from "@/components/admin/pages/StaffFormPage.vue";
+import RevenueManagementPage from "@/components/admin/pages/RevenueManagementPage.vue";
+import DailyTaskBoard from "@/components/admin/DailyTaskBoard.vue";
+import ProjectMetricsPage from "@/pages/admin/ProjectMetricsPage.vue";
 import MainLayout from "@/layouts/MainLayout.vue";
 
 const routes = [
   { path: "/login", component: Login },
   { path: "/register", component: Register },
   { path: "/activate", component: ActivateAccount },
+  { path: "/unauthorized", component: Unauthorized },
   { path: "/", component: MainLayout},
   {
     path: "/my-projects",
@@ -142,6 +147,24 @@ const routes = [
         component: StaffFormPage,
         props: (route) => ({ id: route.params.id, mode: "edit" }),
         meta: { sectionKey: "staff" }
+      },
+      {
+        path: "revenue",
+        name: "admin-revenue",
+        component: RevenueManagementPage,
+        meta: { sectionKey: "revenue" }
+      },
+      {
+        path: "daily-tasks",
+        name: "admin-daily-tasks",
+        component: DailyTaskBoard,
+        meta: { sectionKey: "dailyTasks" }
+      },
+      {
+        path: "metrics",
+        name: "admin-metrics",
+        component: ProjectMetricsPage,
+        meta: { sectionKey: "metrics" }
       }
     ]
   },
