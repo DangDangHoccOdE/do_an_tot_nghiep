@@ -88,7 +88,7 @@ public class TaskServiceImpl implements ITaskService {
         validator.validate(request);
 
         if (request.getStatus() == null) {
-            request.setStatus(TaskStatus.PENDING);
+            request.setStatus(TaskStatus.TODO);
         }
 
         if (request.getStartDate() != null && request.getDueDate() != null
