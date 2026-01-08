@@ -34,6 +34,9 @@ public class Project extends BaseEntity {
     @Column(name = "budget_estimated", precision = 18, scale = 2)
     private BigDecimal budgetEstimated;
 
+    @Column(name = "currency_unit", length = 10)
+    private String currencyUnit = "VND";
+
     @Column(name = "timeline_estimated")
     private Integer timelineEstimated; // in days
 

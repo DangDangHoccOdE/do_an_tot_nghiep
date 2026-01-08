@@ -20,4 +20,6 @@ public interface IProjectService {
     ProjectResponse update(UUID id, ProjectRequest request);
 
     void delete(UUID id);
+
+    boolean existsByNameExcludingId(String projectName, UUID excludeId);
 }

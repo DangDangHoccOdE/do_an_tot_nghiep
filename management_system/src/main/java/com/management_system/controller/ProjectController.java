@@ -1,5 +1,7 @@
 package com.management_system.controller;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -80,5 +82,27 @@ public class ProjectController {
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         projectService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/check-name/{projectName}")
+    public ResponseEntity<Map<String, Object>> checkDuplicateName(
+            @PathVariable String projectName,
+            @RequestParam(required = false) String excludeId) {
+
+        UUID excludeUUID = null;
+        if (excludeId != null && !excludeId.isEmpty()) {
+            try {
+                excludeUUID = UUID.fromString(excludeId);
+            } catch (IllegalArgumentException e) {
+                // Invalid UUID format, treat as null
+            }
+        }
+
+        boolean exists = projectService.existsByNameExcludingId(projectName, excludeUUID);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("exists", exists);
+
+        return ResponseEntity.ok(response);
     }
 }

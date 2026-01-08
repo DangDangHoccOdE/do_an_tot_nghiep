@@ -12,4 +12,10 @@ public interface ProjectRepository extends BaseRepository<Project, UUID> {
 	Page<Project> findAllByDeleteFlagFalse(Pageable pageable);
 
 	List<Project> findAllByTeamIdInAndDeleteFlagFalse(List<UUID> teamIds);
+
+	boolean existsByProjectNameAndDeleteFlagFalse(String projectName);
+
+	boolean existsByProjectNameAndIdNotAndDeleteFlagFalse(String projectName, UUID id);
+
+	List<Project> findAllByDeleteFlagFalse();
 }
