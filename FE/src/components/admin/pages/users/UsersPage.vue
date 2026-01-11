@@ -6,87 +6,68 @@
                     <h2 class="page-title">{{ t('admin.menu.users') }}</h2>
                 </div>
                 <div class="header-actions">
-                    <el-button @click="fetchUsers()">{{ t('admin.actions.refresh') }}</el-button>
-                    <el-button type="primary" @click="goCreate">{{ t('admin.actions.add') }}</el-button>
+                    <UiButton variant="refresh" @click="fetchUsers()" />
+                    <UiButton variant="add" @click="goCreate" />
                 </div>
             </div>
 
             <div class="search-section">
-                <el-input v-model="userSearch" :placeholder="t('admin.filters.search')" class="search-input" clearable
-                    size="large">
-                    <template #prefix>
-                        <el-icon>
-                            <Search />
-                        </el-icon>
-                    </template>
-                </el-input>
+                <div class="search-controls">
+                    <el-input v-model="userSearch" :placeholder="t('admin.filters.search')" class="search-input"
+                        clearable size="large">
+                        <template #prefix>
+                            <el-icon>
+                                <Search />
+                            </el-icon>
+                        </template>
+                    </el-input>
+                </div>
+                <div class="search-actions">
+                    <UiButton variant="delete" size="large" :label="t('admin.actions.deleteSelected')"
+                        :disabled="!selectedUserIds.length" @click="() => handleBulkDelete(selectedUserIds)" />
+                </div>
             </div>
 
-            <div class="table-wrapper">
-                <el-table :data="filteredUsers" stripe :empty-text="t('admin.empty')" style="height: 430px;width: 100%">
-                    <el-table-column type="index" :label="t('admin.table.index')" width="60" :index="getTableIndex" />
-                    <el-table-column :label="t('admin.table.avatar')" width="80">
-                        <template #default="scope">
-                            <div class="avatar-cell">
-                                <img v-if="scope.row.avatar" :src="scope.row.avatar" :alt="scope.row.firstName"
-                                    class="avatar-img" />
-                                <div v-else class="avatar-default">
-                                    {{ getInitials(scope.row.firstName, scope.row.lastName) }}
-                                </div>
-                            </div>
-                        </template>
-                    </el-table-column>
-                    <el-table-column :label="t('admin.table.name')" min-width="180">
-                        <template #default="scope">
-                            <div class="title-col">
-                                <span class="title">{{ scope.row.firstName }} {{ scope.row.lastName }}</span>
-                                <span class="subtitle">{{ scope.row.email }}</span>
-                            </div>
-                        </template>
-                    </el-table-column>
-                    <el-table-column :label="t('admin.table.email')" min-width="180">
-                        <template #default="scope">
-                            {{ scope.row.email }}
-                        </template>
-                    </el-table-column>
-                    <el-table-column :label="t('admin.table.phone')" width="140">
-                        <template #default="scope">
-                            {{ scope.row.phone || '--' }}
-                        </template>
-                    </el-table-column>
-                    <el-table-column :label="t('admin.table.role')" width="140">
-                        <template #default="scope">
-                            <el-tag :type="getRoleType(scope.row.roleId)" effect="dark" size="small">
-                                {{ getRoleName(scope.row.roleId) }}
-                            </el-tag>
-                        </template>
-                    </el-table-column>
-                    <el-table-column :label="t('admin.table.status')" width="120">
-                        <template #default="scope">
-                            <el-tag :type="scope.row.deleteFlag ? 'danger' : 'success'" effect="dark" size="small">
-                                {{ scope.row.deleteFlag ? t('admin.table.inactive') : t('admin.table.active') }}
-                            </el-tag>
-                        </template>
-                    </el-table-column>
-                    <el-table-column width="200" :label="t('admin.actions.view')">
-                        <template #default="scope">
-                            <el-space wrap size="4">
-                                <el-button text size="small" type="primary" @click="goEdit(scope.row.id)">
-                                    {{ t('admin.actions.edit') }}
-                                </el-button>
-                                <el-button text size="small" type="danger" @click="confirmDelete(scope.row.id)">
-                                    {{ t('admin.actions.delete') }}
-                                </el-button>
-                            </el-space>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </div>
+            <TableListView :data="filteredUsers" :columns="tableColumns" :total="userPage.total"
+                :current-page="userPage.page" :page-size="userPage.size" :loading="isLoading" :selectable="true"
+                height="430px" @update:current-page="(page) => userPage.page = page"
+                @update:page-size="(size) => userPage.size = size" @page-change="handleUserPage"
+                @bulk-delete="handleBulkDelete" @selection-change="onUserSelectionChange" @row-click="handleRowClick">
+                <template #avatar="{ row }">
+                    <div class="avatar-cell">
+                        <img v-if="row.avatar" :src="row.avatar" :alt="row.firstName" class="avatar-img" />
+                        <div v-else class="avatar-default">
+                            {{ getInitials(row.firstName, row.lastName) }}
+                        </div>
+                    </div>
+                </template>
 
-            <div class="pagination">
-                <el-pagination background layout="prev, pager, next" :current-page="userPage.page"
-                    :page-size="userPage.size" :total="userPage.total" @current-change="handleUserPage" />
-            </div>
+                <template #name="{ row }">
+                    <div class="title-col">
+                        <span class="title">{{ row.firstName }} {{ row.lastName }}</span>
+                        <span class="subtitle">{{ row.email }}</span>
+                    </div>
+                </template>
+
+                <template #role="{ row }">
+                    <el-tag :type="getRoleType(row.roleId)" effect="dark" size="small">
+                        {{ getRoleName(row.roleId) }}
+                    </el-tag>
+                </template>
+
+                <template #status="{ row }">
+                    <el-tag :type="row.deleteFlag ? 'danger' : 'success'" effect="dark" size="small">
+                        {{ row.deleteFlag ? t('admin.table.inactive') : t('admin.table.active') }}
+                    </el-tag>
+                </template>
+
+                <template #actions="{ row }">
+                    <el-space wrap size="4">
+                        <UiButton variant="edit" size="small" @click.stop="goEdit(row.id)" />
+                        <UiButton variant="delete" size="small" @click.stop="confirmDelete(row.id)" />
+                    </el-space>
+                </template>
+            </TableListView>
         </SectionCard>
     </div>
 </template>
@@ -95,9 +76,11 @@
 import { computed, reactive, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox, ElTag, ElButton, ElSpace } from 'element-plus'
+import UiButton from '@/components/common/UiButton.vue'
 import { Search } from '@element-plus/icons-vue'
 import SectionCard from '@/components/admin/SectionCard.vue'
+import TableListView from '@/components/common/TableListView.vue'
 import { apiUsers } from '@/services/apiUsers'
 import { apiRoles } from '@/services/apiRoles'
 
@@ -109,6 +92,7 @@ const users = ref([])
 const roles = ref([])
 const userSearch = ref('')
 const isLoading = ref(false)
+const selectedUserIds = ref([])
 
 const userPage = reactive({
     page: 1,
@@ -164,6 +148,50 @@ const filteredUsers = computed(() => {
     return result
 })
 
+const tableColumns = computed(() => [
+    {
+        prop: 'avatar',
+        label: t('admin.table.avatar'),
+        minWidth: 80,
+        slot: 'avatar'
+    },
+    {
+        prop: 'name',
+        label: t('admin.table.name'),
+        minWidth: 180,
+        slot: 'name'
+    },
+    {
+        prop: 'email',
+        label: t('admin.table.email'),
+        minWidth: 180
+    },
+    {
+        prop: 'phone',
+        label: t('admin.table.phone'),
+        minWidth: 140,
+        formatter: (row) => row.phone || '--'
+    },
+    {
+        prop: 'roleId',
+        label: t('admin.table.role'),
+        minWidth: 140,
+        slot: 'role'
+    },
+    {
+        prop: 'deleteFlag',
+        label: t('admin.table.status'),
+        minWidth: 120,
+        slot: 'status'
+    },
+    {
+        prop: 'actions',
+        label: t('admin.actions.view'),
+        minWidth: 200,
+        slot: 'actions'
+    }
+])
+
 const getTableIndex = (index) => {
     return (userPage.page - 1) * userPage.size + index + 1
 }
@@ -206,8 +234,8 @@ const goEdit = (id) => {
 const confirmDelete = async (id) => {
     try {
         await ElMessageBox.confirm(
-            t('admin.messages.confirmDelete') || 'Bạn có chắc muốn xóa người dùng này? Hành động này không thể hoàn tác.',
-            t('admin.actions.delete'),
+            t('message.MSG0101', { count: 1, entity: t('admin.entities.user') }),
+            t('confirm'),
             {
                 confirmButtonText: t('admin.actions.delete'),
                 cancelButtonText: t('admin.actions.cancel'),
@@ -223,12 +251,47 @@ const confirmDelete = async (id) => {
 const deleteUser = async (id) => {
     try {
         await apiUsers.remove(id)
-        ElMessage.success(t('admin.messages.deleteUserSuccess'))
+        ElMessage.success(t('message.MSG0102', { count: 1, entity: t('admin.entities.user') }))
         fetchUsers()
     } catch (error) {
         console.error('Failed to delete user:', error)
-        ElMessage.error(t('admin.messages.deleteUserFailed'))
+        ElMessage.error(t('message.ERR011', { entity: t('admin.entities.user') }))
     }
+}
+
+const handleBulkDelete = async (selectedIds) => {
+    if (!selectedIds?.length) return
+    try {
+        await ElMessageBox.confirm(
+            t('message.MSG0101', { count: selectedIds.length, entity: t('admin.entities.user') }),
+            t('confirm'),
+            {
+                confirmButtonText: t('admin.actions.delete'),
+                cancelButtonText: t('admin.actions.cancel'),
+                type: 'warning'
+            }
+        )
+
+        isLoading.value = true
+        await apiUsers.removeBulk(selectedIds)
+        ElMessage.success(t('message.MSG0102', { count: selectedIds.length, entity: t('admin.entities.user') }))
+        await fetchUsers()
+        selectedUserIds.value = []
+    } catch (error) {
+        if (error !== 'cancel') {
+            ElMessage.error(t('message.ERR011', { entity: t('admin.entities.user') }))
+        }
+    } finally {
+        isLoading.value = false
+    }
+}
+
+const onUserSelectionChange = (ids) => {
+    selectedUserIds.value = ids
+}
+
+const handleRowClick = (row) => {
+    goEdit(row.id)
 }
 </script>
 
@@ -276,11 +339,32 @@ const deleteUser = async (id) => {
 }
 
 .search-section {
+    display: flex;
+    gap: 12px;
+    align-items: center;
     margin: 16px 0 20px;
+    flex-wrap: wrap;
+}
+
+.search-controls {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    flex: 1;
+    min-width: 240px;
 }
 
 .search-input {
     max-width: 600px;
+    flex: 1;
+    min-width: 240px;
+}
+
+.search-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
 }
 
 .table-wrapper {

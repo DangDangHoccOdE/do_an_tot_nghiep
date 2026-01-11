@@ -31,8 +31,6 @@ const navItems = computed(() => [
   { key: 'revenue', label: t('admin.menu.revenueManagement'), icon: '💰', routeName: 'admin-revenue' },
   { key: 'dailyTasks', label: t('admin.menu.dailyTasks'), icon: '📋', routeName: 'admin-daily-tasks' },
   { key: 'metrics', label: t('admin.menu.metrics'), icon: '📊', routeName: 'admin-metrics' },
-  { key: 'teams', label: t('admin.menu.teams'), icon: '👥', routeName: 'admin-teams' },
-  { key: 'tasks', label: t('admin.menu.tasks'), icon: '✅', routeName: 'admin-tasks' },
   { key: 'staff', label: t('admin.menu.staff'), icon: '👨‍💼', routeName: 'admin-staff' },
   { key: 'users', label: t('admin.menu.users'), icon: '👤', routeName: 'admin-users' }
 ])

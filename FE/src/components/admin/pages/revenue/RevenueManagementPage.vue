@@ -50,59 +50,27 @@
             <!-- Top Projects by Revenue -->
             <div class="top-projects-container">
                 <div class="section-title">{{ t('admin.revenue.topByRevenue') }}</div>
-                <el-table :data="topProjectsByRevenue" stripe style="width: 100%">
-                    <el-table-column :label="t('admin.table.projectName')" min-width="200">
-                        <template #default="scope">{{ scope.row.projectName }}</template>
-                    </el-table-column>
-                    <el-table-column :label="t('admin.form.clientId')" min-width="150">
-                        <template #default="scope">{{ scope.row.clientName }}</template>
-                    </el-table-column>
-                    <el-table-column :label="t('admin.revenue.revenue')" width="160">
-                        <template #default="scope">
-                            <span class="revenue-value">{{ formatCurrency(scope.row.budgetEstimated,
-                                scope.row.currencyUnit) }}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column :label="t('admin.table.status')" width="130">
-                        <template #default="scope">
-                            <el-tag :type="statusMeta(scope.row.status).type" effect="dark" size="small">
-                                {{ statusMeta(scope.row.status).label }}
-                            </el-tag>
-                        </template>
-                    </el-table-column>
-                    <el-table-column :label="t('admin.table.endDate')" width="130">
-                        <template #default="scope">{{ formatDate(scope.row.endDate) }}</template>
-                    </el-table-column>
-                </el-table>
+                <TableListView :data="topProjectsByRevenue" :columns="topRevenueColumns" :total="0" :selectable="false"
+                    :loading="loading" :empty-text="t('noData')">
+                    <template #status="{ row }">
+                        <el-tag :type="statusMeta(row.status).type" effect="dark" size="small">
+                            {{ statusMeta(row.status).label }}
+                        </el-tag>
+                    </template>
+                </TableListView>
             </div>
 
             <!-- Top Projects by Completion Date -->
             <div class="top-projects-container">
                 <div class="section-title">{{ t('admin.revenue.topCompleted') }}</div>
-                <el-table :data="topProjectsByCompletion" stripe style="width: 100%">
-                    <el-table-column :label="t('admin.table.projectName')" min-width="200">
-                        <template #default="scope">{{ scope.row.projectName }}</template>
-                    </el-table-column>
-                    <el-table-column :label="t('admin.form.clientId')" min-width="150">
-                        <template #default="scope">{{ scope.row.clientName }}</template>
-                    </el-table-column>
-                    <el-table-column :label="t('admin.table.endDate')" width="160">
-                        <template #default="scope">{{ formatDate(scope.row.endDate) }}</template>
-                    </el-table-column>
-                    <el-table-column :label="t('admin.revenue.revenue')" width="160">
-                        <template #default="scope">
-                            <span class="revenue-value">{{ formatCurrency(scope.row.budgetEstimated,
-                                scope.row.currencyUnit) }}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column :label="t('admin.table.status')" width="130">
-                        <template #default="scope">
-                            <el-tag :type="statusMeta(scope.row.status).type" effect="dark" size="small">
-                                {{ statusMeta(scope.row.status).label }}
-                            </el-tag>
-                        </template>
-                    </el-table-column>
-                </el-table>
+                <TableListView :data="topProjectsByCompletion" :columns="topCompletionColumns" :total="0"
+                    :selectable="false" :loading="loading" :empty-text="t('noData')">
+                    <template #status="{ row }">
+                        <el-tag :type="statusMeta(row.status).type" effect="dark" size="small">
+                            {{ statusMeta(row.status).label }}
+                        </el-tag>
+                    </template>
+                </TableListView>
             </div>
         </SectionCard>
     </div>
@@ -113,6 +81,7 @@ import { ref, reactive, computed, onMounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
 import SectionCard from '@/components/admin/SectionCard.vue'
+import TableListView from '@/components/common/TableListView.vue'
 import { apiProjects } from '@/services/apiProjects'
 import { apiRevenue } from '@/services/apiRevenue'
 import * as echarts from 'echarts'
@@ -138,6 +107,41 @@ const stats = reactive({
 
 const topProjectsByRevenue = ref([])
 const topProjectsByCompletion = ref([])
+const topRevenueColumns = computed(() => ([
+    { prop: 'projectName', label: t('admin.table.projectName'), minWidth: 200 },
+    { prop: 'clientName', label: t('admin.form.clientId'), minWidth: 150 },
+    {
+        prop: 'budgetEstimated',
+        label: t('admin.revenue.revenue'),
+        minWidth: 160,
+        formatter: (row) => formatCurrency(row.budgetEstimated, row.currencyUnit)
+    },
+    {
+        prop: 'status',
+        label: t('admin.table.status'),
+        minWidth: 130,
+        slot: 'status'
+    },
+    { prop: 'endDate', label: t('admin.table.endDate'), minWidth: 130, formatter: (row) => formatDate(row.endDate) }
+]))
+
+const topCompletionColumns = computed(() => ([
+    { prop: 'projectName', label: t('admin.table.projectName'), minWidth: 200 },
+    { prop: 'clientName', label: t('admin.form.clientId'), minWidth: 150 },
+    { prop: 'endDate', label: t('admin.table.endDate'), minWidth: 160, formatter: (row) => formatDate(row.endDate) },
+    {
+        prop: 'budgetEstimated',
+        label: t('admin.revenue.revenue'),
+        minWidth: 160,
+        formatter: (row) => formatCurrency(row.budgetEstimated, row.currencyUnit)
+    },
+    {
+        prop: 'status',
+        label: t('admin.table.status'),
+        minWidth: 130,
+        slot: 'status'
+    }
+]))
 const chartContainer = ref(null)
 let chartInstance = null
 const exporting = ref(false)

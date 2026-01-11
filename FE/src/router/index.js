@@ -8,19 +8,19 @@ import OAuth2RedirectHandler from "@/pages/OAuth2RedirectHandler.vue";
 import AdminDashboard from "@/pages/AdminDashboard.vue";
 import MyProjects from "@/pages/MyProjects.vue";
 import { useAuthStore } from "@/stores/auth/useAuthStore";
-import ProjectsPage from "@/components/admin/pages/ProjectsPage.vue";
-import TeamsPage from "@/components/admin/pages/TeamsPage.vue";
-import TasksPage from "@/components/admin/pages/TasksPage.vue";
-import ProjectFormPage from "@/components/admin/pages/ProjectFormPage.vue";
-import TeamFormPage from "@/components/admin/pages/TeamFormPage.vue";
-import TaskFormPage from "@/components/admin/pages/TaskFormPage.vue";
-import UsersPage from "@/components/admin/pages/UsersPage.vue";
-import UserFormPage from "@/components/admin/pages/UserFormPage.vue";
-import StaffPage from "@/components/admin/pages/StaffPage.vue";
-import StaffFormPage from "@/components/admin/pages/StaffFormPage.vue";
-import RevenueManagementPage from "@/components/admin/pages/RevenueManagementPage.vue";
-import DailyTaskBoard from "@/components/admin/DailyTaskBoard.vue";
-import ProjectMetricsPage from "@/pages/admin/ProjectMetricsPage.vue";
+import ProjectsPage from "@/components/admin/pages/projects/ProjectsPage.vue";
+import ProjectFormPage from "@/components/admin/pages/projects/ProjectFormPage.vue";
+import TeamsPage from "@/components/admin/pages/teams/TeamsPage.vue";
+import TeamFormPage from "@/components/admin/pages/teams/TeamFormPage.vue";
+import TasksPage from "@/components/admin/pages/tasks/TasksPage.vue";
+import TaskFormPage from "@/components/admin/pages/tasks/TaskFormPage.vue";
+import UsersPage from "@/components/admin/pages/users/UsersPage.vue";
+import UserFormPage from "@/components/admin/pages/users/UserFormPage.vue";
+import StaffPage from "@/components/admin/pages/staff/StaffPage.vue";
+import StaffFormPage from "@/components/admin/pages/staff/StaffFormPage.vue";
+import RevenueManagementPage from "@/components/admin/pages/revenue/RevenueManagementPage.vue";
+import ProjectMetricsPage from "@/components/admin/pages/metrics/ProjectMetricsPage.vue";
+import DailyTaskBoard from "@/components/admin/pages/daily-tasks/DailyTaskBoard.vue";
 import MainLayout from "@/layouts/MainLayout.vue";
 
 const routes = [
@@ -194,7 +194,11 @@ router.beforeEach((to, from, next) => {
   
   // Nếu đã có khả năng authenticate (token còn hạn hoặc có refresh token) và đang cố vào trang login/register -> redirect về home
   if (isAuthPage && auth.canAuthenticate) {
-    return next('/admin');
+    // Redirect dựa trên role
+    if (auth.canAccessAdmin) {
+      return next('/admin');
+    }
+    return next('/my-projects');
   }
 
   // Nếu trang yêu cầu auth nhưng không có khả năng authenticate (cả 2 token đều hết hạn)
@@ -202,9 +206,18 @@ router.beforeEach((to, from, next) => {
     return next(`/login?redirect=${to.fullPath}`);
   }
 
-  // Kiểm tra phân quyền
-  if (to.meta.roles && auth.role && !to.meta.roles.includes(auth.role)) {
-    return next('/');
+  // Kiểm tra phân quyền theo roles trong meta
+  if (to.meta.roles && to.meta.roles.length > 0) {
+    if (!auth.role) {
+      // Không có role -> chưa login
+      return next(`/login?redirect=${to.fullPath}`);
+    }
+    
+    if (!to.meta.roles.includes(auth.role)) {
+      // Có login nhưng không có quyền truy cập
+      console.warn(`Access denied: user role '${auth.role}' not in allowed roles:`, to.meta.roles);
+      return next('/unauthorized');
+    }
   }
 
   next();

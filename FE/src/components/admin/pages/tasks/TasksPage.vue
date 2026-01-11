@@ -71,11 +71,8 @@
               <el-button text size="small" @click="goView(scope.row.id)">{{ t('admin.actions.view') }}</el-button>
               <el-button text size="small" type="primary" @click="goEdit(scope.row.id)">{{
                 t('admin.actions.edit') }}</el-button>
-              <el-popconfirm :title="t('admin.confirm.deleteMessage')" @confirm="deleteTask(scope.row.id)">
-                <template #reference>
-                  <el-button text size="small" type="danger">{{ t('admin.actions.delete') }}</el-button>
-                </template>
-              </el-popconfirm>
+              <el-button text size="small" type="danger" @click="() => confirmDeleteTask(scope.row.id)">{{
+                t('admin.actions.delete') }}</el-button>
             </el-space>
           </template>
         </el-table-column>
@@ -88,8 +85,10 @@
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import SectionCard from '@/components/admin/SectionCard.vue'
 import { apiTasks } from '@/services/apiTasks'
+import { useAuthStore } from '@/stores/auth/useAuthStore'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -161,9 +160,26 @@ const taskStats = computed(() => {
 })
 
 const fetchTasks = async () => {
-  if (!projectIdFilter.value) return
-  const data = await apiTasks.byProject(projectIdFilter.value)
-  tasks.value = data
+  const auth = useAuthStore()
+  // If project filter provided, fetch tasks for that project
+  if (projectIdFilter.value) {
+    const data = await apiTasks.byProject(projectIdFilter.value)
+    tasks.value = data
+    return
+  }
+  // No project filter: fall back to role-based lists
+  if (auth.isAdmin) {
+    // Admin without filter: keep tasks empty until a project is selected
+    tasks.value = []
+  } else if (auth.isPM) {
+    const data = await apiTasks.myProjectsTasks()
+    tasks.value = data
+  } else if (auth.isStaff) {
+    const data = await apiTasks.myTasks()
+    tasks.value = data
+  } else {
+    tasks.value = []
+  }
 }
 
 const goCreate = () => {
@@ -176,8 +192,31 @@ const goEdit = (id) => router.push({ name: 'admin-tasks-edit', params: { id } })
 const goView = (id) => router.push({ name: 'admin-tasks-edit', params: { id }, query: { mode: 'view' } })
 
 const deleteTask = async (id) => {
-  await apiTasks.remove(id)
-  fetchTasks()
+  try {
+    await apiTasks.remove(id)
+    ElMessage.success(t('message.MSG0102', { count: 1, entity: t('admin.entities.task') }))
+    fetchTasks()
+  } catch (error) {
+    ElMessage.error(t('message.ERR011', { entity: t('admin.entities.task') }))
+  }
+}
+
+const confirmDeleteTask = async (id) => {
+  try {
+    await ElMessageBox.confirm(
+      t('message.MSG0101', { count: 1, entity: t('admin.entities.task') }),
+      t('confirm'),
+      {
+        confirmButtonText: t('admin.actions.delete'),
+        cancelButtonText: t('admin.actions.cancel'),
+        type: 'warning'
+      }
+    )
+  } catch {
+    return
+  }
+
+  await deleteTask(id)
 }
 </script>
 

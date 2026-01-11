@@ -78,14 +78,14 @@
                         <el-row :gutter="16">
                             <el-col :xs="24" :md="12">
                                 <el-form-item :label="t('admin.form.startDate')" prop="startDate">
-                                    <el-date-picker v-model="form.startDate" type="date" format="DD/MM/YYYY"
-                                        value-format="YYYY-MM-DD" placeholder="DD/MM/YYYY" style="width: 100%" />
+                                    <el-date-picker v-model="form.startDate" type="date" format="dd/MM/yyyy"
+                                        value-format="dd/MM/yyyy" placeholder="dd/MM/yyyy" style="width: 100%" />
                                 </el-form-item>
                             </el-col>
                             <el-col :xs="24" :md="12">
                                 <el-form-item :label="t('admin.form.endDate')" prop="endDate">
-                                    <el-date-picker v-model="form.endDate" type="date" format="DD/MM/YYYY"
-                                        value-format="YYYY-MM-DD" placeholder="DD/MM/YYYY" style="width: 100%" />
+                                    <el-date-picker v-model="form.endDate" type="date" format="dd/MM/yyyy"
+                                        value-format="dd/MM/yyyy" placeholder="dd/MM/yyyy" style="width: 100%" />
                                 </el-form-item>
                             </el-col>
                         </el-row>

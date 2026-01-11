@@ -49,14 +49,14 @@
                     <el-row :gutter="16">
                         <el-col :xs="24" :md="12">
                             <el-form-item :label="t('admin.form.startDate')" prop="startDate">
-                                <el-date-picker v-model="form.startDate" type="date" value-format="YYYY-MM-DD"
-                                    placeholder="YYYY-MM-DD" style="width: 100%" />
+                                <el-date-picker v-model="form.startDate" type="date" value-format="dd/MM/yyyy"
+                                    placeholder="dd/MM/yyyy" style="width: 100%" />
                             </el-form-item>
                         </el-col>
                         <el-col :xs="24" :md="12">
                             <el-form-item :label="t('admin.table.dueDate')" prop="dueDate">
-                                <el-date-picker v-model="form.dueDate" type="date" value-format="YYYY-MM-DD"
-                                    placeholder="YYYY-MM-DD" style="width: 100%" />
+                                <el-date-picker v-model="form.dueDate" type="date" value-format="dd/MM/yyyy"
+                                    placeholder="dd/MM/yyyy" style="width: 100%" />
                             </el-form-item>
                         </el-col>
                     </el-row>

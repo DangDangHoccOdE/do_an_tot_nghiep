@@ -6,105 +6,92 @@
           <h2 class="page-title">{{ sectionLabel }}</h2>
         </div>
         <div class="header-actions">
-          <el-button @click="fetchProjects()">{{ t('admin.actions.refresh') }}</el-button>
-          <el-button type="primary" @click="goCreate">{{ t('admin.actions.add') }}</el-button>
+          <UiButton variant="refresh" @click="fetchProjects()" />
+          <UiButton variant="add" @click="goCreate" />
         </div>
       </div>
 
       <div class="search-section">
-        <el-input v-model="projectSearch" :placeholder="t('admin.filters.search')" class="search-input" clearable
-          size="large">
-          <template #prefix>
-            <el-icon>
-              <Search />
-            </el-icon>
-          </template>
-        </el-input>
-        <el-select v-model="statusFilter" size="large" class="filter-select" clearable>
-          <el-option v-for="opt in statusOptions" :key="opt.value" :label="opt.label" :value="opt.value" />
-        </el-select>
+        <div class="search-controls">
+          <el-input v-model="projectSearch" :placeholder="t('admin.filters.search')" class="search-input" clearable
+            size="large">
+            <template #prefix>
+              <el-icon>
+                <Search />
+              </el-icon>
+            </template>
+          </el-input>
+          <el-select v-model="statusFilter" size="large" class="filter-select" clearable>
+            <el-option v-for="opt in statusOptions" :key="opt.value" :label="opt.label" :value="opt.value" />
+          </el-select>
+        </div>
+        <div class="search-actions">
+          <UiButton variant="delete" size="large" :label="t('admin.actions.deleteSelected')"
+            :disabled="!selectedProjectIds.length" @click="() => handleBulkDelete(selectedProjectIds)" />
+        </div>
       </div>
 
       <div class="meta-row" v-if="projectStats.total">
-        <div class="pill" :class="{ 'future-pill': props.status === 'future' }">
-          <span class="pill-label">Tổng dự án</span>
+        <div class="pill" v-if="props.status !== 'future'" :class="{ 'future-pill': props.status === 'future' }">
+          <span class="pill-label">{{ t('admin.stats.projectsTotal') }}</span>
           <strong>{{ projectStats.total }}</strong>
         </div>
-        <div class="pill warning" :class="{ 'future-pill': props.status === 'future' }">
-          <span class="pill-label">Đang duyệt</span>
+        <div class="pill warning" v-if="props.status !== 'future'"
+          :class="{ 'future-pill': props.status === 'future' }">
+          <span class="pill-label">{{ t('admin.stats.projectsPending') }}</span>
           <strong>{{ projectStats.pending }}</strong>
         </div>
         <div class="pill info" v-if="props.status !== 'future'" :class="{ 'future-pill': props.status === 'future' }">
-          <span class="pill-label">Đang thực hiện</span>
+          <span class="pill-label">{{ t('admin.stats.projectsInProgress') }}</span>
           <strong>{{ projectStats.inProgress }}</strong>
         </div>
         <div class="pill success" v-if="props.status !== 'future'"
           :class="{ 'future-pill': props.status === 'future' }">
-          <span class="pill-label">Hoàn thành</span>
+          <span class="pill-label">{{ t('admin.stats.projectsDone') }}</span>
           <strong>{{ projectStats.done }}</strong>
         </div>
       </div>
 
-      <el-table :data="filteredProjects" stripe :empty-text="t('admin.empty')" style="width: 100%">
-        <el-table-column :label="t('admin.table.projectName')" min-width="260">
-          <template #default="scope">
-            <div class="title-col">
-              <span class="title">{{ scope.row.projectName }}</span>
-              <span class="subtitle" v-if="scope.row.clientName">{{ scope.row.clientName }}</span>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column :label="t('admin.table.status')" width="140">
-          <template #default="scope">
-            <el-tag :type="statusMeta(scope.row.status).type" effect="dark" size="small">
-              {{ statusMeta(scope.row.status).label }}
-            </el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column :label="t('admin.table.startDate')" width="130">
-          <template #default="scope">{{ formatDate(scope.row.startDate) }}</template>
-        </el-table-column>
-        <el-table-column :label="t('admin.table.endDate')" width="130">
-          <template #default="scope">{{ formatDate(scope.row.endDate) }}</template>
-        </el-table-column>
-        <el-table-column :label="t('admin.form.budgetEstimated')" width="180">
-          <template #default="scope">
-            {{ formatCurrency(scope.row.budgetEstimated, scope.row.currencyUnit) }}
-          </template>
-        </el-table-column>
-        <el-table-column width="240" align="center" :label="t('admin.actions.view')">
-          <template #default="scope">
-            <div class="action-buttons">
-              <el-button @click="goView(scope.row.id)" plain size="small">
-                {{ t('admin.actions.view') }}
-              </el-button>
-              <el-button type="primary" @click="goEdit(scope.row.id)" plain size="small">
-                {{ t('admin.actions.edit') }}
-              </el-button>
-              <el-popconfirm :title="t('admin.confirm.deleteMessage')" @confirm="deleteProject(scope.row.id)">
-                <template #reference>
-                  <el-button type="danger" plain size="small">{{ t('admin.actions.delete') }}</el-button>
-                </template>
-              </el-popconfirm>
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div class="pagination">
-        <el-pagination background layout="prev, pager, next" :current-page="projectPage.page"
-          :page-size="projectPage.size" :total="projectPage.total" @current-change="handleProjectPage" />
-      </div>
+      <TableListView :data="filteredProjects" :columns="tableColumns" :total="projectPage.total"
+        :current-page="projectPage.page" :page-size="projectPage.size" :loading="loading" :selectable="true"
+        @update:current-page="(page) => projectPage.page = page" @update:page-size="(size) => projectPage.size = size"
+        @page-change="handleProjectPage" @bulk-delete="handleBulkDelete" @selection-change="onProjectSelectionChange"
+        @row-click="handleRowClick">
+        <template #projectName="{ row }">
+          <div class="title-col">
+            <span class="title">{{ row.projectName }}</span>
+            <span class="subtitle" v-if="row.clientName">{{ row.clientName }}</span>
+          </div>
+        </template>
+
+        <template #status="{ row }">
+          <el-tag :type="statusMeta(row.status).type" effect="dark" size="small">
+            {{ statusMeta(row.status).label }}
+          </el-tag>
+        </template>
+
+        <template #actions="{ row }">
+          <div class="action-buttons">
+            <UiButton variant="edit" size="small" @click.stop="goEdit(row.id)" />
+            <UiButton variant="delete" size="small" @click.stop="() => confirmDeleteProject(row.id)" />
+          </div>
+        </template>
+      </TableListView>
     </SectionCard>
   </div>
 </template>
 
 <script setup>
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, reactive, ref, watch, h } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { Search } from '@element-plus/icons-vue'
+import { ElMessage, ElMessageBox, ElTag, ElButton } from 'element-plus'
+import UiButton from '@/components/common/UiButton.vue'
 import SectionCard from '@/components/admin/SectionCard.vue'
+import TableListView from '@/components/common/TableListView.vue'
 import { apiProjects } from '@/services/apiProjects'
+import { useAuthStore } from '@/stores/auth/useAuthStore'
 import { apiUsers } from '@/services/apiUsers'
 
 const props = defineProps({
@@ -118,19 +105,21 @@ const projectPage = reactive({ data: [], total: 0, page: 1, size: 10, status: pr
 const projectSearch = ref('')
 const statusFilter = ref('all')
 const customers = ref([])
+const loading = ref(false)
+const selectedProjectIds = ref([])
 
 const statusOptions = computed(() => {
   // Nếu là dự án tương lai, chỉ hiển thị PENDING
   if (props.status === 'future') {
     return [
-      { label: 'Tất cả', value: 'all' },
+      { label: t('admin.filters.statusAll'), value: 'all' },
       { label: t('admin.projectStatus.PENDING'), value: 'PENDING' }
     ]
   }
 
   // Dự án hiện tại - hiển thị tất cả trạng thái
   return [
-    { label: 'Tất cả', value: 'all' },
+    { label: t('admin.filters.statusAll'), value: 'all' },
     { label: t('admin.projectStatus.PENDING'), value: 'PENDING' },
     { label: t('admin.projectStatus.APPROVED'), value: 'APPROVED' },
     { label: t('admin.projectStatus.IN_PROGRESS'), value: 'IN_PROGRESS' },
@@ -181,12 +170,62 @@ const projectStats = computed(() => {
   }
 })
 
+const tableColumns = computed(() => [
+  {
+    prop: 'projectName',
+    label: t('admin.table.projectName'),
+    minWidth: 200,
+    slot: 'projectName'
+  },
+  {
+    prop: 'status',
+    label: t('admin.table.status'),
+    minWidth: 140,
+    slot: 'status'
+  },
+  {
+    prop: 'startDate',
+    label: t('admin.table.startDate'),
+    minWidth: 80,
+    formatter: (row) => formatDate(row.startDate)
+  },
+  {
+    prop: 'endDate',
+    label: t('admin.table.endDate'),
+    minWidth: 80,
+    formatter: (row) => formatDate(row.endDate)
+  },
+  {
+    prop: 'budgetEstimated',
+    align: 'center',
+    label: t('admin.form.budgetEstimated'),
+    minWidth: 180,
+    formatter: (row) => formatCurrency(row.budgetEstimated, row.currencyUnit)
+  },
+  {
+    prop: 'actions',
+    label: t('admin.actions.view'),
+    minWidth: 200,
+    slot: 'actions'
+  }
+])
+
 const fetchProjects = async () => {
-  const data = await apiProjects.list({
-    status: projectPage.status,
-    page: projectPage.page - 1,
-    size: projectPage.size
-  })
+  const auth = useAuthStore()
+  let data
+  if (auth.isAdmin) {
+    data = await apiProjects.list({
+      status: projectPage.status,
+      page: projectPage.page - 1,
+      size: projectPage.size
+    })
+  } else {
+    // PM & Staff: only see their projects
+    data = await apiProjects.myProjects({
+      page: projectPage.page - 1,
+      size: projectPage.size
+    })
+  }
 
   // Map tên khách hàng vào dự án
   projectPage.data = data.content.map(project => {
@@ -225,6 +264,10 @@ const goView = (id) => {
   router.push({ name: 'admin-projects-edit', params: { id }, query: { mode: 'view', from: props.status } })
 }
 
+const indexMethod = (index) => {
+  return (projectPage.page - 1) * projectPage.size + index + 1
+}
+
 const formatDate = (value) => {
   if (!value) return '--'
   const date = new Date(value)
@@ -248,8 +291,66 @@ const formatCurrency = (value, currencyUnit = 'VND') => {
 }
 
 const deleteProject = async (id) => {
-  await apiProjects.remove(id)
-  fetchProjects()
+  try {
+    await apiProjects.remove(id)
+    ElMessage.success(t('message.MSG0102', { count: 1, entity: t('admin.entities.project') }))
+    fetchProjects()
+  } catch (error) {
+    ElMessage.error(t('message.ERR011', { entity: t('admin.entities.project') }))
+  }
+}
+
+const confirmDeleteProject = async (id) => {
+  try {
+    await ElMessageBox.confirm(
+      t('message.MSG0101', { count: 1, entity: t('admin.entities.project') }),
+      t('confirm'),
+      {
+        confirmButtonText: t('admin.actions.delete'),
+        cancelButtonText: t('admin.actions.cancel'),
+        type: 'warning'
+      }
+    )
+  } catch {
+    return
+  }
+
+  await deleteProject(id)
+}
+
+const handleBulkDelete = async (selectedIds) => {
+  if (!selectedIds?.length) return
+  try {
+    await ElMessageBox.confirm(
+      t('message.MSG0101', { count: selectedIds.length, entity: t('admin.entities.project') }),
+      t('confirm'),
+      {
+        confirmButtonText: t('admin.actions.delete'),
+        cancelButtonText: t('admin.actions.cancel'),
+        type: 'warning'
+      }
+    )
+
+    loading.value = true
+    await apiProjects.removeBulk(selectedIds)
+    ElMessage.success(t('message.MSG0102', { count: selectedIds.length, entity: t('admin.entities.project') }))
+    await fetchProjects()
+    selectedProjectIds.value = []
+  } catch (error) {
+    if (error !== 'cancel') {
+      ElMessage.error(t('message.ERR011', { entity: t('admin.entities.project') }))
+    }
+  } finally {
+    loading.value = false
+  }
+}
+
+const onProjectSelectionChange = (ids) => {
+  selectedProjectIds.value = ids
+}
+
+const handleRowClick = (row) => {
+  goView(row.id)
 }
 
 watch(
@@ -306,10 +407,25 @@ watch(
   flex-wrap: wrap;
 }
 
+.search-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  flex: 1;
+  min-width: 240px;
+}
+
 .search-input {
   flex: 1;
   min-width: 240px;
   max-width: 400px;
+}
+
+.search-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
 }
 
 .filter-select {
@@ -372,22 +488,6 @@ watch(
   gap: 4px;
 }
 
-.project-col {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.project-col .title-col {
-  flex: 1;
-  min-width: 180px;
-}
-
-.project-col .status-tag {
-  flex-shrink: 0;
-}
-
 .title {
   font-weight: 700;
   color: #0f172a;
@@ -396,10 +496,6 @@ watch(
 .subtitle {
   color: #6b7280;
   font-size: 12px;
-}
-
-.muted {
-  color: #9ca3af;
 }
 
 .action-buttons {
@@ -414,6 +510,10 @@ watch(
   padding: 6px 12px;
   font-size: 12px;
   border-radius: 6px;
+}
+
+.muted {
+  color: #9ca3af;
 }
 
 .budget-cell {
