@@ -19,4 +19,8 @@ public interface ITeamService {
     TeamResponse addMember(UUID teamId, TeamMemberRequest request);
 
     void removeMember(UUID teamId, UUID userId);
+
+    void delete(UUID id);
+
+    void deleteBulk(java.util.List<UUID> ids);
 }

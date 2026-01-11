@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.management_system.dto.request.TeamMemberRequest;
 import com.management_system.dto.request.TeamRequest;
@@ -116,6 +117,44 @@ public class TeamServiceImpl implements ITeamService {
                 .orElseThrow(() -> new EntityNotFoundException("Team member not found"));
         member.setDeleteFlag(true);
         teamMemberRepository.save(member);
+    }
+
+    @Override
+    @Transactional
+    public void delete(UUID id) {
+        Team team = teamRepository.findByIdAndDeleteFlagFalse(id)
+                .orElseThrow(() -> new EntityNotFoundException("Team not found"));
+        softDeleteTeam(team);
+    }
+
+    @Override
+    @Transactional
+    public void deleteBulk(List<UUID> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return;
+        }
+
+        List<Team> teams = teamRepository.findAllById(ids).stream()
+                .filter(team -> !Boolean.TRUE.equals(team.getDeleteFlag()))
+                .collect(Collectors.toList());
+
+        long distinctRequested = ids.stream().distinct().count();
+        if (teams.size() != distinctRequested) {
+            throw new EntityNotFoundException("Team not found");
+        }
+
+        teams.forEach(this::softDeleteTeam);
+    }
+
+    private void softDeleteTeam(Team team) {
+        team.setDeleteFlag(true);
+        teamRepository.save(team);
+
+        List<TeamMember> members = teamMemberRepository.findAllByTeamIdAndDeleteFlagFalse(team.getId());
+        if (!members.isEmpty()) {
+            members.forEach(member -> member.setDeleteFlag(true));
+            teamMemberRepository.saveAll(members);
+        }
     }
 
     private TeamResponse toResponse(Team team) {

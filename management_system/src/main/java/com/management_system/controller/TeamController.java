@@ -1,5 +1,7 @@
 package com.management_system.controller;
 
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -64,6 +66,21 @@ public class TeamController {
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_PM')")
     public ResponseEntity<Void> removeMember(@PathVariable UUID teamId, @PathVariable UUID userId) {
         teamService.removeMember(teamId, userId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_PM')")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+        teamService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/bulk")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_PM')")
+    public ResponseEntity<Void> deleteBulk(@RequestBody Map<String, List<UUID>> payload) {
+        List<UUID> ids = payload.get("ids");
+        teamService.deleteBulk(ids);
         return ResponseEntity.noContent().build();
     }
 }
