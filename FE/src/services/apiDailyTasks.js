@@ -1,52 +1,43 @@
-import { del, get, post, put } from '@/utils/http'
+import { get, post, put, del } from '@/utils/http'
 
-const BASE_URL = '/api/v1/daily-tasks'
+export const apiDailyTasks = {
+  create: (payload) => post("/daily-tasks", payload),
+  createDailyTask: (payload) => post("/daily-tasks", payload),
 
-export const createDailyTask = (data) => {
-  return post(BASE_URL, data)
-}
+  update: (taskId, payload) =>
+    put(`/daily-tasks/${taskId}`, payload),
+  updateDailyTask: (taskId, payload) =>
+    put(`/daily-tasks/${taskId}`, payload),
 
-export const updateDailyTask = (taskId, data) => {
-  return put(`${BASE_URL}/${taskId}`, data)
-}
+  detail: (taskId) =>
+    get(`/daily-tasks/${taskId}`),
 
-export const getDailyTask = (taskId) => {
-  return get(`${BASE_URL}/${taskId}`)
-}
+  byProject: (projectId) =>
+    get(`/daily-tasks/project/${projectId}`),
 
-export const getTasksByProject = (projectId) => {
-  return get(`${BASE_URL}/project/${projectId}`)
-}
+  byProjectAndDate: (projectId, taskDate) =>
+    get(`/daily-tasks/project/${projectId}/date/${taskDate}`),
 
-export const getTasksByProjectAndDate = (projectId, taskDate) => {
-  return get(`${BASE_URL}/project/${projectId}/date/${taskDate}`)
-}
+  byAssignedUser: (userId) =>
+    get(`/daily-tasks/user/${userId}`),
 
-export const getTasksByAssignedUser = (userId) => {
-  return get(`${BASE_URL}/user/${userId}`)
-}
+  byAssignedUserAndDate: (userId, taskDate) =>
+    get(`/daily-tasks/user/${userId}/date/${taskDate}`),
 
-export const getTasksByAssignedUserAndDate = (userId, taskDate) => {
-  return get(`${BASE_URL}/user/${userId}/date/${taskDate}`)
-}
+  byDateRange: (projectId, startDate, endDate) =>
+    get(`/daily-tasks/project/${projectId}/range`, {
+      params: {
+        startDate,
+        endDate
+      }
+    }),
 
-export const getTasksByDateRange = (projectId, startDate, endDate) => {
-  return get(`${BASE_URL}/project/${projectId}/range`, {
-    params: {
-      startDate,
-      endDate
-    }
-  })
-}
+  byStatus: (projectId, status) =>
+    get(`/daily-tasks/project/${projectId}/status/${status}`),
 
-export const getTasksByStatus = (projectId, status) => {
-  return get(`${BASE_URL}/project/${projectId}/status/${status}`)
-}
+  remove: (taskId) =>
+    del(`/daily-tasks/${taskId}`),
 
-export const deleteDailyTask = (taskId) => {
-  return delete(`${BASE_URL}/${taskId}`)
-}
-
-export const getTaskCount = (projectId, taskDate) => {
-  return get(`${BASE_URL}/project/${projectId}/date/${taskDate}/count`)
+  countByDate: (projectId, taskDate) =>
+    get(`/daily-tasks/project/${projectId}/date/${taskDate}/count`)
 }
