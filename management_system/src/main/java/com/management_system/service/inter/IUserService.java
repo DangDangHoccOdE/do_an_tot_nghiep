@@ -1,6 +1,7 @@
 package com.management_system.service.inter;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +32,8 @@ public interface IUserService {
     UserResponse getUserById(UUID id);
 
     void deleteUser(UUID id);
+
+    void deleteUsers(List<UUID> ids);
 
     PageResponse<UserResponse> getPage(int page, int size);
 

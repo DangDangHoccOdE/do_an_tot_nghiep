@@ -2,6 +2,7 @@ package com.management_system.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -154,6 +155,14 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
         iUserService.deleteUser(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/bulk")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteUsers(@RequestBody Map<String, List<UUID>> payload) {
+        List<UUID> ids = payload.get("ids");
+        iUserService.deleteUsers(ids);
         return ResponseEntity.noContent().build();
     }
 

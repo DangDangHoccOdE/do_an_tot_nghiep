@@ -3,6 +3,7 @@ package com.management_system.service.impl;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -238,6 +239,18 @@ public class UserServiceImpl implements IUserService {
         deleteAvatarIfNeeded(user.getAvatar());
         user.setDeleteFlag(true);
         userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUsers(List<UUID> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return;
+        }
+
+        for (UUID id : ids) {
+            deleteUser(id);
+        }
     }
 
     @Override
