@@ -7,5 +7,6 @@ export const apiTeams = {
   detail: (id) => get(`${basePath}/${id}`),
   create: (payload) => post(basePath, payload),
   update: (id, payload) => put(`${basePath}/${id}`, payload),
-  remove: (id) => del(`${basePath}/${id}`)
+  remove: (id) => del(`${basePath}/${id}`),
+  removeBulk: (ids) => del(`${basePath}/bulk`, { ids })
 }

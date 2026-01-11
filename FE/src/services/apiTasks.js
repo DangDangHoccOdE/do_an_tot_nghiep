@@ -5,5 +5,7 @@ export const apiTasks = {
   detail: (id) => get(`/tasks/${id}`),
   create: (projectId, payload) => post(`/projects/${projectId}/tasks`, payload),
   update: (id, payload) => put(`/tasks/${id}`, payload),
-  remove: (id) => del(`/tasks/${id}`)
+  remove: (id) => del(`/tasks/${id}`),
+  myTasks: () => get('/tasks/my-tasks'),
+  myProjectsTasks: () => get('/tasks/my-projects')
 }

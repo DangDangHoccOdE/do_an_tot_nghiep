@@ -34,6 +34,9 @@ export const apiUsers = {
   
   // Soft delete - only marks as deleted
   remove: (id) => del(`${basePath}/${id}`),
+
+  // Bulk delete users by ids
+  removeBulk: (ids) => del(`${basePath}/bulk`, { ids }),
   
   removeCustomer: (id) => del(`${basePath}/customers/${id}`),
   
