@@ -5,6 +5,8 @@ import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.management_system.dto.request.TaskRequest;
 import com.management_system.dto.response.TaskResponse;
+import com.management_system.service.impl.UserSecurityServiceImpl;
 import com.management_system.service.inter.ITaskService;
 
 import jakarta.validation.Valid;
@@ -27,10 +30,25 @@ import lombok.RequiredArgsConstructor;
 public class TaskController {
 
     private final ITaskService taskService;
+    private final UserSecurityServiceImpl userSecurityService;
 
     @GetMapping("/projects/{projectId}/tasks")
     public ResponseEntity<List<TaskResponse>> listByProject(@PathVariable UUID projectId) {
         return ResponseEntity.ok(taskService.getByProject(projectId));
+    }
+
+    @GetMapping("/tasks/my-tasks")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_PM','ROLE_STAFF')")
+    public ResponseEntity<List<TaskResponse>> myTasks(@AuthenticationPrincipal UserDetails userDetails) {
+        var user = userSecurityService.findByEmail(userDetails.getUsername());
+        return ResponseEntity.ok(taskService.getByAssignee(user.getId()));
+    }
+
+    @GetMapping("/tasks/my-projects")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_PM')")
+    public ResponseEntity<List<TaskResponse>> tasksFromMyProjects(@AuthenticationPrincipal UserDetails userDetails) {
+        var user = userSecurityService.findByEmail(userDetails.getUsername());
+        return ResponseEntity.ok(taskService.getByProjectsOfUser(user.getId()));
     }
 
     @GetMapping("/tasks/{id}")

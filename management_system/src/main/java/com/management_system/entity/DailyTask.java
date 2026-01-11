@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.management_system.enums.TaskPriority;
 import com.management_system.enums.TaskStatus;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -41,15 +43,17 @@ public class DailyTask {
     @Column(nullable = false)
     private LocalDate taskDate;
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(nullable = false, columnDefinition = "task_priority")
     private TaskPriority priority = TaskPriority.MEDIUM;
 
     @Column
     private Integer estimatedHours;
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(nullable = false, columnDefinition = "task_status")
     private TaskStatus status = TaskStatus.TODO;
 
     @Column(columnDefinition = "boolean default false")

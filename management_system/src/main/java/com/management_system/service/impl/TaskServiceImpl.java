@@ -26,12 +26,36 @@ public class TaskServiceImpl implements ITaskService {
 
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
+    private final ProjectServiceImpl projectService;
     private final ValidatorWrapper validator;
 
     @Override
     public List<TaskResponse> getByProject(UUID projectId) {
         ensureProjectExists(projectId);
         return taskRepository.findAllByProjectIdAndDeleteFlagFalse(projectId, Sort.by(Sort.Direction.DESC, "createdAt"))
+                .stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TaskResponse> getByAssignee(UUID userId) {
+        return taskRepository
+                .findAllByAssignedToUserIdAndDeleteFlagFalse(userId, Sort.by(Sort.Direction.DESC, "createdAt"))
+                .stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TaskResponse> getByProjectsOfUser(UUID userId) {
+        // Reuse projectService to get projects the user belongs to
+        var page = projectService.getMyProjects(userId, 0, Integer.MAX_VALUE);
+        var projectIds = page.getContent().stream().map(p -> p.getId()).collect(Collectors.toList());
+        if (projectIds.isEmpty())
+            return List.of();
+        return taskRepository
+                .findAllByProjectIdInAndDeleteFlagFalse(projectIds, Sort.by(Sort.Direction.DESC, "createdAt"))
                 .stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
