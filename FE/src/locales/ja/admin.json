@@ -27,11 +27,14 @@
     "edit": "編集",
     "update": "更新",
     "delete": "削除",
+    "deleteSelected": "選択を削除",
     "view": "表示",
     "save": "保存",
     "cancel": "キャンセル",
     "close": "閉じる",
-    "confirm": "確認"
+    "confirm": "確認",
+    "clearSelection": "選択を解除",
+    "export": "エクスポート"
     },
     "services": {
       "title": "デジタルトランスフォーメーションの旅へ",
@@ -120,6 +123,9 @@
        "itRole": "IT役割",
        "skills": "スキル",
        "avatar": "アバター",
+       "memberCount": "メンバー数",
+       "selectedCount": "選択済み: {count}",
+       "pageSize": "ページサイズ",
        "active": "有効",
        "inactive": "無効"
     },
@@ -134,7 +140,18 @@
       "pm": "プロジェクトマネージャー",
       "scrum": "スクラムマスター",
       "techLead": "テックリード",
-      "architect": "ソリューションアーキテクト"
+      "architect": "ソリューションアーキテクト",
+      "frontend_developer": "フロントエンド開発者",
+      "backend_developer": "バックエンド開発者",
+      "fullstack_developer": "フルスタック開発者",
+      "mobile_developer": "モバイル開発者",
+      "qa_engineer": "QAエンジニア",
+      "business_analyst": "ビジネスアナリスト",
+      "product_owner": "プロダクトオーナー",
+      "project_manager": "プロジェクトマネージャー",
+      "scrum_master": "スクラムマスター",
+      "tech_lead": "テックリード",
+      "solution_architect": "ソリューションアーキテクト"
     },
     "projectStatus": {
       "PENDING": "承認待ち",
@@ -240,6 +257,14 @@
       "deleteTitle": "レコードを削除",
       "deleteMessage": "この項目を削除しますか？"
     },
+    "stats": {
+      "projectsTotal": "プロジェクト総数",
+      "projectsPending": "承認待ち",
+      "projectsInProgress": "進行中",
+      "projectsDone": "完了",
+      "teamsTotal": "チーム総数",
+      "membersTotal": "メンバー総数"
+    },
     "empty": "データがありません",
     "sidebar": {
         "home": "ホーム",
@@ -266,6 +291,9 @@
       "descriptionPlaceholder": "タスクの説明を入力",
       "project": "プロジェクト",
       "selectProject": "プロジェクトを選択",
+      "roleFilter": "役割でフィルタ",
+      "selectRole": "役割を選択",
+      "optional": "オプション",
       "assignedTo": "割り当て先",
       "selectAssignee": "割り当て先を選択",
       "taskDate": "タスク日付",
@@ -318,7 +346,24 @@
       "date": "日付",
       "calculateSuccess": "メトリクスが正常に計算されました",
       "calculateFailed": "メトリクスの計算に失敗しました",
-      "selectProjectFirst": "まずプロジェクトを選択してください"
+      "selectProjectFirst": "まずプロジェクトを選択してください",
+      "noMetricsFound": "この日付のメトリクスが見つかりません",
+      "alreadyExists": "この日付のメトリクスは既に存在します。最新データを表示します"
+    },
+    "enums": {
+      "priority": {
+        "LOW": "低",
+        "MEDIUM": "中",
+        "HIGH": "高",
+        "CRITICAL": "極高"
+      },
+      "status": {
+        "TODO": "未対応",
+        "IN_PROGRESS": "処理中",
+        "COMPLETED": "完了",
+        "BLOCKED": "ブロック",
+        "CANCELLED": "キャンセル"
+      }
     }
   }
 }

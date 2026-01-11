@@ -27,11 +27,14 @@
       "edit": "Edit",
       "update": "Update",
       "delete": "Delete",
+      "deleteSelected": "Delete selected",
       "view": "View",
       "save": "Save",
       "cancel": "Cancel",
       "close": "Close",
-      "confirm": "Confirm"
+      "confirm": "Confirm",
+      "clearSelection": "Clear selection",
+      "export": "Export"
     },
     "services": {
       "title": "Join us on the digital transformation journey",
@@ -97,21 +100,6 @@
         "cooperation": { "title": "Long-term partnership", "desc": "Focus on long-term cooperation, accompanying clients to success." }
       }
     },
-    "actions": {
-      "refresh": "Refresh",
-      "loadTasks": "Load tasks",
-      "back": "Back",
-      "create": "Create",
-      "add": "Add new",
-      "edit": "Edit",
-      "update": "Update",
-      "delete": "Delete",
-      "view": "View",
-      "save": "Save",
-      "cancel": "Cancel",
-      "close": "Close",
-      "confirm": "Confirm"
-    },
     "table": {
       "index": "No.",
       "projectName": "Project Name",
@@ -135,6 +123,9 @@
       "itRole": "IT Role",
       "skills": "Skills",
       "avatar": "Avatar",
+      "memberCount": "Member count",
+      "selectedCount": "Selected: {count}",
+      "pageSize": "Page size",
       "active": "Active",
       "inactive": "Inactive"
     },
@@ -149,7 +140,18 @@
       "pm": "Project Manager",
       "scrum": "Scrum Master",
       "techLead": "Tech Lead",
-      "architect": "Solution Architect"
+      "architect": "Solution Architect",
+      "frontend_developer": "Frontend Developer",
+      "backend_developer": "Backend Developer",
+      "fullstack_developer": "Fullstack Developer",
+      "mobile_developer": "Mobile Developer",
+      "qa_engineer": "QA Engineer",
+      "business_analyst": "Business Analyst",
+      "product_owner": "Product Owner",
+      "project_manager": "Project Manager",
+      "scrum_master": "Scrum Master",
+      "tech_lead": "Tech Lead",
+      "solution_architect": "Solution Architect"
     },
     "projectStatus": {
       "PENDING": "Pending",
@@ -267,6 +269,14 @@
       "deleteTitle": "Delete record",
       "deleteMessage": "Are you sure you want to delete this item?"
     },
+    "stats": {
+      "projectsTotal": "Total projects",
+      "projectsPending": "Pending",
+      "projectsInProgress": "In progress",
+      "projectsDone": "Done",
+      "teamsTotal": "Total teams",
+      "membersTotal": "Total members"
+    },
     "empty": "No data",
     "sidebar": {
         "home": "Home",
@@ -293,6 +303,9 @@
       "descriptionPlaceholder": "Enter task description",
       "project": "Project",
       "selectProject": "Select project",
+      "roleFilter": "Filter by Role",
+      "selectRole": "Select role",
+      "optional": "optional",
       "assignedTo": "Assigned To",
       "selectAssignee": "Select assignee",
       "taskDate": "Task Date",
@@ -345,7 +358,24 @@
       "date": "Date",
       "calculateSuccess": "Metrics calculated successfully",
       "calculateFailed": "Failed to calculate metrics",
-      "selectProjectFirst": "Please select a project first"
+      "selectProjectFirst": "Please select a project first",
+      "noMetricsFound": "No metrics found for this date",
+      "alreadyExists": "Metrics already exist for this date; showing the latest data"
+    },
+    "enums": {
+      "priority": {
+        "LOW": "Low",
+        "MEDIUM": "Medium",
+        "HIGH": "High",
+        "CRITICAL": "Critical"
+      },
+      "status": {
+        "TODO": "To Do",
+        "IN_PROGRESS": "In Progress",
+        "COMPLETED": "Completed",
+        "BLOCKED": "Blocked",
+        "CANCELLED": "Cancelled"
+      }
     }
   }
 }

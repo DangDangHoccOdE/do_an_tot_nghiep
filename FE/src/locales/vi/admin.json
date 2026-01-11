@@ -27,11 +27,14 @@
       "edit": "Chỉnh sửa",
       "update": "Cập nhật",
       "delete": "Xóa",
+      "deleteSelected": "Xóa đã chọn",
       "view": "Xem",
       "save": "Lưu",
       "cancel": "Hủy",
       "close": "Đóng",
-      "confirm": "Xác nhận"
+      "confirm": "Xác nhận",
+      "clearSelection": "Bỏ chọn",
+      "export": "Xuất file"
     },
     "table": {
       "index": "STT",
@@ -55,6 +58,9 @@
       "itRole": "Vai trò IT",
       "skills": "Kỹ năng",
       "avatar": "Avatar",
+      "memberCount": "Số thành viên",
+      "selectedCount": "Đã chọn: {count}",
+      "pageSize": "Số dòng/trang",
       "active": "Hoạt động",
       "inactive": "Vô hiệu"
     },
@@ -69,7 +75,18 @@
       "pm": "Quản lý dự án",
       "scrum": "Scrum Master",
       "techLead": "Tech Lead",
-      "architect": "Kiến trúc sư giải pháp"
+      "architect": "Kiến trúc sư giải pháp",
+      "frontend_developer": "Lập trình viên Frontend",
+      "backend_developer": "Lập trình viên Backend",
+      "fullstack_developer": "Lập trình viên Fullstack",
+      "mobile_developer": "Lập trình viên Mobile",
+      "qa_engineer": "Kỹ sư QA",
+      "business_analyst": "Chuyên viên BA",
+      "product_owner": "Product Owner",
+      "project_manager": "Quản lý dự án",
+      "scrum_master": "Scrum Master",
+      "tech_lead": "Tech Lead",
+      "solution_architect": "Kiến trúc sư giải pháp"
     },
     "projectStatus": {
       "PENDING": "Đang duyệt",
@@ -209,7 +226,13 @@
       "admins": "Quản trị viên",
       "staff": "Nhân viên",
       "users": "Người dùng",
-      "totalStaff": "Tổng nhân viên"
+      "totalStaff": "Tổng nhân viên",
+      "projectsTotal": "Tổng dự án",
+      "projectsPending": "Đang duyệt",
+      "projectsInProgress": "Đang thực hiện",
+      "projectsDone": "Hoàn thành",
+      "teamsTotal": "Tổng đội",
+      "membersTotal": "Tổng thành viên"
     },
     "empty": "Không có dữ liệu",
     "sidebar": {
@@ -237,6 +260,9 @@
       "descriptionPlaceholder": "Nhập mô tả công việc",
       "project": "Dự Án",
       "selectProject": "Chọn dự án",
+      "roleFilter": "Lọc theo Vai Trò",
+      "selectRole": "Chọn vai trò",
+      "optional": "tùy chọn",
       "assignedTo": "Giao Cho",
       "selectAssignee": "Chọn người giao",
       "taskDate": "Ngày Công Việc",
@@ -289,7 +315,24 @@
       "date": "Ngày",
       "calculateSuccess": "Tính toán thành công",
       "calculateFailed": "Tính toán thất bại",
-      "selectProjectFirst": "Vui lòng chọn dự án trước"
+      "selectProjectFirst": "Vui lòng chọn dự án trước",
+      "noMetricsFound": "Không tìm thấy thống kê cho ngày này",
+      "alreadyExists": "Đã có thống kê cho ngày này, đang hiển thị dữ liệu mới nhất"
+    },
+    "enums": {
+      "priority": {
+        "LOW": "Thấp",
+        "MEDIUM": "Trung Bình",
+        "HIGH": "Cao",
+        "CRITICAL": "Rất Cao"
+      },
+      "status": {
+        "TODO": "Chờ Xử Lý",
+        "IN_PROGRESS": "Đang Thực Hiện",
+        "COMPLETED": "Hoàn Thành",
+        "BLOCKED": "Bị Chặn",
+        "CANCELLED": "Đã Hủy"
+      }
     }
   }
 }
