@@ -1,6 +1,6 @@
 import { del, get, post, put } from '@/utils/http'
 
-const BASE_URL = '/api/v1/task-reports'
+const BASE_URL = '/task-reports'
 
 export const createTaskReport = (data) => {
   return post(BASE_URL, data)
