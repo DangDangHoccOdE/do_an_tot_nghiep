@@ -4,10 +4,6 @@ public class Endpoints {
         public static final String front_end_host = "http://localhost:5173";
 
         // API Endpoints
-        public static final String DAILY_TASKS = "/api/v1/daily-tasks";
-        public static final String TASK_REPORTS = "/api/v1/task-reports";
-        public static final String PROJECT_METRICS = "/api/v1/projects/metrics";
-
         public static final String[] PUBLIC_GET_ENDPOINTS = {
                         "/api/v1/roles/get-all",
                         "/api/v1/users/check-duplicate",
