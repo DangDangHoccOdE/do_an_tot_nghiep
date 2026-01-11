@@ -1,9 +1,11 @@
 package com.management_system.service.inter;
 
+import java.util.List;
 import java.util.UUID;
 
 import com.management_system.dto.request.ProjectRequest;
 import com.management_system.dto.response.ProjectResponse;
+import com.management_system.dto.response.ProjectMemberResponse;
 import com.management_system.dto.response.PageResponse;
 
 public interface IProjectService {
@@ -21,5 +23,9 @@ public interface IProjectService {
 
     void delete(UUID id);
 
+    void deleteBulk(List<UUID> ids);
+
     boolean existsByNameExcludingId(String projectName, UUID excludeId);
+
+    List<ProjectMemberResponse> getMembers(UUID projectId);
 }

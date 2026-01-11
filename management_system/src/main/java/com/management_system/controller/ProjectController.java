@@ -1,6 +1,7 @@
 package com.management_system.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.management_system.dto.request.ProjectRequest;
 import com.management_system.dto.response.PageResponse;
 import com.management_system.dto.response.ProjectResponse;
+import com.management_system.dto.response.ProjectMemberResponse;
 import com.management_system.entity.User;
 import com.management_system.service.impl.UserSecurityServiceImpl;
 import com.management_system.service.inter.IProjectService;
@@ -59,6 +61,11 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.get(id));
     }
 
+    @GetMapping("/{id}/members")
+    public ResponseEntity<List<ProjectMemberResponse>> getMembers(@PathVariable UUID id) {
+        return ResponseEntity.ok(projectService.getMembers(id));
+    }
+
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_PM')")
     public ResponseEntity<ProjectResponse> create(@Valid @RequestBody ProjectRequest request) {
@@ -81,6 +88,14 @@ public class ProjectController {
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_PM')")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         projectService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/bulk")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_PM')")
+    public ResponseEntity<Void> deleteBulk(@RequestBody Map<String, List<UUID>> payload) {
+        List<UUID> ids = payload.get("ids");
+        projectService.deleteBulk(ids);
         return ResponseEntity.noContent().build();
     }
 

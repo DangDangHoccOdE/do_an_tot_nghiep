@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.management_system.core.ValidatorWrapper;
 import com.management_system.dto.request.ProjectRequest;
@@ -179,6 +180,26 @@ public class ProjectServiceImpl implements IProjectService {
     }
 
     @Override
+    @Transactional
+    public void deleteBulk(List<UUID> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return;
+        }
+
+        List<Project> projects = projectRepository.findAllById(ids).stream()
+                .filter(project -> !Boolean.TRUE.equals(project.getDeleteFlag()))
+                .collect(Collectors.toList());
+
+        long distinctRequested = ids.stream().distinct().count();
+        if (projects.size() != distinctRequested) {
+            throw new EntityNotFoundException("Project not found");
+        }
+
+        projects.forEach(project -> project.setDeleteFlag(true));
+        projectRepository.saveAll(projects);
+    }
+
+    @Override
     public boolean existsByNameExcludingId(String projectName, UUID excludeId) {
         if (projectName == null || projectName.trim().isEmpty()) {
             return false;
@@ -327,5 +348,10 @@ public class ProjectServiceImpl implements IProjectService {
                     .itRole(member.getItRole())
                     .build();
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProjectMemberResponse> getMembers(UUID projectId) {
+        return buildMemberResponses(projectId);
     }
 }
