@@ -16,7 +16,7 @@ function decodeToken(token) {
 }
 
 // Helper function to check if token is expired
-function isTokenExpired(token) {
+function isTokenExpired(token) { 
     if (!token) return true;
     
     const decoded = decodeToken(token);
@@ -57,6 +57,34 @@ export const useAuthStore = defineStore('auth', {
         // Kiểm tra accessToken có hợp lệ không (tồn tại và chưa hết hạn)
         isTokenValid: (state) => {
             return !!state.accessToken && !isTokenExpired(state.accessToken);
+        },
+        // Kiểm tra người dùng có role cụ thể
+        hasRole: (state) => (roleName) => {
+            return state.role === roleName;
+        },
+        // Kiểm tra có phải Admin không
+        isAdmin: (state) => {
+            return state.role === 'ROLE_ADMIN';
+        },
+        // Kiểm tra có phải Project Manager không
+        isPM: (state) => {
+            return state.role === 'ROLE_PM';
+        },
+        // Kiểm tra có phải Staff không
+        isStaff: (state) => {
+            return state.role === 'ROLE_STAFF';
+        },
+        // Kiểm tra có phải User (khách hàng) không
+        isUser: (state) => {
+            return state.role === 'ROLE_USER';
+        },
+        // Kiểm tra có quyền quản lý (Admin hoặc PM)
+        canManage: (state) => {
+            return state.role === 'ROLE_ADMIN' || state.role === 'ROLE_PM';
+        },
+        // Kiểm tra có quyền truy cập admin panel (Admin, PM, hoặc Staff)
+        canAccessAdmin: (state) => {
+            return ['ROLE_ADMIN', 'ROLE_PM', 'ROLE_STAFF'].includes(state.role);
         }
     },
     actions: {

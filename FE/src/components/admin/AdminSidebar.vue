@@ -10,7 +10,8 @@
       <LanguageSwitcher />
     </div>
 
-    <nav>
+
+    <nav class="nav-scrollable">
       <button v-for="item in items" :key="item.key" :class="['nav-item', { active: item.key === active, collapsed }]"
         type="button" @click="$emit('select', item.key)">
         <span class="icon">{{ item.icon }}</span>
@@ -139,6 +140,40 @@ nav {
   flex-direction: column;
   gap: 8px;
   width: 100%;
+}
+
+.nav-scrollable {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 4px;
+  margin-right: -4px;
+  min-height: 0;
+  height: calc(80vh - 150px);
+}
+
+/* Custom scrollbar styling */
+.nav-scrollable::-webkit-scrollbar {
+  width: 6px;
+}
+
+.nav-scrollable::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.nav-scrollable::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}
+
+.nav-scrollable::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Firefox scrollbar */
+.nav-scrollable {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
 }
 
 .nav-item {
