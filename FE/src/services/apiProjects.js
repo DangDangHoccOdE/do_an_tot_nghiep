@@ -1,17 +1,17 @@
 import { get, post, put, del } from '@/utils/http'
 
-const basePath = '/projects'
-
 export const apiProjects = {
-  list: (params) => get(basePath, params),
-  detail: (id) => get(`${basePath}/${id}`),
-  create: (payload) => post(basePath, payload),
-  createFuture: (payload) => post(`${basePath}/future`, payload),
-  update: (id, payload) => put(`${basePath}/${id}`, payload),
-  remove: (id) => del(`${basePath}/${id}`),
-  myProjects: (params) => get(`${basePath}/my-projects`, params),
+  list: (params) => get("/projects", params),
+  detail: (id) => get(`/projects/${id}`),
+  create: (payload) => post("/projects", payload),
+  createFuture: (payload) => post("/projects/future", payload),
+  update: (id, payload) => put(`/projects/${id}`, payload),
+  remove: (id) => del(`/projects/${id}`),
+  removeBulk: (ids) => del('/projects/bulk', { ids }),
+  myProjects: (params) => get("/projects/my-projects", params),
   checkDuplicateName: (projectName, excludeId) => {
     const params = excludeId ? { excludeId } : {}
-    return get(`${basePath}/check-name/${encodeURIComponent(projectName)}`, params)
-  }
+    return get(`/projects/check-name/${encodeURIComponent(projectName)}`, params)
+  },
+  getMembers: (projectId) => get(`/projects/${projectId}/members`)
 }

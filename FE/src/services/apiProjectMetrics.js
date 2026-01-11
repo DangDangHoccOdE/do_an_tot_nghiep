@@ -1,38 +1,50 @@
-import { del, get, post, put } from '@/utils/http'
+import { get, post, put, del } from '@/utils/http'
 
-const BASE_URL = '/api/v1/projects/metrics'
+const BASE_URL = '/projects/metrics'
 
-export const getMetricsForProject = (projectId, reportDate) => {
-  return get(`${BASE_URL}/project/${projectId}/date/${reportDate}`)
-}
+export const apiProjectMetrics = {
+  getByProjectAndDate: (projectId, reportDate) =>
+    get(`${BASE_URL}/project/${projectId}/date/${reportDate}`),
 
-export const getMetricsForProjectDateRange = (projectId, startDate, endDate) => {
-  return get(`${BASE_URL}/project/${projectId}/range`, {
-    params: {
-      startDate,
-      endDate
-    }
-  })
-}
+  getByProjectDateRange: (projectId, startDate, endDate) =>
+    get(`${BASE_URL}/project/${projectId}/range`, {
+      params: {
+        startDate,
+        endDate
+      }
+    }),
 
-export const calculateAndSaveMetrics = (projectId, reportDate) => {
-  return post(`${BASE_URL}/project/${projectId}/calculate/${reportDate}`)
-}
+  calculateAndSave: (projectId, reportDate) =>
+    post(`${BASE_URL}/project/${projectId}/calculate/${reportDate}`),
 
-export const getTopProjectsByCompletionRate = (reportDate, limit = 5) => {
-  return get(`${BASE_URL}/top-projects`, {
-    params: {
-      reportDate,
-      limit
-    }
-  })
-}
+  getTopByCompletionRate: (reportDate, limit = 5) =>
+    get(`${BASE_URL}/top-projects`, {
+      params: {
+        reportDate,
+        limit
+      }
+    }),
 
-export const getMetricsByDateRange = (startDate, endDate) => {
-  return get(`${BASE_URL}/range`, {
-    params: {
-      startDate,
-      endDate
-    }
-  })
+  getByDateRange: (startDate, endDate) =>
+    get(`${BASE_URL}/range`, {
+      params: {
+        startDate,
+        endDate
+      }
+    }),
+
+  // Aliases for backward compatibility
+  getMetricsForProject: (projectId, reportDate) =>
+    get(`${BASE_URL}/project/${projectId}/date/${reportDate}`),
+
+  getMetricsForProjectDateRange: (projectId, startDate, endDate) =>
+    get(`${BASE_URL}/project/${projectId}/range`, {
+      params: {
+        startDate,
+        endDate
+      }
+    }),
+
+  calculateAndSaveMetrics: (projectId, reportDate) =>
+    post(`${BASE_URL}/project/${projectId}/calculate/${reportDate}`)
 }
