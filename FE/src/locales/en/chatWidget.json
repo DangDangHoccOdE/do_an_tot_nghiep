@@ -1,0 +1,16 @@
+{
+  "chatWidget": {
+    "title": "IT Project Consulting",
+    "online": "Online",
+    "offline": "Offline",
+    "welcome": "Hello! 👋",
+    "welcomeDesc": "I'm an AI assistant for project consulting. I can help you with:",
+    "inputPlaceholder": "Type your question...",
+    "poweredBy": "Powered by",
+    "errorMessage": "Sorry, an error occurred. Please try again later.",
+    "quickQ1": "How to start a web project?",
+    "quickQ2": "How long does mobile app development take?",
+    "quickQ3": "What's the cost of a CRM project?",
+    "quickQ4": "Which technology suits my project?"
+  }
+}

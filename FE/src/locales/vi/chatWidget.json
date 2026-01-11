@@ -1,0 +1,16 @@
+{
+  "chatWidget": {
+    "title": "Tư vấn dự án IT",
+    "online": "Trực tuyến",
+    "offline": "Ngoại tuyến",
+    "welcome": "Xin chào! 👋",
+    "welcomeDesc": "Tôi là trợ lý AI tư vấn dự án. Tôi có thể giúp bạn về:",
+    "inputPlaceholder": "Nhập câu hỏi của bạn...",
+    "poweredBy": "Được hỗ trợ bởi",
+    "errorMessage": "Xin lỗi, đã có lỗi xảy ra. Vui lòng thử lại sau.",
+    "quickQ1": "Làm thế nào để bắt đầu một dự án web?",
+    "quickQ2": "Thời gian phát triển app mobile là bao lâu?",
+    "quickQ3": "Chi phí cho một dự án CRM là bao nhiêu?",
+    "quickQ4": "Công nghệ nào phù hợp cho dự án của tôi?"
+  }
+}
