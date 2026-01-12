@@ -12,7 +12,8 @@
       "teams": "Đội dự án",
       "tasks": "Task theo dự án",
       "staff": "Nhân viên",
-      "users": "Người dùng"
+      "users": "Người dùng",
+      "chatHistory": "Lịch sử tư vấn"
     },
     "sections": {
       "projectMembers": "Thành viên dự án",
@@ -104,6 +105,24 @@
       "statusFuture": "Tương lai",
       "filterByRole": "Lọc theo role",
       "selectClient": "Chọn khách hàng"
+    },
+    "chat": {
+      "title": "Lịch sử trò chuyện",
+      "subtitle": "Xem lại các cuộc tư vấn của AI",
+      "sync": "Đồng bộ dữ liệu",
+      "synced": "Đã đồng bộ kiến thức",
+      "thread": "Cuộc trò chuyện",
+      "pick": "Chọn một cuộc trò chuyện",
+      "noConversation": "Chưa chọn cuộc trò chuyện",
+      "refreshMessages": "Tải lại tin nhắn",
+      "loading": "Đang tải tin nhắn...",
+      "error": "Có lỗi khi tải dữ liệu chat.",
+      "columns": {
+        "title": "Tiêu đề",
+        "locale": "Ngôn ngữ",
+        "messages": "Tin nhắn",
+        "updated": "Cập nhật"
+      }
     },
     "form": {
       "email": "Email",

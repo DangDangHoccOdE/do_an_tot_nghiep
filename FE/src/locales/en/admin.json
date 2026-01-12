@@ -12,7 +12,8 @@
       "teams": "Project teams",
       "tasks": "Tasks by project",
       "staff": "Staff",
-      "users": "Users"
+      "users": "Users",
+      "chatHistory": "Chat history"
     },
     "sections": {
       "projectMembers": "Project members",
@@ -169,6 +170,24 @@
       "statusFuture": "Future",
       "filterByRole": "Filter by role",
       "selectClient": "Select client"
+    },
+    "chat": {
+      "title": "Customer chats",
+      "subtitle": "Review AI consultations",
+      "sync": "Sync knowledge",
+      "synced": "Knowledge synced",
+      "thread": "Conversation",
+      "pick": "Select a conversation",
+      "noConversation": "No conversation selected",
+      "refreshMessages": "Refresh messages",
+      "loading": "Loading messages...",
+      "error": "Something went wrong while loading chat data.",
+      "columns": {
+        "title": "Title",
+        "locale": "Lang",
+        "messages": "Messages",
+        "updated": "Updated"
+      }
     },
     "form": {
       "email": "Email",

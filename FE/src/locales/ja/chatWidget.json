@@ -8,6 +8,8 @@
     "inputPlaceholder": "質問を入力してください...",
     "poweredBy": "提供元",
     "errorMessage": "申し訳ございません。エラーが発生しました。後でもう一度お試しください。",
+    "sources": "参照",
+    "newConversation": "新しいチャット",
     "quickQ1": "ウェブプロジェクトを始める方法は？",
     "quickQ2": "モバイルアプリ開発にかかる時間は？",
     "quickQ3": "CRMプロジェクトの費用は？",
