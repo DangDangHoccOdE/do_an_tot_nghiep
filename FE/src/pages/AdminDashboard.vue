@@ -32,7 +32,8 @@ const navItems = computed(() => [
   { key: 'dailyTasks', label: t('admin.menu.dailyTasks'), icon: '📋', routeName: 'admin-daily-tasks' },
   { key: 'metrics', label: t('admin.menu.metrics'), icon: '📊', routeName: 'admin-metrics' },
   { key: 'staff', label: t('admin.menu.staff'), icon: '👨‍💼', routeName: 'admin-staff' },
-  { key: 'users', label: t('admin.menu.users'), icon: '👤', routeName: 'admin-users' }
+  { key: 'users', label: t('admin.menu.users'), icon: '👤', routeName: 'admin-users' },
+  { key: 'chat', label: t('admin.menu.chatHistory'), icon: '💬', routeName: 'admin-chat-history' }
 ])
 
 const activeSection = computed(() => route.meta.sectionKey || 'current')

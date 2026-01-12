@@ -21,6 +21,7 @@ import StaffFormPage from "@/components/admin/pages/staff/StaffFormPage.vue";
 import RevenueManagementPage from "@/components/admin/pages/revenue/RevenueManagementPage.vue";
 import ProjectMetricsPage from "@/components/admin/pages/metrics/ProjectMetricsPage.vue";
 import DailyTaskBoard from "@/components/admin/pages/daily-tasks/DailyTaskBoard.vue";
+import ChatHistoryPage from "@/components/admin/pages/chat/ChatHistoryPage.vue";
 import MainLayout from "@/layouts/MainLayout.vue";
 
 const routes = [
@@ -165,6 +166,12 @@ const routes = [
         name: "admin-metrics",
         component: ProjectMetricsPage,
         meta: { sectionKey: "metrics" }
+      },
+      {
+        path: "chat-history",
+        name: "admin-chat-history",
+        component: ChatHistoryPage,
+        meta: { sectionKey: "chat" }
       }
     ]
   },

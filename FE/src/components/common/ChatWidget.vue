@@ -34,6 +34,15 @@
                             </span>
                         </div>
                     </div>
+                    <button @click="newConversation" class="close-button secondary"
+                        :title="t('chatWidget.newConversation')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="1 4 1 10 7 10"></polyline>
+                            <polyline points="23 20 23 14 17 14"></polyline>
+                            <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+                        </svg>
+                    </button>
                     <button @click="toggleChat" class="close-button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -116,12 +125,13 @@
 </template>
 
 <script setup>
-import { ref, computed, nextTick, watch } from 'vue'
+import { ref, computed, nextTick, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
 import { Promotion } from '@element-plus/icons-vue'
+import { apiChat } from '@/services/apiChat'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const isOpen = ref(false)
 const isTyping = ref(false)
@@ -131,14 +141,8 @@ const messages = ref([])
 const messagesContainer = ref(null)
 const hasUnread = ref(false)
 const unreadCount = ref(0)
-
-// AI Provider - Change this to 'openai' or 'gemini'
-const AI_PROVIDER = 'gemini' // 'gemini' or 'openai'
-const aiProvider = computed(() => AI_PROVIDER === 'gemini' ? 'Google Gemini' : 'OpenAI GPT')
-
-// API Keys - Người dùng cần thay thế bằng key của họ
-const GEMINI_API_KEY = 'YOUR_GEMINI_API_KEY_HERE' // Get from: https://makersuite.google.com/app/apikey
-const OPENAI_API_KEY = 'YOUR_OPENAI_API_KEY_HERE' // Get from: https://platform.openai.com/api-keys
+const conversationId = ref(localStorage.getItem('chat_conversation_id') || '')
+const aiProvider = ref('AI')
 
 const quickQuestions = computed(() => [
     t('chatWidget.quickQ1'),
@@ -146,21 +150,6 @@ const quickQuestions = computed(() => [
     t('chatWidget.quickQ3'),
     t('chatWidget.quickQ4')
 ])
-
-const systemPrompt = `Bạn là trợ lý AI tư vấn dự án IT của công ty phần mềm. Nhiệm vụ của bạn:
-
-1. Tư vấn về các dự án phát triển phần mềm (Web, Mobile, Desktop)
-2. Giải thích quy trình thực hiện dự án (Planning → Design → Development → Testing → Deployment)
-3. Ước tính thời gian và chi phí dự án dựa trên yêu cầu
-4. Tư vấn công nghệ phù hợp (Frontend, Backend, Database, DevOps)
-5. Trả lời câu hỏi về dịch vụ IT outsourcing
-
-Khi khách hàng hỏi về giá:
-- Dự án nhỏ (1-3 tháng): 50-150 triệu VNĐ
-- Dự án trung bình (3-6 tháng): 150-500 triệu VNĐ
-- Dự án lớn (6-12 tháng): 500 triệu - 2 tỷ VNĐ
-
-Luôn thân thiện, chuyên nghiệp, và khuyến khích khách hàng để lại thông tin liên hệ để được tư vấn chi tiết hơn.`
 
 const toggleChat = () => {
     isOpen.value = !isOpen.value
@@ -178,11 +167,30 @@ const sendQuickQuestion = (question) => {
     sendMessage()
 }
 
+const loadHistory = async () => {
+    if (!conversationId.value) return
+    try {
+        const res = await apiChat.getMessages(conversationId.value)
+        messages.value = (res || []).map(item => ({
+            role: item.role,
+            content: item.content,
+            timestamp: item.createdAt || new Date()
+        }))
+        await nextTick()
+        scrollToBottom()
+    } catch (error) {
+        console.error('Load chat history failed', error)
+    }
+}
+
+onMounted(() => {
+    loadHistory()
+})
+
 const sendMessage = async () => {
     const text = userInput.value.trim()
     if (!text) return
 
-    // Add user message
     messages.value.push({
         role: 'user',
         content: text,
@@ -195,18 +203,32 @@ const sendMessage = async () => {
     scrollToBottom()
 
     try {
-        let response
-        if (AI_PROVIDER === 'gemini') {
-            response = await sendToGemini(text)
-        } else {
-            response = await sendToOpenAI(text)
+        const payload = {
+            message: text,
+            conversationId: conversationId.value || null,
+            locale: locale.value
+        }
+        const response = await apiChat.ask(payload)
+        if (response?.conversationId) {
+            conversationId.value = response.conversationId
+            localStorage.setItem('chat_conversation_id', conversationId.value)
+        }
+        if (response?.provider) {
+            aiProvider.value = response.provider === 'gemini' ? 'Google Gemini' : 'OpenAI'
         }
 
-        // Add bot response
+        let assistantContent = response?.reply?.content || t('chatWidget.errorMessage')
+        if (response?.references && response.references.length > 0) {
+            const refText = response.references
+                .map(r => `• ${r.title || r.source}: ${r.snippet || ''}`)
+                .join('\n')
+            assistantContent += `\n\n${t('chatWidget.sources')}:\n${refText}`
+        }
+
         messages.value.push({
             role: 'assistant',
-            content: response,
-            timestamp: new Date()
+            content: assistantContent,
+            timestamp: response?.reply?.createdAt || new Date()
         })
 
         if (!isOpen.value) {
@@ -228,82 +250,22 @@ const sendMessage = async () => {
     }
 }
 
-const sendToGemini = async (message) => {
-    if (GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY_HERE') {
-        return `⚠️ **Cấu hình API Key:**\n\nVui lòng thay thế \`GEMINI_API_KEY\` trong file \`ChatWidget.vue\`.\n\n📌 Lấy miễn phí tại: https://makersuite.google.com/app/apikey`
-    }
-
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`
-
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            contents: [{
-                parts: [{
-                    text: `${systemPrompt}\n\nKhách hàng: ${message}`
-                }]
-            }],
-            generationConfig: {
-                temperature: 0.7,
-                topK: 40,
-                topP: 0.95,
-                maxOutputTokens: 1024
-            }
-        })
-    })
-
-    const data = await response.json()
-
-    if (!response.ok) {
-        throw new Error(data.error?.message || 'API Error')
-    }
-
-    return data.candidates[0]?.content?.parts[0]?.text || 'Xin lỗi, tôi không thể trả lời câu hỏi này.'
-}
-
-const sendToOpenAI = async (message) => {
-    if (OPENAI_API_KEY === 'YOUR_OPENAI_API_KEY_HERE') {
-        return `⚠️ **Cấu hình API Key:**\n\nVui lòng thay thế \`OPENAI_API_KEY\` trong file \`ChatWidget.vue\`.\n\n📌 Lấy tại: https://platform.openai.com/api-keys`
-    }
-
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${OPENAI_API_KEY}`
-        },
-        body: JSON.stringify({
-            model: 'gpt-3.5-turbo',
-            messages: [
-                { role: 'system', content: systemPrompt },
-                { role: 'user', content: message }
-            ],
-            temperature: 0.7,
-            max_tokens: 1000
-        })
-    })
-
-    const data = await response.json()
-
-    if (!response.ok) {
-        throw new Error(data.error?.message || 'API Error')
-    }
-
-    return data.choices[0]?.message?.content || 'Xin lỗi, tôi không thể trả lời câu hỏi này.'
+const newConversation = async () => {
+    conversationId.value = ''
+    localStorage.removeItem('chat_conversation_id')
+    messages.value = []
+    await nextTick()
 }
 
 const formatMessage = (text) => {
-    return text
+    return (text || '')
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         .replace(/\n/g, '<br>')
 }
 
 const formatTime = (timestamp) => {
     const date = new Date(timestamp)
-    return date.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })
+    return date.toLocaleTimeString(locale.value || 'vi-VN', { hour: '2-digit', minute: '2-digit' })
 }
 
 const scrollToBottom = () => {
@@ -469,6 +431,15 @@ watch(messages, () => {
 
 .close-button:hover {
     background: rgba(255, 255, 255, 0.3);
+}
+
+.close-button.secondary {
+    margin-right: 8px;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.close-button.secondary:hover {
+    background: rgba(255, 255, 255, 0.25);
 }
 
 .chat-messages {
