@@ -14,6 +14,7 @@ public class Endpoints {
                         "/oauth2/**",
                         "/login/oauth2/**",
                         "/api/v1/skills",
+                        // "/api/v1/chat/conversations/*/messages"
         };
 
         public static final String[] PUBLIC_POST_ENDPOINTS = {
@@ -24,5 +25,6 @@ public class Endpoints {
                         "/api/v1/users/register",
                         "/oauth2/**",
                         "/login/oauth2/**",
+                        // "/api/v1/chat/ask"
         };
 }
