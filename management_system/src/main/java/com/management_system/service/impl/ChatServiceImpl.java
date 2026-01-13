@@ -3,31 +3,44 @@ package com.management_system.service.impl;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.management_system.dto.request.ChatAskRequest;
+import com.management_system.dto.request.ChatFeedbackRequest;
 import com.management_system.dto.request.ChatIngestRequest;
 import com.management_system.dto.response.ChatAskResponse;
 import com.management_system.dto.response.ChatConversationResponse;
+import com.management_system.dto.response.ChatFeedbackResponse;
+import com.management_system.dto.response.ChatFeedbackStatisticsResponse;
+import com.management_system.dto.response.ChatIntentResponse;
 import com.management_system.dto.response.ChatMessageResponse;
 import com.management_system.dto.response.KnowledgeReferenceResponse;
 import com.management_system.entity.AiKnowledgeChunk;
 import com.management_system.entity.ChatConversation;
+import com.management_system.entity.ChatFeedback;
+import com.management_system.entity.ChatIntent;
 import com.management_system.entity.ChatMessage;
 import com.management_system.entity.DailyTask;
 import com.management_system.entity.FaqEntry;
 import com.management_system.entity.Project;
 import com.management_system.entity.Team;
 import com.management_system.entity.TechnologyStack;
+import com.management_system.entity.enums.IssueType;
 import com.management_system.enums.ChatMessageRole;
 import com.management_system.repository.AiKnowledgeChunkRepository;
 import com.management_system.repository.ChatConversationRepository;
+import com.management_system.repository.ChatFeedbackRepository;
+import com.management_system.repository.ChatIntentRepository;
 import com.management_system.repository.ChatMessageRepository;
 import com.management_system.repository.DailyTaskRepository;
 import com.management_system.repository.FaqEntryRepository;
@@ -35,22 +48,29 @@ import com.management_system.repository.ProjectRepository;
 import com.management_system.repository.TeamRepository;
 import com.management_system.repository.TechnologyStackRepository;
 import com.management_system.service.inter.IChatService;
+import com.management_system.service.inter.IIntentDetectionService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ChatServiceImpl implements IChatService {
 
     private final ChatConversationRepository conversationRepository;
     private final ChatMessageRepository chatMessageRepository;
+    private final ChatIntentRepository chatIntentRepository;
+    private final ChatFeedbackRepository chatFeedbackRepository;
     private final AiKnowledgeChunkRepository knowledgeRepository;
     private final AiGatewayService aiGatewayService;
+    private final IIntentDetectionService intentDetectionService;
     private final ProjectRepository projectRepository;
     private final TeamRepository teamRepository;
     private final DailyTaskRepository dailyTaskRepository;
     private final FaqEntryRepository faqEntryRepository;
     private final TechnologyStackRepository technologyStackRepository;
+    private final ObjectMapper objectMapper;
 
     private static final int MAX_HISTORY = 8;
     private static final int MAX_REFERENCES = 5;
@@ -61,69 +81,109 @@ public class ChatServiceImpl implements IChatService {
     public ChatAskResponse ask(ChatAskRequest request, Locale locale, UUID userId) {
         String localeTag = locale != null ? locale.getLanguage()
                 : (request.getLocale() == null ? "en" : request.getLocale());
-        ChatConversation conversation = findOrCreateConversation(request.getConversationId(), localeTag, userId,
-                request.getMessage());
 
-        // Save user message
-        ChatMessage userMsg = new ChatMessage();
-        userMsg.setConversationId(conversation.getId());
-        userMsg.setRole(ChatMessageRole.USER);
-        userMsg.setContent(request.getMessage());
-        userMsg.setCreatedAt(OffsetDateTime.now());
-        chatMessageRepository.save(userMsg);
+        log.info("Chat request received: conversationId={}, locale={}, messageLength={}, userId={}",
+                request.getConversationId(), localeTag, request.getMessage().length(), userId);
 
-        // Embed query
-        double[] queryEmbedding = aiGatewayService.embed(request.getMessage(), localeTag);
+        try {
+            ChatConversation conversation = findOrCreateConversation(request.getConversationId(), localeTag, userId,
+                    request.getMessage());
 
-        // Retrieve knowledge
-        List<AiKnowledgeChunk> candidates = getKnowledge(localeTag);
-        List<ScoredChunk> relevant = rankBySimilarity(queryEmbedding, candidates).stream()
-                .filter(sc -> sc.score() >= MIN_SCORE)
-                .limit(MAX_REFERENCES)
-                .collect(Collectors.toList());
+            // Save user message
+            ChatMessage userMsg = new ChatMessage();
+            userMsg.setConversationId(conversation.getId());
+            userMsg.setRole(ChatMessageRole.USER);
+            userMsg.setContent(request.getMessage());
+            userMsg.setCreatedAt(OffsetDateTime.now());
+            chatMessageRepository.save(userMsg);
 
-        // Build context and history
-        List<String> contexts = relevant.stream()
-                .map(sc -> sc.chunk().getTitle() + ": " + truncate(sc.chunk().getContent(), 600))
-                .collect(Collectors.toList());
+            // Detect intent and extract entities
+            String detectedIntent = intentDetectionService.detectIntent(request.getMessage(), localeTag);
+            Map<String, Object> extractedEntities = intentDetectionService.extractEntities(
+                    request.getMessage(), detectedIntent);
+            double confidenceScore = intentDetectionService.calculateConfidence(
+                    request.getMessage(), detectedIntent);
 
-        List<ChatMessage> history = latestMessages(conversation.getId(), MAX_HISTORY);
-        List<String> historyText = history.stream()
-                .map(m -> m.getRole().name().toLowerCase() + ": " + truncate(m.getContent(), 200))
-                .collect(Collectors.toList());
+            log.debug("Intent detected: intent={}, confidence={}, entities={}",
+                    detectedIntent, confidenceScore, extractedEntities);
 
-        String systemPrompt = buildSystemPrompt(localeTag);
-        String answer = aiGatewayService.chat(systemPrompt, request.getMessage(), contexts, historyText, localeTag);
+            // Save intent
+            ChatIntent intent = new ChatIntent();
+            intent.setConversationId(conversation.getId());
+            intent.setDetectedIntent(detectedIntent);
+            intent.setConfidenceScore(confidenceScore);
+            try {
+                intent.setExtractedEntities(objectMapper.writeValueAsString(extractedEntities));
+            } catch (JsonProcessingException e) {
+                log.warn("Failed to serialize extracted entities", e);
+                intent.setExtractedEntities("{}");
+            }
+            intent.setCreatedAt(OffsetDateTime.now());
+            chatIntentRepository.save(intent);
 
-        // Save assistant message
-        ChatMessage botMsg = new ChatMessage();
-        botMsg.setConversationId(conversation.getId());
-        botMsg.setRole(ChatMessageRole.ASSISTANT);
-        botMsg.setContent(answer);
-        botMsg.setCreatedAt(OffsetDateTime.now());
-        chatMessageRepository.save(botMsg);
+            // Embed query
+            double[] queryEmbedding = aiGatewayService.embed(request.getMessage(), localeTag);
 
-        conversation.setLastMessageAt(OffsetDateTime.now());
-        conversationRepository.save(conversation);
+            // Retrieve knowledge
+            List<AiKnowledgeChunk> candidates = getKnowledge(localeTag);
+            List<ScoredChunk> relevant = rankBySimilarity(queryEmbedding, candidates).stream()
+                    .filter(sc -> sc.score() >= MIN_SCORE)
+                    .limit(MAX_REFERENCES)
+                    .collect(Collectors.toList());
 
-        return ChatAskResponse.builder()
-                .conversationId(conversation.getId())
-                .reply(ChatMessageResponse.builder()
-                        .id(botMsg.getId())
-                        .role(botMsg.getRole().name().toLowerCase())
-                        .content(botMsg.getContent())
-                        .createdAt(botMsg.getCreatedAt())
-                        .build())
-                .references(relevant.stream().map(sc -> KnowledgeReferenceResponse.builder()
-                        .title(sc.chunk().getTitle())
-                        .snippet(truncate(sc.chunk().getContent(), 220))
-                        .source(sc.chunk().getSource())
-                        .sourceId(sc.chunk().getSourceId())
-                        .score(sc.score())
-                        .build()).collect(Collectors.toList()))
-                .provider(aiGatewayService.getActiveProvider())
-                .model(aiGatewayService.getModelName())
-                .build();
+            log.debug("Knowledge retrieval: totalCandidates={}, relevantChunks={}, minScore={}",
+                    candidates.size(), relevant.size(), MIN_SCORE);
+
+            // Build context and history
+            List<String> contexts = relevant.stream()
+                    .map(sc -> sc.chunk().getTitle() + ": " + truncate(sc.chunk().getContent(), 600))
+                    .collect(Collectors.toList());
+
+            List<ChatMessage> history = latestMessages(conversation.getId(), MAX_HISTORY);
+            List<String> historyText = history.stream()
+                    .map(m -> m.getRole().name().toLowerCase() + ": " + truncate(m.getContent(), 200))
+                    .collect(Collectors.toList());
+
+            String systemPrompt = buildSystemPrompt(localeTag);
+            String answer = aiGatewayService.chat(systemPrompt, request.getMessage(), contexts, historyText, localeTag);
+
+            // Save assistant message
+            ChatMessage botMsg = new ChatMessage();
+            botMsg.setConversationId(conversation.getId());
+            botMsg.setRole(ChatMessageRole.ASSISTANT);
+            botMsg.setContent(answer);
+            botMsg.setCreatedAt(OffsetDateTime.now());
+            chatMessageRepository.save(botMsg);
+
+            conversation.setLastMessageAt(OffsetDateTime.now());
+            conversationRepository.save(conversation);
+
+            log.info("Chat response success: conversationId={}, provider={}, model={}, referencesCount={}",
+                    conversation.getId(), aiGatewayService.getActiveProvider(),
+                    aiGatewayService.getModelName(), relevant.size());
+
+            return ChatAskResponse.builder()
+                    .conversationId(conversation.getId())
+                    .reply(ChatMessageResponse.builder()
+                            .id(botMsg.getId())
+                            .role(botMsg.getRole().name().toLowerCase())
+                            .content(botMsg.getContent())
+                            .createdAt(botMsg.getCreatedAt())
+                            .build())
+                    .references(relevant.stream().map(sc -> KnowledgeReferenceResponse.builder()
+                            .title(sc.chunk().getTitle())
+                            .snippet(truncate(sc.chunk().getContent(), 220))
+                            .source(sc.chunk().getSource())
+                            .sourceId(sc.chunk().getSourceId())
+                            .score(sc.score())
+                            .build()).collect(Collectors.toList()))
+                    .provider(aiGatewayService.getActiveProvider())
+                    .model(aiGatewayService.getModelName())
+                    .build();
+        } catch (Exception e) {
+            log.error("Chat error: conversationId={}, error={}", request.getConversationId(), e.getMessage(), e);
+            throw e;
+        }
     }
 
     @Override
@@ -187,8 +247,10 @@ public class ChatServiceImpl implements IChatService {
 
     @Override
     @Transactional
+    @org.springframework.cache.annotation.CacheEvict(value = "knowledgeCache", allEntries = true)
     public List<KnowledgeReferenceResponse> syncDomainData(Locale locale) {
         String lang = locale != null ? locale.getLanguage() : "en";
+        log.info("Starting domain data sync for locale: {}", lang);
         List<KnowledgeReferenceResponse> results = new ArrayList<>();
 
         // 1. Company intro chunk
@@ -250,7 +312,7 @@ public class ChatServiceImpl implements IChatService {
                     "FAQ",
                     faq.getId().toString(),
                     lang));
-            
+
             // Update FAQ embedding if not exists
             if (faq.getEmbedding() == null) {
                 double[] embedding = aiGatewayService.embed(faqContent, lang);
@@ -269,7 +331,7 @@ public class ChatServiceImpl implements IChatService {
                     "DOCUMENT",
                     tech.getId().toString(),
                     lang));
-            
+
             // Update tech stack embedding if not exists
             if (tech.getEmbedding() == null) {
                 double[] embedding = aiGatewayService.embed(techContent, lang);
@@ -416,7 +478,9 @@ public class ChatServiceImpl implements IChatService {
         return denom == 0 ? 0 : dot / denom;
     }
 
+    @org.springframework.cache.annotation.Cacheable(value = "knowledgeCache", key = "#locale")
     private List<AiKnowledgeChunk> getKnowledge(String locale) {
+        log.debug("Fetching knowledge from database for locale: {}", locale);
         List<AiKnowledgeChunk> localized = knowledgeRepository.findRecentByLanguage(locale);
         if (localized != null && !localized.isEmpty())
             return localized;
@@ -462,6 +526,134 @@ public class ChatServiceImpl implements IChatService {
                 + "If information is missing, ask clarifying questions. "
                 + "Offer project timelines, cost ranges, and suggest tech stacks (frontend, backend, database, devops). "
                 + "Keep replies polite and encourage the user to share contact info for follow-up.";
+    }
+
+    // ==================== Feedback Methods ====================
+
+    @Override
+    @Transactional
+    public ChatFeedbackResponse saveFeedback(ChatFeedbackRequest request, UUID userId) {
+        log.info("Saving feedback: conversationId={}, messageId={}, rating={}, userId={}",
+                request.getConversationId(), request.getMessageId(), request.getRating(), userId);
+
+        ChatFeedback feedback = new ChatFeedback();
+        feedback.setConversationId(request.getConversationId());
+        feedback.setMessageId(request.getMessageId());
+        feedback.setUserId(userId);
+        feedback.setRating(request.getRating());
+        feedback.setIsHelpful(request.getIsHelpful());
+        feedback.setFeedbackText(request.getFeedbackText());
+
+        // Convert string to enum if issueType is provided
+        if (request.getIssueType() != null && !request.getIssueType().isBlank()) {
+            try {
+                feedback.setIssueType(IssueType.valueOf(request.getIssueType()));
+            } catch (IllegalArgumentException e) {
+                log.warn("Invalid issue type: {}", request.getIssueType());
+            }
+        }
+
+        feedback.setCreatedAt(OffsetDateTime.now());
+
+        feedback = chatFeedbackRepository.save(feedback);
+
+        log.info("Feedback saved successfully: feedbackId={}", feedback.getId());
+
+        return ChatFeedbackResponse.builder()
+                .id(feedback.getId())
+                .conversationId(feedback.getConversationId())
+                .messageId(feedback.getMessageId())
+                .rating(feedback.getRating())
+                .isHelpful(feedback.getIsHelpful())
+                .feedbackText(feedback.getFeedbackText())
+                .issueType(feedback.getIssueType() != null ? feedback.getIssueType().name() : null)
+                .createdAt(feedback.getCreatedAt())
+                .build();
+    }
+
+    @Override
+    public ChatFeedbackStatisticsResponse getFeedbackStatistics() {
+        Double avgRating = chatFeedbackRepository.getAverageRating();
+        List<ChatFeedback> allFeedbacks = chatFeedbackRepository.findAll();
+
+        long totalFeedbacks = allFeedbacks.size();
+        long helpfulCount = allFeedbacks.stream()
+                .filter(f -> f.getIsHelpful() != null && f.getIsHelpful())
+                .count();
+        long notHelpfulCount = allFeedbacks.stream()
+                .filter(f -> f.getIsHelpful() != null && !f.getIsHelpful())
+                .count();
+
+        // Group by issue type (convert enum to string)
+        Map<String, Long> issueGroups = allFeedbacks.stream()
+                .filter(f -> f.getIssueType() != null)
+                .collect(Collectors.groupingBy(
+                        f -> f.getIssueType().name(),
+                        Collectors.counting()));
+
+        List<ChatFeedbackStatisticsResponse.FeedbackIssue> topIssues = issueGroups.entrySet().stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .limit(5)
+                .map(entry -> ChatFeedbackStatisticsResponse.FeedbackIssue.builder()
+                        .issueType(entry.getKey())
+                        .count(entry.getValue())
+                        .build())
+                .collect(Collectors.toList());
+
+        return ChatFeedbackStatisticsResponse.builder()
+                .averageRating(avgRating != null ? avgRating : 0.0)
+                .totalFeedbacks(totalFeedbacks)
+                .helpfulCount(helpfulCount)
+                .notHelpfulCount(notHelpfulCount)
+                .topIssues(topIssues)
+                .build();
+    }
+
+    @Override
+    public List<ChatFeedbackResponse> getLowRatedFeedbacks() {
+        List<ChatFeedback> lowRated = chatFeedbackRepository.findLowRatedFeedback();
+
+        return lowRated.stream()
+                .map(f -> ChatFeedbackResponse.builder()
+                        .id(f.getId())
+                        .conversationId(f.getConversationId())
+                        .messageId(f.getMessageId())
+                        .rating(f.getRating())
+                        .isHelpful(f.getIsHelpful())
+                        .feedbackText(f.getFeedbackText())
+                        .issueType(f.getIssueType() != null ? f.getIssueType().name() : null)
+                        .createdAt(f.getCreatedAt())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    // ==================== Intent Methods ====================
+
+    @Override
+    public List<ChatIntentResponse> getConversationIntents(UUID conversationId) {
+        List<ChatIntent> intents = chatIntentRepository.findByConversationIdOrderByCreatedAtDesc(conversationId);
+
+        return intents.stream()
+                .map(i -> {
+                    Map<String, Object> entities = new HashMap<>();
+                    if (i.getExtractedEntities() != null && !i.getExtractedEntities().isBlank()) {
+                        try {
+                            entities = objectMapper.readValue(i.getExtractedEntities(), Map.class);
+                        } catch (JsonProcessingException e) {
+                            log.warn("Failed to deserialize extracted entities for intent: {}", i.getId(), e);
+                        }
+                    }
+
+                    return ChatIntentResponse.builder()
+                            .id(i.getId())
+                            .conversationId(i.getConversationId())
+                            .detectedIntent(i.getDetectedIntent())
+                            .confidenceScore(i.getConfidenceScore())
+                            .extractedEntities(entities)
+                            .createdAt(i.getCreatedAt())
+                            .build();
+                })
+                .collect(Collectors.toList());
     }
 
     private record ScoredChunk(AiKnowledgeChunk chunk, double score) {
