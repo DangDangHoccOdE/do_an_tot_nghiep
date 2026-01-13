@@ -79,8 +79,17 @@
                             </svg>
                         </div>
                         <div class="message-content">
+                            <!-- Intent Display for Assistant Messages -->
+                            <ChatIntentDisplay v-if="msg.role === 'assistant' && msg.intent" :intent-data="msg.intent"
+                                style="margin-bottom: 8px" />
+
                             <div class="message-text" v-html="formatMessage(msg.content)"></div>
                             <span class="message-time">{{ formatTime(msg.timestamp) }}</span>
+
+                            <!-- Feedback Component for Assistant Messages -->
+                            <ChatFeedback v-if="msg.role === 'assistant' && msg.id" :conversation-id="conversationId"
+                                :message-id="msg.id" @feedback-submitted="onFeedbackSubmitted"
+                                style="margin-top: 12px" />
                         </div>
                     </div>
 
@@ -130,6 +139,8 @@ import { useI18n } from 'vue-i18n'
 import { ElMessage } from 'element-plus'
 import { Promotion } from '@element-plus/icons-vue'
 import { apiChat } from '@/services/apiChat'
+import ChatFeedback from './ChatFeedback.vue'
+import ChatIntentDisplay from './ChatIntentDisplay.vue'
 
 const { t, locale } = useI18n()
 
@@ -172,10 +183,28 @@ const loadHistory = async () => {
     try {
         const res = await apiChat.getMessages(conversationId.value)
         messages.value = (res || []).map(item => ({
+            id: item.id,
             role: item.role,
             content: item.content,
-            timestamp: item.createdAt || new Date()
+            timestamp: item.createdAt || new Date(),
+            intent: null
         }))
+
+        // Load intents for this conversation
+        try {
+            const intents = await apiChat.getConversationIntents(conversationId.value)
+            if (intents && intents.length > 0) {
+                // Map intents to messages by index (assuming order matches)
+                intents.forEach((intent, idx) => {
+                    if (messages.value[idx] && messages.value[idx].role === 'assistant') {
+                        messages.value[idx].intent = intent
+                    }
+                })
+            }
+        } catch (error) {
+            console.warn('Failed to load intents:', error)
+        }
+
         await nextTick()
         scrollToBottom()
     } catch (error) {
@@ -225,11 +254,29 @@ const sendMessage = async () => {
             assistantContent += `\n\n${t('chatWidget.sources')}:\n${refText}`
         }
 
-        messages.value.push({
+        // Store message with ID and intent
+        const botMessage = {
+            id: response?.reply?.id,
             role: 'assistant',
             content: assistantContent,
-            timestamp: response?.reply?.createdAt || new Date()
-        })
+            timestamp: response?.reply?.createdAt || new Date(),
+            intent: null // Will be loaded separately if needed
+        }
+
+        // Load intent data if available
+        if (conversationId.value) {
+            try {
+                const intents = await apiChat.getConversationIntents(conversationId.value)
+                if (intents && intents.length > 0) {
+                    // Get the latest intent
+                    botMessage.intent = intents[0]
+                }
+            } catch (error) {
+                console.warn('Failed to load intents:', error)
+            }
+        }
+
+        messages.value.push(botMessage)
 
         if (!isOpen.value) {
             hasUnread.value = true
@@ -248,6 +295,12 @@ const sendMessage = async () => {
         await nextTick()
         scrollToBottom()
     }
+}
+
+const onFeedbackSubmitted = (feedbackData) => {
+    ElMessage.success(t('chatFeedback.successMessage'))
+    // You can add analytics or other logic here
+    console.log('Feedback submitted:', feedbackData)
 }
 
 const newConversation = async () => {
