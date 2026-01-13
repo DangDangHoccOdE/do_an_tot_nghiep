@@ -7,6 +7,8 @@ import lombok.Setter;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+import com.management_system.entity.enums.IssueType;
+
 @Entity
 @Table(name = "chat_feedback", indexes = {
         @Index(name = "idx_chat_feedback_conversation", columnList = "conversation_id"),
@@ -39,8 +41,9 @@ public class ChatFeedback {
     @Column(name = "feedback_text", columnDefinition = "TEXT")
     private String feedbackText;
 
-    @Column(name = "issue_type", length = 50)
-    private String issueType; // INACCURATE, IRRELEVANT, INCOMPLETE, RUDE, OTHER
+    @Enumerated(EnumType.STRING)
+    @Column(name = "issue_type", columnDefinition = "issue_type_enum")
+    public IssueType issueType;
 
     @Column(name = "created_at")
     private OffsetDateTime createdAt = OffsetDateTime.now();
