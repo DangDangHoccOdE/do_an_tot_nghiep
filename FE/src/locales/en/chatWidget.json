@@ -14,5 +14,36 @@
     "quickQ2": "How long does mobile app development take?",
     "quickQ3": "What's the cost of a CRM project?",
     "quickQ4": "Which technology suits my project?"
+  },
+  "chatFeedback": {
+    "helpful": "Was this response helpful?",
+    "yes": "Yes",
+    "no": "No",
+    "rating": "Rate this response",
+    "issueType": "Issue type",
+    "selectIssue": "-- Select issue type --",
+    "feedbackText": "Additional feedback",
+    "feedbackPlaceholder": "Tell us what went wrong...",
+    "submit": "Submit feedback",
+    "successMessage": "Thank you for your feedback!",
+    "submitError": "Failed to submit feedback",
+    "selectAtLeast": "Please select at least one feedback option",
+    "inaccurate": "Inaccurate",
+    "irrelevant": "Irrelevant",
+    "incomplete": "Incomplete",
+    "rude": "Rude",
+    "other": "Other"
+  },
+  "chatIntent": {
+    "extractedEntities": "Extracted Information",
+    "pricingInquiry": "Pricing/Budget Question",
+    "techRecommendation": "Technology Recommendation",
+    "projectTimeline": "Timeline Question",
+    "featureRequest": "Feature Request",
+    "generalInfo": "General Information",
+    "budget": "Budget",
+    "timeline": "Timeline",
+    "projectType": "Project Type",
+    "technologies": "Mentioned Technologies"
   }
 }

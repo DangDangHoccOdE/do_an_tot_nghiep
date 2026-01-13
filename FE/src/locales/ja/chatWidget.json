@@ -14,5 +14,36 @@
     "quickQ2": "モバイルアプリ開発にかかる時間は？",
     "quickQ3": "CRMプロジェクトの費用は？",
     "quickQ4": "私のプロジェクトに適した技術は？"
+  },
+  "chatFeedback": {
+    "helpful": "この回答は役に立ちましたか？",
+    "yes": "はい",
+    "no": "いいえ",
+    "rating": "この回答を評価してください",
+    "issueType": "問題の種類",
+    "selectIssue": "-- 問題の種類を選択 --",
+    "feedbackText": "追加フィードバック",
+    "feedbackPlaceholder": "何が問題だったかを教えてください...",
+    "submit": "フィードバックを送信",
+    "successMessage": "フィードバックをお寄せいただきありがとうございます！",
+    "submitError": "フィードバックの送信に失敗しました",
+    "selectAtLeast": "少なくとも1つのフィードバックオプションを選択してください",
+    "inaccurate": "不正確",
+    "irrelevant": "無関係",
+    "incomplete": "不完全",
+    "rude": "失礼",
+    "other": "その他"
+  },
+  "chatIntent": {
+    "extractedEntities": "抽出された情報",
+    "pricingInquiry": "価格/予算に関する質問",
+    "techRecommendation": "技術推奨",
+    "projectTimeline": "タイムラインに関する質問",
+    "featureRequest": "機能リクエスト",
+    "generalInfo": "一般情報",
+    "budget": "予算",
+    "timeline": "タイムライン",
+    "projectType": "プロジェクトタイプ",
+    "technologies": "言及されている技術"
   }
 }

@@ -14,5 +14,36 @@
     "quickQ2": "Thời gian phát triển app mobile là bao lâu?",
     "quickQ3": "Chi phí cho một dự án CRM là bao nhiêu?",
     "quickQ4": "Công nghệ nào phù hợp cho dự án của tôi?"
+  },
+  "chatFeedback": {
+    "helpful": "Phản hồi có hữu ích không?",
+    "yes": "Có",
+    "no": "Không",
+    "rating": "Đánh giá phản hồi này",
+    "issueType": "Loại vấn đề",
+    "selectIssue": "-- Chọn loại vấn đề --",
+    "feedbackText": "Phản hồi thêm",
+    "feedbackPlaceholder": "Hãy cho chúng tôi biết điều gì không đúng...",
+    "submit": "Gửi phản hồi",
+    "successMessage": "Cảm ơn bạn đã phản hồi!",
+    "submitError": "Gửi phản hồi thất bại",
+    "selectAtLeast": "Vui lòng chọn ít nhất một tùy chọn phản hồi",
+    "inaccurate": "Không chính xác",
+    "irrelevant": "Không liên quan",
+    "incomplete": "Không đầy đủ",
+    "rude": "Thô lỗ",
+    "other": "Khác"
+  },
+  "chatIntent": {
+    "extractedEntities": "Thông tin được trích xuất",
+    "pricingInquiry": "Câu hỏi về giá cả/ngân sách",
+    "techRecommendation": "Đề xuất công nghệ",
+    "projectTimeline": "Câu hỏi về thời gian",
+    "featureRequest": "Yêu cầu tính năng",
+    "generalInfo": "Thông tin chung",
+    "budget": "Ngân sách",
+    "timeline": "Thời gian",
+    "projectType": "Loại dự án",
+    "technologies": "Công nghệ được đề cập"
   }
 }

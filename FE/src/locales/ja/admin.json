@@ -383,6 +383,18 @@
         "BLOCKED": "ブロック",
         "CANCELLED": "キャンセル"
       }
-    }
+    },
+    "feedbackDashboard": "チャットフィードバックダッシュボード",
+    "averageRating": "平均評価",
+    "totalFeedbacks": "総フィードバック",
+    "helpful": "役に立つ",
+    "notHelpful": "役に立たない",
+    "responses": "フィードバック",
+    "topIssues": "トップイシュー",
+    "lowRatedFeedbacks": "低評価フィードバック",
+    "issueType": "問題の種類",
+    "feedback": "フィードバック",
+    "date": "日付",
+    "loadStatisticsError": "統計情報の読み込みに失敗しました"
   }
 }

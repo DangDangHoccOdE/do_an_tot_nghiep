@@ -352,6 +352,18 @@
         "BLOCKED": "Bị Chặn",
         "CANCELLED": "Đã Hủy"
       }
-    }
+    },
+    "feedbackDashboard": "Bảng Điều Khiển Phản Hồi",
+    "averageRating": "Đánh giá trung bình",
+    "totalFeedbacks": "Tổng phản hồi",
+    "helpful": "Hữu ích",
+    "notHelpful": "Không hữu ích",
+    "responses": "phản hồi",
+    "topIssues": "Vấn đề hàng đầu",
+    "lowRatedFeedbacks": "Phản hồi có đánh giá thấp",
+    "issueType": "Loại vấn đề",
+    "feedback": "Phản hồi",
+    "date": "Ngày",
+    "loadStatisticsError": "Lỗi tải thống kê"
   }
 }

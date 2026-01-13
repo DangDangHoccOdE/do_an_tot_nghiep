@@ -395,6 +395,18 @@
         "BLOCKED": "Blocked",
         "CANCELLED": "Cancelled"
       }
-    }
+    },
+    "feedbackDashboard": "Chat Feedback Dashboard",
+    "averageRating": "Average Rating",
+    "totalFeedbacks": "Total Feedbacks",
+    "helpful": "Helpful",
+    "notHelpful": "Not Helpful",
+    "responses": "responses",
+    "topIssues": "Top Issues",
+    "lowRatedFeedbacks": "Low Rated Feedbacks",
+    "issueType": "Issue Type",
+    "feedback": "Feedback",
+    "date": "Date",
+    "loadStatisticsError": "Failed to load statistics"
   }
 }
